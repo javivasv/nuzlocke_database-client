@@ -1,7 +1,25 @@
 <template>
   <v-row>
     <div id="nuzlockes">
-      <v-card id="nuzlocke-card"></v-card>
+      <v-card id="nuzlocke-card">
+        <v-card-title>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          v-if="gotNuzlockes"
+          :headers="headers"
+          :items="nuzlockes"
+          :search="search"
+          @click:row="prueba($event)"
+        >
+        </v-data-table>
+      </v-card>
     </div>
     <div id="rules">
       <v-card id="rules-card">
@@ -52,9 +70,41 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
+import * as staticInfo from "../../utils/staticInfo";
 
 @Component({})
-export default class Nuzlockes extends Vue {}
+export default class Nuzlockes extends Vue {
+  search = "";
+  nuzlockes = [] as any;
+  headers = [
+    { text: "Title", value: "title", align: "center", filterable: true },
+    { text: "Game", value: "game", align: "center", filterable: true },
+    { text: "Base game", value: "baseGame", align: "center", filterable: true },
+    { text: "Status", value: "status", align: "center", filterable: true }
+  ];
+  gotNuzlockes = false;
+
+  prueba(item: any) {
+    console.log(item);
+  }
+
+  created() {
+    this.getNuzlockes();
+  }
+
+  async getNuzlockes() {
+    try {
+      const userId = this.$store.state.user.id;
+      const res = await axios.get(
+        `${staticInfo.server}/user/${userId}/nuzlockes`
+      );
+      this.nuzlockes = res.data.nuzlockes;
+      this.gotNuzlockes = true;
+    } catch (error) {
+      this.$root.$emit("error", error.response.data.msg);
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -78,6 +128,10 @@ export default class Nuzlockes extends Vue {}
   height: fit-content;
   margin-top: 30px;
   padding: 10px;
+}
+
+.v-data-table::v-deep tr {
+  cursor: pointer;
 }
 
 #rules {

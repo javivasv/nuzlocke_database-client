@@ -63,12 +63,17 @@ import axios from "axios";
 @Component({})
 export default class Dashboard extends Vue {
   background = require("../../../public/img/ecruteak_city_landscape_opaque.png");
-
   items = [
     { title: "Home", icon: "fa-home", link: "home" },
     { title: "Nuzlockes", icon: "fa-clipboard-list", link: "nuzlockes" },
     { title: "Info", icon: "fa-info", link: "info" }
   ];
+
+  created() {
+    if (this.$store.state.user.id === "") {
+      this.$store.state.user.id = localStorage.getItem("pndb_user_id");
+    }
+  }
 
   active(itemName: string) {
     if (itemName === this.$route.name) {
@@ -84,8 +89,10 @@ export default class Dashboard extends Vue {
 
   logout() {
     localStorage.setItem("pndb_jwt", "");
+    localStorage.setItem("pndb_user_id", "");
     localStorage.setItem("pndb_username", "");
-    this.$store.state.username = "";
+    this.$store.state.user.id = "";
+    this.$store.state.user.username = "";
     this.$router.push({ name: "login" });
   }
 }
