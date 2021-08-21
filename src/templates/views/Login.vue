@@ -59,6 +59,8 @@ export default class Login extends Vue {
     try {
       const res = await axios.post(`${staticInfo.server}/login`, data);
       localStorage.setItem("pndb_jwt", res.data.token);
+      localStorage.setItem("pndb_username", this.username);
+      this.$store.state.username = this.username;
       this.$router.push({ name: "home" });
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
@@ -67,7 +69,6 @@ export default class Login extends Vue {
 
   validateData() {
     let valid = true;
-
     if (this.username === "" || this.password === "") {
       valid = false;
     }

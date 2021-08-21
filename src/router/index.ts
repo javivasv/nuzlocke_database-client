@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../templates/views/Home.vue";
+import Info from "../templates/views/Info.vue";
+import Nuzlockes from "../templates/views/Nuzlockes.vue";
 import Dashboard from "../templates/views/Dashboard.vue";
 import Login from "../templates/views/Login.vue";
 import Register from "../templates/views/Register.vue";
@@ -23,9 +25,19 @@ const routes = [
     component: Dashboard,
     children: [
       {
-        path: "",
+        path: "home",
         name: "home",
         component: Home
+      },
+      {
+        path: "/nuzlockes",
+        name: "nuzlockes",
+        component: Nuzlockes
+      },
+      {
+        path: "/info",
+        name: "info",
+        component: Info
       }
     ]
   },

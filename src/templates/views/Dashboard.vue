@@ -17,7 +17,13 @@
               <v-divider></v-divider>
 
               <v-list>
-                <v-list-item v-for="item in items" :key="item.title" link>
+                <v-list-item
+                  :class="active(item.link)"
+                  v-for="item in items"
+                  :key="item.title"
+                  link
+                  @click="redirect(item.link)"
+                >
                   <v-list-item-icon>
                     <v-icon>{{ item.icon }}</v-icon>
                   </v-list-item-icon>
@@ -29,7 +35,7 @@
               </v-list>
 
               <template v-slot:append>
-                <v-list-item link>
+                <v-list-item link @click="logout()">
                   <v-list-item-icon>
                     <v-icon>fa-sign-out-alt</v-icon>
                   </v-list-item-icon>
@@ -59,9 +65,27 @@ export default class Dashboard extends Vue {
   background = require("../../../public/img/ecruteak_city_landscape_opaque.png");
 
   items = [
-    { title: "Home", icon: "fa-home" },
-    { title: "Nuzlockes", icon: "fa-clipboard-list" }
+    { title: "Home", icon: "fa-home", link: "home" },
+    { title: "Nuzlockes", icon: "fa-clipboard-list", link: "nuzlockes" },
+    { title: "Info", icon: "fa-info", link: "info" }
   ];
+
+  active(itemName: string) {
+    if (itemName === this.$route.name) {
+      return "active";
+    }
+  }
+
+  redirect(to: string) {
+    this.$router.push({ name: to });
+  }
+
+  logout() {
+    localStorage.setItem("pndb_jwt", "");
+    localStorage.setItem("pndb_username", "");
+    this.$store.state.username = "";
+    this.$router.push({ name: "login" });
+  }
 }
 </script>
 
@@ -89,6 +113,16 @@ export default class Dashboard extends Vue {
   width: 100% !important;
   padding: 10%;
   background-size: cover;
+}
+
+.v-list-item {
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+.v-list-item:hover,
+.active {
+  background-color: $primaryColor !important;
 }
 
 #content {
