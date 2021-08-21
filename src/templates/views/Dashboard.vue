@@ -35,7 +35,7 @@
               </v-list>
 
               <template v-slot:append>
-                <v-list-item link @click="logout()">
+                <v-list-item class="item" link @click="logout()">
                   <v-list-item-icon>
                     <v-icon>fa-sign-out-alt</v-icon>
                   </v-list-item-icon>
@@ -72,8 +72,10 @@ export default class Dashboard extends Vue {
 
   active(itemName: string) {
     if (itemName === this.$route.name) {
-      return "active";
+      return "active item";
     }
+
+    return "item";
   }
 
   redirect(to: string) {
@@ -120,7 +122,7 @@ export default class Dashboard extends Vue {
   border-radius: 4px;
 }
 
-.v-list-item:hover,
+.item:hover,
 .active {
   background-color: $primaryColor !important;
 }
