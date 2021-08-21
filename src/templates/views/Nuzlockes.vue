@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <div id="nuzlockes">
-      <v-card id="nuzlocke-card">
+      <v-card id="nuzlockes-card">
         <v-card-title>
           <v-text-field
             v-model="search"
@@ -89,7 +89,7 @@ export default class Nuzlockes extends Vue {
   gotNuzlockes = false;
 
   checkNuzlocke(event: any) {
-    console.log(event);
+    this.$router.push({ name: "nuzlocke", params: { nuzlocke_id: event._id } });
   }
 
   created() {
@@ -126,7 +126,7 @@ export default class Nuzlockes extends Vue {
   padding: 5% 10px 10px 10px;
 }
 
-#nuzlocke-card,
+#nuzlockes-card,
 #info-card {
   width: 100%;
   height: fit-content;

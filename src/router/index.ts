@@ -4,6 +4,7 @@ import Home from "../templates/views/Home.vue";
 import Info from "../templates/views/Info.vue";
 import Nuzlockes from "../templates/views/Nuzlockes.vue";
 import NewNuzlocke from "../templates/views/NewNuzlocke.vue";
+import Nuzlocke from "../templates/views/Nuzlocke.vue";
 import Dashboard from "../templates/views/Dashboard.vue";
 import Login from "../templates/views/Login.vue";
 import Register from "../templates/views/Register.vue";
@@ -36,14 +37,19 @@ const routes = [
         component: Nuzlockes
       },
       {
-        path: "/info",
-        name: "info",
-        component: Info
-      },
-      {
         path: "/new-nuzlocke",
         name: "new-nuzlocke",
         component: NewNuzlocke
+      },
+      {
+        path: "/nuzlocke/:nuzlocke_id",
+        name: "nuzlocke",
+        component: Nuzlocke
+      },
+      {
+        path: "/info",
+        name: "info",
+        component: Info
       }
     ]
   },
