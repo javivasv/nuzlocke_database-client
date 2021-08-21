@@ -47,7 +47,7 @@ export default class Login extends Vue {
   password = "";
 
   async login() {
-    if (!this.validateData) {
+    if (!this.validateData()) {
       return;
     }
 
@@ -70,12 +70,11 @@ export default class Login extends Vue {
   }
 
   validateData() {
-    let valid = true;
     if (this.username === "" || this.password === "") {
-      valid = false;
+      return false;
     }
 
-    return valid;
+    return true;
   }
 }
 </script>

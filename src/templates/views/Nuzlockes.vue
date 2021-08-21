@@ -16,13 +16,13 @@
           :headers="headers"
           :items="nuzlockes"
           :search="search"
-          @click:row="prueba($event)"
+          @click:row="checkNuzlocke($event)"
         >
         </v-data-table>
       </v-card>
     </div>
-    <div id="rules">
-      <v-card id="rules-card">
+    <div id="info">
+      <v-card id="info-card">
         <v-fab-transition>
           <v-img
             id="pokeball"
@@ -33,7 +33,11 @@
             :src="require(`../../../public/img/pokeball.png`)"
           ></v-img>
         </v-fab-transition>
-        <v-card-title><v-btn>Create new nuzlocke</v-btn></v-card-title>
+        <v-card-title>
+          <router-link :to="{ name: 'new-nuzlocke' }">
+            <v-btn>New nuzlocke</v-btn>
+          </router-link>
+        </v-card-title>
         <v-divider></v-divider>
         <v-card-subtitle class="card-text"
           >Nuzlocke Basic Rules</v-card-subtitle
@@ -84,8 +88,8 @@ export default class Nuzlockes extends Vue {
   ];
   gotNuzlockes = false;
 
-  prueba(item: any) {
-    console.log(item);
+  checkNuzlocke(event: any) {
+    console.log(event);
   }
 
   created() {
@@ -123,7 +127,7 @@ export default class Nuzlockes extends Vue {
 }
 
 #nuzlocke-card,
-#rules-card {
+#info-card {
   width: 100%;
   height: fit-content;
   margin-top: 30px;
@@ -134,13 +138,13 @@ export default class Nuzlockes extends Vue {
   cursor: pointer;
 }
 
-#rules {
+#info {
   width: 35%;
   height: 100%;
   padding: 5% 10px 10px 10px;
 }
 
-#rules::v-deep .v-card__title {
+#info::v-deep .v-card__title {
   justify-content: center;
   margin-top: 60px;
 }
@@ -168,5 +172,9 @@ export default class Nuzlockes extends Vue {
 
 .card-text {
   color: #999999;
+}
+
+a {
+  text-decoration: none;
 }
 </style>

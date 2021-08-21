@@ -45,7 +45,7 @@ export default class Register extends Vue {
   password = "";
 
   async register() {
-    if (!this.validateData) {
+    if (!this.validateData()) {
       return;
     }
 
@@ -63,12 +63,11 @@ export default class Register extends Vue {
   }
 
   validateData() {
-    let valid = true;
     if (this.username === "" || this.password === "") {
-      valid = false;
+      return false;
     }
 
-    return valid;
+    return true;
   }
 }
 </script>
