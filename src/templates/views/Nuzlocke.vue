@@ -32,7 +32,14 @@
           ></v-img>
         </v-fab-transition>
         <v-card-title>
-          <v-btn>Add pokemon</v-btn>
+          <router-link
+            :to="{
+              name: 'add-pokemon',
+              params: { baseGame: nuzlocke.baseGame }
+            }"
+          >
+            <v-btn>Add pokemon</v-btn>
+          </router-link>
         </v-card-title>
         <v-divider></v-divider>
         <v-card-subtitle class="card-text"

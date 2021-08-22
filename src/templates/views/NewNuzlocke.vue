@@ -46,7 +46,6 @@
           <v-btn @click="createNuzlocke()">Create new nuzlocke</v-btn>
         </v-card-title>
         <v-divider></v-divider>
-        <v-card-subtitle class="card-text"></v-card-subtitle>
         <v-card-text>
           <ul>
             <li>
