@@ -67,17 +67,24 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-subtitle class="card-text"
-          >Game status: {{ nuzlocke.status }}
+          >Game status: {{ nuzlocke.status.toUpperCase() }}
         </v-card-subtitle>
+        <v-divider></v-divider>
+        <v-card-subtitle class="card-text">Change status: </v-card-subtitle>
         <v-row id="nuzlocke-status">
           <v-btn
-            v-if="nuzlocke.status === 'started'"
+            v-if="nuzlocke.status !== 'started'"
+            @click="changeNuzlockeStatus('started')"
+            >Started</v-btn
+          >
+          <v-btn
+            v-if="nuzlocke.status !== 'completed'"
             id="completed-button"
             @click="changeNuzlockeStatus('completed')"
             >Completed</v-btn
           >
           <v-btn
-            v-if="nuzlocke.status === 'started'"
+            v-if="nuzlocke.status !== 'lost'"
             id="lost-button"
             @click="changeNuzlockeStatus('lost')"
             >Lost</v-btn

@@ -76,8 +76,20 @@ export default class Dashboard extends Vue {
   }
 
   active(itemName: string) {
-    if (itemName === this.$route.name) {
+    const routeName = this.$route.name;
+
+    if (itemName === routeName) {
       return "active item";
+    }
+
+    if (itemName === "nuzlockes") {
+      if (
+        routeName === "nuzlocke" ||
+        routeName === "new-nuzlocke" ||
+        routeName === "add-pokemon"
+      ) {
+        return "active item";
+      }
     }
 
     return "item";
