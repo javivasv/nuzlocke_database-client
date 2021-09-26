@@ -16,29 +16,16 @@
           :items="nuzlocke.pokemon"
           :search="search"
         >
-          <!-- eslint-disable-next-line -->
-          <template #item.species="{ item }">
-            {{ item.species.toUpperCase() }}
-          </template>
-
-          <!-- eslint-disable-next-line -->
-          <template #item.location="{ item }">
-            {{ item.location.toUpperCase() }}
-          </template>
-
-          <!-- eslint-disable-next-line -->
-          <template #item.obtained="{ item }">
-            {{ item.obtained.toUpperCase() }}
-          </template>
-
-          <!-- eslint-disable-next-line -->
-          <template #item.dead="{ item }">
-            {{ item.dead ? "DEAD" : "ALIVE" }}
-          </template>
-
-          <!-- eslint-disable-next-line -->
-          <template #item.change="{ item }">
-            <v-btn @click="changePokemonStatus(item)" small>CHANGE</v-btn>
+          <template #item="{ item }">
+            <tr :class="pokemonRowClass(item.dead)">
+              <td>{{ item.nickname }}</td>
+              <td>{{ item.species.toUpperCase() }}</td>
+              <td>{{ item.location.toUpperCase() }}</td>
+              <td>{{ item.obtained.toUpperCase() }}</td>
+              <td>
+                <v-btn @click="changePokemonStatus(item)" small>CHANGE</v-btn>
+              </td>
+            </tr>
           </template>
         </v-data-table>
       </v-card>
@@ -110,7 +97,6 @@ export default class Nuzlocke extends Vue {
     { text: "Species", value: "species", align: "center", filterable: true },
     { text: "Location", value: "location", align: "center", filterable: true },
     { text: "Obtained", value: "obtained", align: "center", filterable: true },
-    { text: "Status", value: "dead", align: "center", filterable: true },
     {
       text: "Change status",
       value: "change",
@@ -171,6 +157,12 @@ export default class Nuzlocke extends Vue {
       item.dead = !item.dead;
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
+    }
+  }
+
+  pokemonRowClass(status: Boolean) {
+    if (status) {
+      return "dead";
     }
   }
 }
@@ -250,5 +242,15 @@ export default class Nuzlocke extends Vue {
 
 a {
   text-decoration: none;
+}
+
+tr,
+tr:hover {
+  background-color: #fff !important;
+}
+
+.dead,
+.dead:hover {
+  background-color: rgb(241, 60, 60) !important;
 }
 </style>

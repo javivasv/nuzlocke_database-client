@@ -18,6 +18,10 @@
           :search="search"
           @click:row="checkNuzlocke($event)"
         >
+          <!-- eslint-disable-next-line -->
+          <template #item.status="{ item }">
+            {{ item.status.toUpperCase() }}
+          </template>
         </v-data-table>
       </v-card>
     </div>
