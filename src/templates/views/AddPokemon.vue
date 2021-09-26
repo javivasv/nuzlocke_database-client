@@ -18,6 +18,12 @@
                   label="Species"
                   @change="pokemonSprite($event)"
                 >
+                  <template v-slot:selection="species">
+                    {{ species.item.toUpperCase() }}
+                  </template>
+                  <template v-slot:item="species">
+                    {{ species.item.toUpperCase() }}
+                  </template>
                 </v-autocomplete>
               </v-row>
               <v-row>
@@ -33,6 +39,12 @@
                   :items="locations"
                   label="Location"
                 >
+                  <template v-slot:selection="locations">
+                    {{ locations.item.toUpperCase() }}
+                  </template>
+                  <template v-slot:item="locations">
+                    {{ locations.item.toUpperCase() }}
+                  </template>
                 </v-autocomplete>
               </v-row>
               <v-row>
@@ -40,7 +52,14 @@
                   v-model="obtained"
                   :items="obtainedOptions"
                   label="Obtained"
-                ></v-select>
+                >
+                  <template v-slot:selection="obtainedOptions">
+                    {{ obtainedOptions.item.toUpperCase() }}
+                  </template>
+                  <template v-slot:item="obtainedOptions">
+                    {{ obtainedOptions.item.toUpperCase() }}
+                  </template>
+                </v-select>
               </v-row>
             </v-col>
           </v-container>
