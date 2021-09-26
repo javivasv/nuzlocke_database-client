@@ -147,8 +147,47 @@ export default class AddPokemon extends Vue {
     }
   }
 
-  addPokemon() {
-    console.log("ADD");
+  async addPokemon() {
+    if (!this.validateData()) {
+      return;
+    }
+
+    const data = {
+      nickname: this.nickname,
+      location: this.location,
+      obtained: this.obtained,
+      species: this.species
+    };
+
+    try {
+      const userId = this.$store.state.user.id;
+      const nuzlockeId = this.$route.params.nuzlocke_id;
+      const res = await axios.post(
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon`,
+        data
+      );
+
+      this.$root.$emit("error", this.nickname + " added to nuzlocke");
+      this.$router.push({ name: "nuzlocke" });
+    } catch (error) {
+      this.$root.$emit("error", error.response.data.msg);
+    }
+  }
+
+  validateData() {
+    if (
+      this.species === "" ||
+      this.species === undefined ||
+      this.nickname === "" ||
+      this.location === "" ||
+      this.location === undefined ||
+      this.obtained === "" ||
+      this.obtained === undefined
+    ) {
+      return false;
+    }
+
+    return true;
   }
 }
 </script>
