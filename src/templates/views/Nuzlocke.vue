@@ -16,6 +16,30 @@
           :items="nuzlocke.pokemon"
           :search="search"
         >
+          <!-- eslint-disable-next-line -->
+          <template #item.species="{ item }">
+            {{ item.species.toUpperCase() }}
+          </template>
+
+          <!-- eslint-disable-next-line -->
+          <template #item.location="{ item }">
+            {{ item.location.toUpperCase() }}
+          </template>
+
+          <!-- eslint-disable-next-line -->
+          <template #item.obtained="{ item }">
+            {{ item.obtained.toUpperCase() }}
+          </template>
+
+          <!-- eslint-disable-next-line -->
+          <template #item.dead="{ item }">
+            {{ item.dead ? "DEAD" : "ALIVE" }}
+          </template>
+
+          <!-- eslint-disable-next-line -->
+          <template #item.change="{ item }">
+            <v-btn @click="changePokemonStatus(item)" small>CHANGE</v-btn>
+          </template>
         </v-data-table>
       </v-card>
     </div>
@@ -49,13 +73,13 @@
           <v-btn
             v-if="nuzlocke.status === 'started'"
             id="completed-button"
-            @click="changeStatus('completed')"
+            @click="changeNuzlockeStatus('completed')"
             >Completed</v-btn
           >
           <v-btn
             v-if="nuzlocke.status === 'started'"
             id="lost-button"
-            @click="changeStatus('lost')"
+            @click="changeNuzlockeStatus('lost')"
             >Lost</v-btn
           >
         </v-row>
@@ -79,7 +103,13 @@ export default class Nuzlocke extends Vue {
     { text: "Species", value: "species", align: "center", filterable: true },
     { text: "Location", value: "location", align: "center", filterable: true },
     { text: "Obtained", value: "obtained", align: "center", filterable: true },
-    { text: "Dead", value: "dead", align: "center", filterable: true }
+    { text: "Status", value: "dead", align: "center", filterable: true },
+    {
+      text: "Change status",
+      value: "change",
+      align: "center",
+      filterable: false
+    }
   ];
   gotNuzlocke = false;
   nuzlocke: any;
@@ -102,27 +132,39 @@ export default class Nuzlocke extends Vue {
     }
   }
 
-  async updateNuzlocke() {
+  async changeNuzlockeStatus(status: String) {
     const data = {
       nuzlocke: this.nuzlocke
     };
 
+    data.nuzlocke.status = status;
     try {
       const userId = this.$store.state.user.id;
       const nuzlockeId = this.$route.params.nuzlocke_id;
-      const res = await axios.put(
+      await axios.put(
         `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`,
         data
       );
+
+      this.nuzlocke.status = status;
       this.$forceUpdate();
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
     }
   }
 
-  changeStatus(status: String) {
-    this.nuzlocke.status = status;
-    this.updateNuzlocke();
+  async changePokemonStatus(item: any) {
+    try {
+      const userId = this.$store.state.user.id;
+      const nuzlockeId = this.$route.params.nuzlocke_id;
+      await axios.put(
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${item._id}`
+      );
+
+      item.dead = !item.dead;
+    } catch (error) {
+      this.$root.$emit("error", error.response.data.msg);
+    }
   }
 }
 </script>
