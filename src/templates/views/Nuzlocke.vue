@@ -15,7 +15,7 @@
           :headers="headers"
           :items="nuzlocke.pokemon"
           :search="search"
-          items-per-page="5"
+          :items-per-page="5"
         >
           <template #item="{ item }">
             <tr :class="pokemonRowClass(item.dead)">
