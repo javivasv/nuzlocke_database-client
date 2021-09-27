@@ -15,9 +15,15 @@
           :headers="headers"
           :items="nuzlocke.pokemon"
           :search="search"
+          items-per-page="5"
         >
           <template #item="{ item }">
             <tr :class="pokemonRowClass(item.dead)">
+              <td>
+                <v-avatar size="80" tile>
+                  <v-img :src="item.sprite"></v-img>
+                </v-avatar>
+              </td>
               <td>{{ item.nickname }}</td>
               <td>{{ item.species.toUpperCase() }}</td>
               <td>{{ item.location.toUpperCase() }}</td>
@@ -93,6 +99,7 @@ import * as staticInfo from "../../utils/staticInfo";
 export default class Nuzlocke extends Vue {
   search = "";
   headers = [
+    { text: "", value: "sprite", align: "center", filterable: false },
     { text: "Nickname", value: "nickname", align: "center", filterable: true },
     { text: "Species", value: "species", align: "center", filterable: true },
     { text: "Location", value: "location", align: "center", filterable: true },

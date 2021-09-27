@@ -175,7 +175,8 @@ export default class AddPokemon extends Vue {
       nickname: this.nickname,
       location: this.location,
       obtained: this.obtained,
-      species: this.species
+      species: this.species,
+      sprite: this.sprite
     };
 
     try {
