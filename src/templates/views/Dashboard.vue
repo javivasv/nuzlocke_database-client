@@ -149,5 +149,6 @@ export default class Dashboard extends Vue {
 #content {
   width: 80%;
   height: 100%;
+  position: relative;
 }
 </style>

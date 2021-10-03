@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="content-row">
     <div id="nuzlockes">
       <v-card id="nuzlockes-card">
         <v-card-title>

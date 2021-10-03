@@ -35,4 +35,8 @@ export default class extends Vue {
   text-align: center;
   color: #2c3e50;
 }
+
+.content-row {
+  position: absolute;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="gotNuzlocke">
+  <v-row class="content-row" v-if="gotNuzlocke">
     <div id="nuzlocke">
       <v-card id="nuzlocke-card">
         <v-card-title>
@@ -197,6 +197,7 @@ export default class Nuzlocke extends Vue {
   width: 65%;
   height: 100%;
   padding: 5% 10px 10px 10px;
+  overflow-y: auto;
 }
 
 #nuzlocke-card,
