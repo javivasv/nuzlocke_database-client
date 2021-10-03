@@ -86,4 +86,4 @@ export const regionsGames = [
   { galar: ["Pokemon Shield", "Pokemon Sword"] }
 ];
 
-export const obtainedOptions = ["caught", "gifted", "hatched", "traded"];
+export const obtainedOptions = ["caught", "gifted", "hatched", "traded", "not"];

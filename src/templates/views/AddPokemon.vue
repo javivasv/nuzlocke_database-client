@@ -198,12 +198,15 @@ export default class AddPokemon extends Vue {
     if (
       this.species === "" ||
       this.species === undefined ||
-      this.nickname === "" ||
       this.location === "" ||
       this.location === undefined ||
       this.obtained === "" ||
       this.obtained === undefined
     ) {
+      return false;
+    }
+
+    if (this.obtained !== "not" && this.nickname === "") {
       return false;
     }
 

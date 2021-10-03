@@ -18,7 +18,7 @@
           :items-per-page="5"
         >
           <template #item="{ item }">
-            <tr :class="pokemonRowClass(item.dead)">
+            <tr :class="pokemonRowClass(item.dead, item.obtained)">
               <td>
                 <v-avatar size="80" tile>
                   <v-img :src="item.sprite"></v-img>
@@ -29,7 +29,12 @@
               <td>{{ item.location.toUpperCase() }}</td>
               <td>{{ item.obtained.toUpperCase() }}</td>
               <td>
-                <v-btn @click="changePokemonStatus(item)" small>CHANGE</v-btn>
+                <v-btn
+                  v-if="item.obtained !== 'not'"
+                  @click="changePokemonStatus(item)"
+                  small
+                  >CHANGE</v-btn
+                >
               </td>
             </tr>
           </template>
@@ -167,9 +172,13 @@ export default class Nuzlocke extends Vue {
     }
   }
 
-  pokemonRowClass(status: Boolean) {
-    if (status) {
-      return "dead";
+  pokemonRowClass(status: Boolean, obtained: string) {
+    if (obtained !== "not") {
+      if (status) {
+        return "dead";
+      }
+    } else if (obtained === "not") {
+      return "not";
     }
   }
 }
@@ -259,5 +268,10 @@ tr:hover {
 .dead,
 .dead:hover {
   background-color: rgb(241, 60, 60) !important;
+}
+
+.not,
+.not:hover {
+  background-color: rgb(241, 229, 60) !important;
 }
 </style>
