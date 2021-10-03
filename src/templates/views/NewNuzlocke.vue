@@ -86,9 +86,6 @@
           will be used</v-card-text
         >
       </v-card>
-      <v-row class="back-row">
-        <BackButton />
-      </v-row>
     </div>
   </v-row>
 </template>

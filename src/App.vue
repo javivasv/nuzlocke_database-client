@@ -41,7 +41,6 @@ export default class extends Vue {
 }
 
 .back-row {
-  height: auto !important;
-  margin: 20px 0 0 20px !important;
+  height: 10% !important;
 }
 </style>

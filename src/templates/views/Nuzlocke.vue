@@ -1,5 +1,6 @@
 <template>
   <v-row class="content-row" v-if="gotNuzlocke">
+    <v-row class="back-row"></v-row>
     <div id="nuzlocke">
       <v-card id="nuzlocke-card">
         <v-card-title>
@@ -11,34 +12,36 @@
             hide-details
           ></v-text-field>
         </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="nuzlocke.pokemon"
-          :search="search"
-          :items-per-page="5"
-        >
-          <template #item="{ item }">
-            <tr :class="pokemonRowClass(item.dead, item.obtained)">
-              <td>
-                <v-avatar size="80" tile>
-                  <v-img :src="item.sprite"></v-img>
-                </v-avatar>
-              </td>
-              <td>{{ item.nickname }}</td>
-              <td>{{ item.species.toUpperCase() }}</td>
-              <td>{{ item.location.toUpperCase() }}</td>
-              <td>{{ item.obtained.toUpperCase() }}</td>
-              <td>
-                <v-btn
-                  v-if="item.obtained !== 'not'"
-                  @click="changePokemonStatus(item)"
-                  small
-                  >CHANGE</v-btn
-                >
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
+        <div id="prueba-dos">
+          <v-data-table
+            :headers="headers"
+            :items="nuzlocke.pokemon"
+            :search="search"
+            :items-per-page="5"
+          >
+            <template #item="{ item }">
+              <tr :class="pokemonRowClass(item.dead, item.obtained)">
+                <td>
+                  <v-avatar size="80" tile>
+                    <v-img :src="item.sprite"></v-img>
+                  </v-avatar>
+                </td>
+                <td>{{ item.nickname }}</td>
+                <td>{{ item.species.toUpperCase() }}</td>
+                <td>{{ item.location.toUpperCase() }}</td>
+                <td>{{ item.obtained.toUpperCase() }}</td>
+                <td>
+                  <v-btn
+                    v-if="item.obtained !== 'not'"
+                    @click="changePokemonStatus(item)"
+                    small
+                    >CHANGE</v-btn
+                  >
+                </td>
+              </tr>
+            </template>
+          </v-data-table>
+        </div>
       </v-card>
     </div>
     <div id="info">
@@ -91,7 +94,6 @@
         <v-divider></v-divider>
         <v-card-text>{{ nuzlocke.description }}</v-card-text>
       </v-card>
-
     </div>
   </v-row>
 </template>
@@ -196,23 +198,26 @@ export default class Nuzlocke extends Vue {
 
 #nuzlocke {
   width: 65%;
-  height: 100%;
-  padding: 5% 10px 10px 10px;
-  overflow-y: auto;
+  height: 90%;
+  padding: 0 10px 10px 10px;
 }
 
 #nuzlocke-card,
 #info-card {
   width: 100%;
   height: fit-content;
-  margin-top: 30px;
   padding: 10px;
+}
+
+#nuzlocke-card {
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 #info {
   width: 35%;
-  height: 100%;
-  padding: 5% 10px 10px 10px;
+  height: 90%;
+  padding: 0 10px 10px 10px;
 }
 
 #info::v-deep .v-card__title {
@@ -220,6 +225,7 @@ export default class Nuzlocke extends Vue {
   margin-top: 60px;
 }
 
+.card-title,
 .v-btn {
   background-color: $secondaryColor !important;
   color: white !important;

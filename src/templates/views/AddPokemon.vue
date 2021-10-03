@@ -82,9 +82,6 @@
           <v-btn @click="addPokemon()">Add pokemon</v-btn>
         </v-card-title>
       </v-card>
-      <v-row class="back-row">
-        <BackButton />
-      </v-row>
     </div>
   </v-row>
 </template>
