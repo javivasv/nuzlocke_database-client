@@ -104,16 +104,16 @@ import * as staticInfo from "../../utils/staticInfo";
 export default class Nuzlocke extends Vue {
   search = "";
   headers = [
-    { text: "", value: "sprite", align: "center", filterable: false },
-    { text: "Nickname", value: "nickname", align: "center", filterable: true },
-    { text: "Species", value: "species", align: "center", filterable: true },
-    { text: "Location", value: "location", align: "center", filterable: true },
-    { text: "Obtained", value: "obtained", align: "center", filterable: true },
+    { text: "", value: "sprite", align: "center", sortable: false },
+    { text: "Nickname", value: "nickname", align: "center", sortable: true },
+    { text: "Species", value: "species", align: "center", sortable: true },
+    { text: "Location", value: "location", align: "center", sortable: true },
+    { text: "Obtained", value: "obtained", align: "center", sortable: true },
     {
       text: "Change status",
       value: "change",
       align: "center",
-      filterable: false
+      sortable: false
     }
   ];
   gotNuzlocke = false;
