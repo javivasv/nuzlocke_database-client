@@ -1,5 +1,6 @@
 <template>
   <v-row>
+    <v-row class="back-row"></v-row>
     <div id="add-pokemon">
       <v-card id="add-pokemon-card">
         <v-form v-on:submit.prevent="addPokemon()">
@@ -232,21 +233,20 @@ export default class AddPokemon extends Vue {
 #add-pokemon {
   width: 65%;
   height: 100%;
-  padding: 5% 10px 10px 10px;
+  padding: 0 10px 10px 10px;
 }
 
 #add-pokemon-card,
 #info-card {
   width: 100%;
   height: fit-content;
-  margin-top: 30px;
   padding: 10px;
 }
 
 #info {
   width: 35%;
   height: 100%;
-  padding: 5% 10px 10px 10px;
+  padding: 0 10px 10px 10px;
 }
 
 #info::v-deep .v-card__title {

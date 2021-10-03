@@ -1,5 +1,6 @@
 <template>
   <v-row class="content-row">
+    <v-row class="back-row"></v-row>
     <div id="nuzlockes">
       <v-card id="nuzlockes-card">
         <v-card-title>
@@ -127,14 +128,13 @@ export default class Nuzlockes extends Vue {
 #nuzlockes {
   width: 65%;
   height: 100%;
-  padding: 5% 10px 10px 10px;
+  padding: 0 10px 10px 10px;
 }
 
 #nuzlockes-card,
 #info-card {
   width: 100%;
   height: fit-content;
-  margin-top: 30px;
   padding: 10px;
 }
 
@@ -145,7 +145,7 @@ export default class Nuzlockes extends Vue {
 #info {
   width: 35%;
   height: 100%;
-  padding: 5% 10px 10px 10px;
+  padding: 0 10px 10px 10px;
 }
 
 #info::v-deep .v-card__title {

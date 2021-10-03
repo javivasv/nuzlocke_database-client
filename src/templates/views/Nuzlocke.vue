@@ -12,36 +12,34 @@
             hide-details
           ></v-text-field>
         </v-card-title>
-        <div id="prueba-dos">
-          <v-data-table
-            :headers="headers"
-            :items="nuzlocke.pokemon"
-            :search="search"
-            :items-per-page="5"
-          >
-            <template #item="{ item }">
-              <tr :class="pokemonRowClass(item.dead, item.obtained)">
-                <td>
-                  <v-avatar size="80" tile>
-                    <v-img :src="item.sprite"></v-img>
-                  </v-avatar>
-                </td>
-                <td>{{ item.nickname }}</td>
-                <td>{{ item.species.toUpperCase() }}</td>
-                <td>{{ item.location.toUpperCase() }}</td>
-                <td>{{ item.obtained.toUpperCase() }}</td>
-                <td>
-                  <v-btn
-                    v-if="item.obtained !== 'not'"
-                    @click="changePokemonStatus(item)"
-                    small
-                    >CHANGE</v-btn
-                  >
-                </td>
-              </tr>
-            </template>
-          </v-data-table>
-        </div>
+        <v-data-table
+          :headers="headers"
+          :items="nuzlocke.pokemon"
+          :search="search"
+          :items-per-page="5"
+        >
+          <template #item="{ item }">
+            <tr :class="pokemonRowClass(item.dead, item.obtained)">
+              <td>
+                <v-avatar size="80" tile>
+                  <v-img :src="item.sprite"></v-img>
+                </v-avatar>
+              </td>
+              <td>{{ item.nickname }}</td>
+              <td>{{ item.species.toUpperCase() }}</td>
+              <td>{{ item.location.toUpperCase() }}</td>
+              <td>{{ item.obtained.toUpperCase() }}</td>
+              <td>
+                <v-btn
+                  v-if="item.obtained !== 'not'"
+                  @click="changePokemonStatus(item)"
+                  small
+                  >CHANGE</v-btn
+                >
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
       </v-card>
     </div>
     <div id="info">

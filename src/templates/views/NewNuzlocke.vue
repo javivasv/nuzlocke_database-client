@@ -1,5 +1,6 @@
 <template>
   <v-row>
+    <v-row class="back-row"></v-row>
     <div id="new-nuzlocke">
       <v-card id="new-nuzlocke-card">
         <v-form v-on:submit.prevent="createNuzlocke()">
@@ -174,21 +175,20 @@ export default class NewNuzlocke extends Vue {
 #new-nuzlocke {
   width: 65%;
   height: 100%;
-  padding: 5% 10px 10px 10px;
+  padding: 0 10px 10px 10px;
 }
 
 #new-nuzlocke-card,
 #info-card {
   width: 100%;
   height: fit-content;
-  margin-top: 30px;
   padding: 10px;
 }
 
 #info {
   width: 35%;
   height: 100%;
-  padding: 5% 10px 10px 10px;
+  padding: 0 10px 10px 10px;
 }
 
 #info::v-deep .v-card__title {
