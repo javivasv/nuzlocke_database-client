@@ -91,6 +91,7 @@
         <v-divider></v-divider>
         <v-card-text>{{ nuzlocke.description }}</v-card-text>
       </v-card>
+
     </div>
   </v-row>
 </template>

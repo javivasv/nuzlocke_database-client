@@ -82,6 +82,9 @@
           <v-btn @click="addPokemon()">Add pokemon</v-btn>
         </v-card-title>
       </v-card>
+      <v-row class="back-row">
+        <BackButton />
+      </v-row>
     </div>
   </v-row>
 </template>
@@ -90,8 +93,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 import * as staticInfo from "../../utils/staticInfo";
+import BackButton from "../components/BackButton.vue";
 
-@Component({})
+@Component({
+  components: {
+    BackButton
+  }
+})
 export default class AddPokemon extends Vue {
   pokemons = [] as any;
   gotPokemons = false;

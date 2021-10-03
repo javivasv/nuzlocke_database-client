@@ -39,4 +39,9 @@ export default class extends Vue {
 .content-row {
   position: absolute;
 }
+
+.back-row {
+  height: auto !important;
+  margin: 20px 0 0 20px !important;
+}
 </style>
