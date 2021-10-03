@@ -40,7 +40,9 @@ export default class extends Vue {
   position: absolute;
 }
 
-.back-row {
+.title-row {
   height: 10% !important;
+  padding-left: 10px;
+  align-items: center;
 }
 </style>

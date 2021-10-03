@@ -1,6 +1,6 @@
 <template>
   <v-row class="content-row">
-    <v-row class="back-row"></v-row>
+    <v-row class="title-row"></v-row>
     <div id="nuzlockes">
       <v-card id="nuzlockes-card">
         <v-card-title>

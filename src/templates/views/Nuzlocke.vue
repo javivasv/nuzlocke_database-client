@@ -1,6 +1,8 @@
 <template>
   <v-row class="content-row" v-if="gotNuzlocke">
-    <v-row class="back-row"></v-row>
+    <v-row class="title-row">
+      <v-card class="title">{{ nuzlocke.title.toUpperCase() }}</v-card>
+    </v-row>
     <div id="nuzlocke">
       <v-card id="nuzlocke-card">
         <v-card-title>
@@ -223,7 +225,7 @@ export default class Nuzlocke extends Vue {
   margin-top: 60px;
 }
 
-.card-title,
+.title,
 .v-btn {
   background-color: $secondaryColor !important;
   color: white !important;
@@ -279,5 +281,10 @@ tr:hover {
 .not,
 .not:hover {
   background-color: rgb(241, 229, 60) !important;
+}
+
+.title {
+  height: fit-content;
+  padding: 10px 50px 10px 50px;
 }
 </style>

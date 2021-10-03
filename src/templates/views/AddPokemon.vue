@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-row class="back-row"></v-row>
+    <v-row class="title-row"></v-row>
     <div id="add-pokemon">
       <v-card id="add-pokemon-card">
         <v-form v-on:submit.prevent="addPokemon()">
