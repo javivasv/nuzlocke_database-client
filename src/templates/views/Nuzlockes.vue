@@ -129,7 +129,7 @@ export default class Nuzlockes extends Vue {
 
 #nuzlockes {
   width: 65%;
-  height: 100%;
+  height: 90%;
   padding: 0 10px 10px 10px;
 }
 
@@ -146,7 +146,7 @@ export default class Nuzlockes extends Vue {
 
 #info {
   width: 35%;
-  height: 100%;
+  height: 90%;
   padding: 0 10px 10px 10px;
 }
 
