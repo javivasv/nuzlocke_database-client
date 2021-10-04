@@ -173,7 +173,29 @@ export default class AddPokemon extends Vue {
         );
 
         const locationsNames = res.data.locations.map((location: any) => {
-          return location.name.replaceAll("-", " ");
+          let locationName = location.name.replaceAll("-", " ");
+
+          if (regions[0] === "kanto") {
+            locationName = locationName.replace("kanto ", "");
+          } else if (regions[0] === "johto") {
+            locationName = locationName
+              .replace("kanto ", "")
+              .replace("johto ", "");
+          } else if (regions[0] === "hoenn") {
+            locationName = locationName.replace("hoenn ", "");
+          } else if (regions[0] === "sinnoh") {
+            locationName = locationName.replace("sinnoh ", "");
+          } else if (regions[0] === "unova") {
+            locationName = locationName.replace("unova ", "");
+          } else if (regions[0] === "kalos") {
+            locationName = locationName.replace("kalos ", "");
+          } else if (regions[0] === "alola") {
+            locationName = locationName.replace("alola ", "");
+          } else if (regions[0] === "galar") {
+            locationName = locationName.replace("galar ", "");
+          }
+
+          return locationName;
         });
 
         this.locations = this.locations.concat(locationsNames);
@@ -215,7 +237,10 @@ export default class AddPokemon extends Vue {
         data
       );
 
-      this.$root.$emit("error", this.nickname + " added to nuzlocke");
+      this.$root.$emit(
+        "error",
+        this.nickname + " was added to " + this.nuzlocke.title
+      );
       this.$router.push({ name: "nuzlocke" });
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
