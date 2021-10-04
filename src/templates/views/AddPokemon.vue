@@ -173,7 +173,7 @@ export default class AddPokemon extends Vue {
         );
 
         const locationsNames = res.data.locations.map((location: any) => {
-          return location.name;
+          return location.name.replaceAll("-", " ");
         });
 
         this.locations = this.locations.concat(locationsNames);
