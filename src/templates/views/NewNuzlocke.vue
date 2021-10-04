@@ -1,6 +1,8 @@
 <template>
   <v-row>
-    <v-row class="title-row"></v-row>
+    <v-row class="title-row">
+      <v-card class="title">NEW NUZLOCKE</v-card>
+    </v-row>
     <div id="new-nuzlocke">
       <v-card id="new-nuzlocke-card">
         <v-form v-on:submit.prevent="createNuzlocke()">

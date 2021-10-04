@@ -60,7 +60,7 @@
           <router-link
             :to="{
               name: 'add-pokemon',
-              params: { baseGame: nuzlocke.baseGame }
+              params: { nuzlocke: nuzlocke }
             }"
           >
             <v-btn>Add pokemon</v-btn>
@@ -225,7 +225,6 @@ export default class Nuzlocke extends Vue {
   margin-top: 60px;
 }
 
-.title,
 .v-btn {
   background-color: $secondaryColor !important;
   color: white !important;
@@ -281,10 +280,5 @@ tr:hover {
 .not,
 .not:hover {
   background-color: rgb(241, 229, 60) !important;
-}
-
-.title {
-  height: fit-content;
-  padding: 10px 50px 10px 50px;
 }
 </style>

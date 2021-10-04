@@ -1,6 +1,8 @@
 <template>
   <v-row>
-    <v-row class="title-row"></v-row>
+    <v-row class="title-row">
+      <v-card class="title">ADD POKEMON</v-card>
+    </v-row>
     <div id="add-pokemon">
       <v-card id="add-pokemon-card">
         <v-form v-on:submit.prevent="addPokemon()">
@@ -99,6 +101,7 @@ import BackButton from "../components/BackButton.vue";
   }
 })
 export default class AddPokemon extends Vue {
+  nuzlocke: any;
   pokemons = [] as any;
   gotPokemons = false;
   locations = [] as any;
@@ -111,9 +114,28 @@ export default class AddPokemon extends Vue {
   gamesRegions = staticInfo.regionsGames;
   sprite = "";
 
-  created() {
+  async created() {
+    if (!this.$route.params.nuzlocke) {
+      await this.getNuzlocke();
+    } else {
+      this.nuzlocke = this.$route.params.nuzlocke;
+    }
+
     this.getPokemon();
     this.getLocations();
+  }
+
+  async getNuzlocke() {
+    try {
+      const userId = this.$store.state.user.id;
+      const nuzlockeId = this.$route.params.nuzlocke_id;
+      const res = await axios.get(
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`
+      );
+      this.nuzlocke = res.data.nuzlocke;
+    } catch (error) {
+      this.$root.$emit("error", error.response.data.msg);
+    }
   }
 
   async getPokemon() {
@@ -134,7 +156,7 @@ export default class AddPokemon extends Vue {
   async getLocations() {
     let regions = [] as any;
     for (const region of this.gamesRegions) {
-      if (Object.values(region)[0].includes(this.$route.params.baseGame)) {
+      if (Object.values(region)[0].includes(this.nuzlocke.baseGame)) {
         regions = Object.keys(region);
         break;
       }
@@ -187,7 +209,7 @@ export default class AddPokemon extends Vue {
 
     try {
       const userId = this.$store.state.user.id;
-      const nuzlockeId = this.$route.params.nuzlocke_id;
+      const nuzlockeId = this.nuzlocke._id;
       const res = await axios.post(
         `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon`,
         data

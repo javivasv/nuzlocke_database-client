@@ -45,4 +45,11 @@ export default class extends Vue {
   padding-left: 10px;
   align-items: center;
 }
+
+.title {
+  height: fit-content;
+  padding: 10px 50px 10px 50px;
+  background-color: $secondaryColor !important;
+  color: white !important;
+}
 </style>
