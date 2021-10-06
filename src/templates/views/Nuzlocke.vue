@@ -30,7 +30,11 @@
               <td>{{ item.nickname }}</td>
               <td>{{ item.species.toUpperCase() }}</td>
               <td>{{ item.location.toUpperCase() }}</td>
-              <td>{{ item.obtained.toUpperCase() }}</td>
+              <td>
+                {{
+                  item.obtained === "not" ? "-" : item.obtained.toUpperCase()
+                }}
+              </td>
               <td>
                 <v-btn
                   v-if="item.obtained !== 'not'"
