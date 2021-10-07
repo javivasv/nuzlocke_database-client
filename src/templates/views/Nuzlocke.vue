@@ -13,10 +13,28 @@
             single-line
             hide-details
           ></v-text-field>
+          <v-checkbox
+            class="filter-checkbox"
+            label="Alive"
+            v-model="aliveCheckbox"
+            @change="filterPokemon($event, 'alive')"
+          ></v-checkbox>
+          <v-checkbox
+            class="filter-checkbox"
+            label="Dead"
+            v-model="deadCheckbox"
+            @change="filterPokemon($event, 'dead')"
+          ></v-checkbox>
+          <v-checkbox
+            class="filter-checkbox"
+            label="Not caught"
+            v-model="notCaughtCheckbox"
+            @change="filterPokemon($event, 'notCaught')"
+          ></v-checkbox>
         </v-card-title>
         <v-data-table
           :headers="headers"
-          :items="nuzlocke.pokemon"
+          :items="pokemon"
           :search="search"
           :items-per-page="5"
         >
@@ -74,8 +92,10 @@
         <v-card-subtitle class="card-text"
           >Game status: {{ nuzlocke.status.toUpperCase() }}
         </v-card-subtitle>
+        <!--
         <v-divider></v-divider>
         <v-card-subtitle class="card-text">Change status: </v-card-subtitle>
+        -->
         <v-row id="nuzlocke-status">
           <v-btn
             v-if="nuzlocke.status !== 'started'"
@@ -125,6 +145,10 @@ export default class Nuzlocke extends Vue {
   ];
   gotNuzlocke = false;
   nuzlocke: any;
+  pokemon = [] as any;
+  aliveCheckbox = false;
+  deadCheckbox = false;
+  notCaughtCheckbox = false;
 
   created() {
     this.getNuzlocke();
@@ -138,6 +162,7 @@ export default class Nuzlocke extends Vue {
         `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`
       );
       this.nuzlocke = res.data.nuzlocke;
+      this.pokemon = res.data.nuzlocke.pokemon;
       this.gotNuzlocke = true;
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
@@ -176,6 +201,30 @@ export default class Nuzlocke extends Vue {
       item.dead = !item.dead;
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
+    }
+  }
+
+  filterPokemon(event: any, type: string) {
+    if (event && type === "alive") {
+      this.deadCheckbox = false;
+      this.notCaughtCheckbox = false;
+      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
+        return pokemon.dead === false;
+      });
+    } else if (event && type === "dead") {
+      this.aliveCheckbox = false;
+      this.notCaughtCheckbox = false;
+      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
+        return pokemon.dead === true;
+      });
+    } else if (event && type === "notCaught") {
+      this.aliveCheckbox = false;
+      this.deadCheckbox = false;
+      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
+        return pokemon.obtained === "not";
+      });
+    } else if (!event) {
+      this.pokemon = this.nuzlocke.pokemon;
     }
   }
 
@@ -283,6 +332,15 @@ tr:hover {
 
 .not,
 .not:hover {
-  background-color: rgb(241, 229, 60) !important;
+  background-color: #d3d3d3 !important;
+}
+
+.filter-checkbox {
+  margin: 0 10px 0 10px;
+  align-self: end;
+}
+
+.filter-checkbox::v-deep .v-messages {
+  display: none;
 }
 </style>
