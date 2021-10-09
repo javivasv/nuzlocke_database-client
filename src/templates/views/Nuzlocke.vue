@@ -46,6 +46,7 @@
                 </v-avatar>
               </td>
               <td>{{ item.nickname }}</td>
+              <td>{{ item.number }}</td>
               <td>{{ item.species.toUpperCase() }}</td>
               <td>{{ item.location.toUpperCase() }}</td>
               <td>
@@ -133,6 +134,7 @@ export default class Nuzlocke extends Vue {
   headers = [
     { text: "", value: "sprite", align: "center", sortable: false },
     { text: "Nickname", value: "nickname", align: "center", sortable: true },
+    { text: "Number", value: "number", align: "center", sortable: true },
     { text: "Species", value: "species", align: "center", sortable: true },
     { text: "Location", value: "location", align: "center", sortable: true },
     { text: "Obtained", value: "obtained", align: "center", sortable: true },

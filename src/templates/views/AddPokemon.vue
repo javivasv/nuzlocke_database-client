@@ -33,6 +33,7 @@
                 <v-text-field
                   v-model="nickname"
                   label="Nickname"
+                  :disabled="obtained !== 'not' ? false : true"
                 ></v-text-field>
               </v-row>
               <v-row>
@@ -143,8 +144,18 @@ export default class AddPokemon extends Vue {
       const res = await axios.get(
         "https://pokeapi.co/api/v2/pokemon/?limit=898"
       );
-      this.pokemons = res.data.results.map((pokemon: any) => {
-        return pokemon.name;
+      this.pokemons = res.data.results.map((pokemon: any, index: any) => {
+        let pokemonNumber = (index + 1).toString();
+
+        if (pokemonNumber.length === 1) {
+          pokemonNumber = "#00" + pokemonNumber;
+        } else if (pokemonNumber.length === 2) {
+          pokemonNumber = "#0" + pokemonNumber;
+        } else if (pokemonNumber.length === 3) {
+          pokemonNumber = "#" + pokemonNumber;
+        }
+
+        return pokemonNumber + " - " + pokemon.name;
       });
 
       this.gotPokemons = true;
@@ -208,11 +219,18 @@ export default class AddPokemon extends Vue {
   }
 
   async pokemonSprite(event: any) {
-    try {
-      const res = await axios.get("https://pokeapi.co/api/v2/pokemon/" + event);
-      this.sprite = res.data.sprites.front_default;
-    } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+    if (event === undefined) {
+      this.sprite = "";
+    } else {
+      const pokemonName = event.split(" ")[2];
+      try {
+        const res = await axios.get(
+          "https://pokeapi.co/api/v2/pokemon/" + pokemonName
+        );
+        this.sprite = res.data.sprites.front_default;
+      } catch (error) {
+        this.$root.$emit("error", error.response.data.msg);
+      }
     }
   }
 
@@ -221,11 +239,13 @@ export default class AddPokemon extends Vue {
       return;
     }
 
+    const pokemon = this.species.split(" ");
     const data = {
       nickname: this.nickname,
       location: this.location,
       obtained: this.obtained,
-      species: this.species,
+      number: pokemon[0],
+      species: pokemon[2],
       sprite: this.sprite
     };
 
@@ -259,8 +279,8 @@ export default class AddPokemon extends Vue {
       return false;
     }
 
-    if (this.obtained !== "not" && this.nickname === "") {
-      return false;
+    if (this.obtained === "not") {
+      this.nickname = "";
     }
 
     return true;
