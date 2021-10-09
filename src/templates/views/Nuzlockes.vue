@@ -23,7 +23,12 @@
             @click:row="checkNuzlocke($event)"
           >
             <!-- eslint-disable-next-line -->
-          <template #item.status="{ item }">
+            <template #item.baseGame="{ item }">
+              {{ item.baseGame === "" ? "-" : item.baseGame }}
+            </template>
+
+            <!-- eslint-disable-next-line -->
+            <template #item.status="{ item }">
               {{ item.status.toUpperCase() }}
             </template>
           </v-data-table>

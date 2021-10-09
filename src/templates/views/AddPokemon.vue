@@ -15,20 +15,48 @@
                   </v-avatar>
                 </v-row>
                 <v-row>
-                  <v-autocomplete
-                    v-if="gotPokemons"
-                    v-model="species"
-                    :items="pokemons"
-                    label="Species"
-                    @change="pokemonSprite($event)"
-                  >
-                    <template v-slot:selection="species">
-                      {{ species.item.toUpperCase() }}
-                    </template>
-                    <template v-slot:item="species">
-                      {{ species.item.toUpperCase() }}
-                    </template>
-                  </v-autocomplete>
+                  <v-col cols="9" id="species-col">
+                    <v-row>
+                      <template v-if="!original">
+                        <v-autocomplete
+                          v-if="gotPokemons"
+                          v-model="species"
+                          :items="pokemons"
+                          label="Species"
+                          @change="pokemonSprite($event)"
+                        >
+                          <template v-slot:selection="species">
+                            {{ species.item.toUpperCase() }}
+                          </template>
+                          <template v-slot:item="species">
+                            {{ species.item.toUpperCase() }}
+                          </template>
+                        </v-autocomplete>
+                      </template>
+                      <template v-else>
+                        <v-col id="species-left-col">
+                          <v-text-field
+                            v-model="number"
+                            label="Number"
+                            placeholder="Format: #000"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col id="species-right-col">
+                          <v-text-field
+                            v-model="species"
+                            label="Original species"
+                          ></v-text-field>
+                        </v-col>
+                      </template>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="3" id="checkbox-col">
+                    <v-checkbox
+                      label="Original species"
+                      v-model="original"
+                      @change="selectOriginal($event)"
+                    ></v-checkbox>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <v-text-field
@@ -38,19 +66,27 @@
                   ></v-text-field>
                 </v-row>
                 <v-row>
-                  <v-autocomplete
-                    v-if="gotLocations"
-                    v-model="location"
-                    :items="locations"
-                    label="Location"
-                  >
-                    <template v-slot:selection="locations">
-                      {{ locations.item.toUpperCase() }}
-                    </template>
-                    <template v-slot:item="locations">
-                      {{ locations.item.toUpperCase() }}
-                    </template>
-                  </v-autocomplete>
+                  <template v-if="!nuzlocke.original">
+                    <v-autocomplete
+                      v-if="gotLocations"
+                      v-model="location"
+                      :items="locations"
+                      label="Location"
+                    >
+                      <template v-slot:selection="locations">
+                        {{ locations.item.toUpperCase() }}
+                      </template>
+                      <template v-slot:item="locations">
+                        {{ locations.item.toUpperCase() }}
+                      </template>
+                    </v-autocomplete>
+                  </template>
+                  <template v-else>
+                    <v-text-field
+                      v-model="location"
+                      label="Location"
+                    ></v-text-field>
+                  </template>
                 </v-row>
                 <v-row>
                   <v-select
@@ -116,6 +152,17 @@ export default class AddPokemon extends Vue {
   obtained = "";
   gamesRegions = staticInfo.regionsGames;
   sprite = "";
+  original = false;
+  number = "";
+
+  selectOriginal(event: any) {
+    this.number = "";
+    this.species = "";
+
+    if (event) {
+      this.sprite = "";
+    }
+  }
 
   async created() {
     if (!this.$route.params.nuzlocke) {
@@ -124,8 +171,11 @@ export default class AddPokemon extends Vue {
       this.nuzlocke = this.$route.params.nuzlocke;
     }
 
+    if (!this.nuzlocke.original) {
+      this.getLocations();
+    }
+
     this.getPokemon();
-    this.getLocations();
   }
 
   async getNuzlocke() {
@@ -241,15 +291,29 @@ export default class AddPokemon extends Vue {
       return;
     }
 
-    const pokemon = this.species.split(" ");
-    const data = {
-      nickname: this.nickname,
-      location: this.location,
-      obtained: this.obtained,
-      number: pokemon[0],
-      species: pokemon[2],
-      sprite: this.sprite
-    };
+    let data: any;
+    if (this.original) {
+      data = {
+        nickname: this.nickname,
+        location: this.location.toLowerCase(),
+        obtained: this.obtained,
+        number: this.number,
+        original: this.original,
+        species: this.species.toLowerCase(),
+        sprite: this.sprite
+      };
+    } else {
+      const pokemon = this.species.split(" ");
+      data = {
+        nickname: this.nickname,
+        location: this.location,
+        obtained: this.obtained,
+        number: pokemon[0],
+        original: this.original,
+        species: pokemon[2],
+        sprite: this.sprite
+      };
+    }
 
     try {
       const userId = this.$store.state.user.id;
@@ -278,6 +342,15 @@ export default class AddPokemon extends Vue {
       this.obtained === "" ||
       this.obtained === undefined
     ) {
+      return false;
+    }
+
+    if (this.original && this.number === "") {
+      return false;
+    }
+
+    let numberRegex = /#\d+/i;
+    if (!numberRegex.test(this.number)) {
       return false;
     }
 
@@ -333,5 +406,15 @@ a {
 
 #sprite {
   justify-content: center;
+}
+
+#species-col,
+#species-left-col {
+  padding-left: 0;
+}
+
+#checkbox-col,
+#species-right-col {
+  padding-right: 0;
 }
 </style>

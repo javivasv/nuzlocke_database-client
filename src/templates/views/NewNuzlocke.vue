@@ -13,12 +13,22 @@
                   <v-text-field v-model="title" label="Title"></v-text-field>
                 </v-row>
                 <v-row>
-                  <v-autocomplete
-                    v-model="baseGame"
-                    :items="games"
-                    label="Base game"
-                  >
-                  </v-autocomplete>
+                  <v-col cols="9" id="base-game-col">
+                    <v-autocomplete
+                      v-model="baseGame"
+                      :items="games"
+                      label="Base game"
+                      :disabled="original"
+                    >
+                    </v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" id="checkbox-col">
+                    <v-checkbox
+                      label="Original game"
+                      v-model="original"
+                      @change="selectOriginal($event)"
+                    ></v-checkbox>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <v-text-field v-model="game" label="Game"></v-text-field>
@@ -54,7 +64,7 @@
             <ul>
               <li>
                 <p class="card-text">
-                  <strong>Title:</strong> The title of the playthrough
+                  <strong>Title:</strong> The title of the nuzlocke playthrough
                 </p>
               </li>
             </ul>
@@ -64,6 +74,15 @@
                   <strong>Base game:</strong>
                   The name of the game used as the core of the game, in case of
                   being a romhack
+                </p>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <p class="card-text">
+                  <strong>Original game:</strong>
+                  In case of being an original game not based in any previous
+                  game or region
                 </p>
               </li>
             </ul>
@@ -112,6 +131,7 @@ export default class NewNuzlocke extends Vue {
   game = "";
   description = "";
   games = staticInfo.games;
+  original = false;
 
   created() {
     this.getGames;
@@ -134,6 +154,7 @@ export default class NewNuzlocke extends Vue {
       baseGame: this.baseGame,
       description: this.description,
       game: this.game,
+      original: this.original,
       title: this.title
     };
 
@@ -150,19 +171,35 @@ export default class NewNuzlocke extends Vue {
   }
 
   validateData() {
-    if (this.baseGame === "") {
-      return false;
-    }
+    if (this.original) {
+      if (this.game === "") {
+        return false;
+      }
 
-    if (this.title === "") {
-      this.title = this.baseGame;
-    }
+      if (this.title === "") {
+        this.title = this.game;
+      }
+    } else {
+      if (this.baseGame === "") {
+        return false;
+      }
 
-    if (this.game === "") {
-      this.game = this.baseGame;
+      if (this.title === "") {
+        this.title = this.game;
+      }
+
+      if (this.game === "") {
+        this.game = this.baseGame;
+      }
     }
 
     return true;
+  }
+
+  selectOriginal(event: any) {
+    if (event) {
+      this.baseGame = "";
+    }
   }
 }
 </script>
@@ -206,5 +243,13 @@ export default class NewNuzlocke extends Vue {
 
 a {
   text-decoration: none;
+}
+
+#base-game-col {
+  padding-left: 0;
+}
+
+#checkbox-col {
+  padding-right: 0;
 }
 </style>
