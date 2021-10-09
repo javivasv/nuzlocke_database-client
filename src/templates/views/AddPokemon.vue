@@ -3,90 +3,92 @@
     <v-row class="title-row">
       <v-card class="title">ADD POKEMON</v-card>
     </v-row>
-    <div id="add-pokemon">
-      <v-card id="add-pokemon-card">
-        <v-form v-on:submit.prevent="addPokemon()">
-          <v-container>
-            <v-col>
-              <v-row id="sprite">
-                <v-avatar v-if="sprite !== ''" size="150" tile>
-                  <v-img :src="sprite"> </v-img>
-                </v-avatar>
-              </v-row>
-              <v-row>
-                <v-autocomplete
-                  v-if="gotPokemons"
-                  v-model="species"
-                  :items="pokemons"
-                  label="Species"
-                  @change="pokemonSprite($event)"
-                >
-                  <template v-slot:selection="species">
-                    {{ species.item.toUpperCase() }}
-                  </template>
-                  <template v-slot:item="species">
-                    {{ species.item.toUpperCase() }}
-                  </template>
-                </v-autocomplete>
-              </v-row>
-              <v-row>
-                <v-text-field
-                  v-model="nickname"
-                  label="Nickname"
-                  :disabled="obtained !== 'not' ? false : true"
-                ></v-text-field>
-              </v-row>
-              <v-row>
-                <v-autocomplete
-                  v-if="gotLocations"
-                  v-model="location"
-                  :items="locations"
-                  label="Location"
-                >
-                  <template v-slot:selection="locations">
-                    {{ locations.item.toUpperCase() }}
-                  </template>
-                  <template v-slot:item="locations">
-                    {{ locations.item.toUpperCase() }}
-                  </template>
-                </v-autocomplete>
-              </v-row>
-              <v-row>
-                <v-select
-                  v-model="obtained"
-                  :items="obtainedOptions"
-                  label="Obtained"
-                >
-                  <template v-slot:selection="obtainedOptions">
-                    {{ obtainedOptions.item.toUpperCase() }}
-                  </template>
-                  <template v-slot:item="obtainedOptions">
-                    {{ obtainedOptions.item.toUpperCase() }}
-                  </template>
-                </v-select>
-              </v-row>
-            </v-col>
-          </v-container>
-        </v-form>
-      </v-card>
-    </div>
-    <div id="info">
-      <v-card id="info-card">
-        <v-fab-transition>
-          <v-img
-            id="pokeball"
-            dark
-            absolute
-            top
-            fab
-            :src="require(`../../../public/img/pokeball.png`)"
-          ></v-img>
-        </v-fab-transition>
-        <v-card-title>
-          <v-btn @click="addPokemon()">Add pokemon</v-btn>
-        </v-card-title>
-      </v-card>
-    </div>
+    <v-row class="content-row">
+      <v-col cols="8" id="add-pokemon">
+        <v-card id="add-pokemon-card">
+          <v-form v-on:submit.prevent="addPokemon()">
+            <v-container>
+              <v-col>
+                <v-row id="sprite">
+                  <v-avatar v-if="sprite !== ''" size="150" tile>
+                    <v-img :src="sprite"> </v-img>
+                  </v-avatar>
+                </v-row>
+                <v-row>
+                  <v-autocomplete
+                    v-if="gotPokemons"
+                    v-model="species"
+                    :items="pokemons"
+                    label="Species"
+                    @change="pokemonSprite($event)"
+                  >
+                    <template v-slot:selection="species">
+                      {{ species.item.toUpperCase() }}
+                    </template>
+                    <template v-slot:item="species">
+                      {{ species.item.toUpperCase() }}
+                    </template>
+                  </v-autocomplete>
+                </v-row>
+                <v-row>
+                  <v-text-field
+                    v-model="nickname"
+                    label="Nickname"
+                    :disabled="obtained !== 'not' ? false : true"
+                  ></v-text-field>
+                </v-row>
+                <v-row>
+                  <v-autocomplete
+                    v-if="gotLocations"
+                    v-model="location"
+                    :items="locations"
+                    label="Location"
+                  >
+                    <template v-slot:selection="locations">
+                      {{ locations.item.toUpperCase() }}
+                    </template>
+                    <template v-slot:item="locations">
+                      {{ locations.item.toUpperCase() }}
+                    </template>
+                  </v-autocomplete>
+                </v-row>
+                <v-row>
+                  <v-select
+                    v-model="obtained"
+                    :items="obtainedOptions"
+                    label="Obtained"
+                  >
+                    <template v-slot:selection="obtainedOptions">
+                      {{ obtainedOptions.item.toUpperCase() }}
+                    </template>
+                    <template v-slot:item="obtainedOptions">
+                      {{ obtainedOptions.item.toUpperCase() }}
+                    </template>
+                  </v-select>
+                </v-row>
+              </v-col>
+            </v-container>
+          </v-form>
+        </v-card>
+      </v-col>
+      <v-col cols="4" class="info">
+        <v-card class="info-card">
+          <v-fab-transition>
+            <v-img
+              class="pokeball"
+              dark
+              absolute
+              top
+              fab
+              :src="require(`../../../public/img/pokeball.png`)"
+            ></v-img>
+          </v-fab-transition>
+          <v-card-title>
+            <v-btn @click="addPokemon()">Add pokemon</v-btn>
+          </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-row>
 </template>
 
@@ -297,26 +299,21 @@ export default class AddPokemon extends Vue {
   margin: 0;
 }
 
+.col {
+  height: 100%;
+}
+
 #add-pokemon {
-  width: 65%;
-  height: 90%;
   padding: 0 10px 10px 10px;
 }
 
-#add-pokemon-card,
-#info-card {
+#add-pokemon-card {
   width: 100%;
   height: fit-content;
   padding: 10px;
 }
 
-#info {
-  width: 35%;
-  height: 90%;
-  padding: 0 10px 10px 10px;
-}
-
-#info::v-deep .v-card__title {
+.info::v-deep .v-card__title {
   justify-content: center;
   margin-top: 60px;
 }
@@ -324,22 +321,6 @@ export default class AddPokemon extends Vue {
 .v-btn {
   background-color: $secondaryColor !important;
   color: white !important;
-}
-
-#pokeball {
-  height: 130px;
-  width: 130px;
-  position: absolute;
-  margin-top: -65px;
-  margin-left: auto;
-  margin-right: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-  border-radius: 50%;
-  box-shadow: 0 16px 38px -12px rgb(0 0 0 / 56%),
-    0 4px 25px 0px rgb(0 0 0 / 12%), 0 8px 10px -5px rgb(0 0 0 / 20%);
 }
 
 .card-text {
