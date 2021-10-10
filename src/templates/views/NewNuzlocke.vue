@@ -1,10 +1,8 @@
 <template>
-  <v-row>
-    <v-row class="title-row">
-      <v-card class="title">NEW NUZLOCKE</v-card>
-    </v-row>
-    <v-row class="content-row">
-      <v-col cols="8" id="new-nuzlocke">
+  <v-row class="content">
+    <v-col cols="8" id="new-nuzlocke">
+      <v-row class="title-row"></v-row>
+      <v-row class="content-row">
         <v-card id="new-nuzlocke-card">
           <v-form v-on:submit.prevent="createNuzlocke()">
             <v-container>
@@ -43,74 +41,80 @@
             </v-container>
           </v-form>
         </v-card>
-      </v-col>
-      <v-col cols="4" class="info">
-        <v-card class="info-card">
-          <v-fab-transition>
-            <v-img
-              class="pokeball"
-              dark
-              absolute
-              top
-              fab
-              :src="require(`../../../public/img/pokeball.png`)"
-            ></v-img>
-          </v-fab-transition>
-          <v-card-title>
-            <v-btn @click="createNuzlocke()">Create new nuzlocke</v-btn>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <ul>
-              <li>
-                <p class="card-text">
-                  <strong>Title:</strong> The title of the nuzlocke playthrough
-                </p>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <p class="card-text">
-                  <strong>Base game:</strong>
-                  The name of the game used as the core of the game, in case of
-                  being a romhack
-                </p>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <p class="card-text">
-                  <strong>Original game:</strong>
-                  In case of being an original game not based in any previous
-                  game or region
-                </p>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <p class="card-text">
-                  <strong>Game:</strong> The name of the game
-                </p>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <p class="card-text">
-                  <strong>Description:</strong>
-                  Relevant information of the nuzlocke playthrough, such as
-                  extra rules
-                </p>
-              </li>
-            </ul>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-text
-            >In case of not introducing a title and/or a game name, the base
-            game will be used</v-card-text
-          >
-        </v-card>
-      </v-col>
-    </v-row>
+      </v-row>
+    </v-col>
+    <v-col cols="4" class="info">
+      <v-row class="title-row"></v-row>
+      <v-row class="content-row">
+        <v-col class="side-content-col">
+          <v-card class="info-card">
+            <v-fab-transition>
+              <v-img
+                class="pokeball"
+                dark
+                absolute
+                top
+                fab
+                :src="require(`../../../public/img/pokeball.png`)"
+              ></v-img>
+            </v-fab-transition>
+            <v-card-title>
+              <v-btn @click="createNuzlocke()">Create new nuzlocke</v-btn>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Title:</strong> The title of the nuzlocke
+                    playthrough
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Base game:</strong>
+                    The name of the game used as the core of the game, in case
+                    of being a romhack
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Original game:</strong>
+                    In case of being an original game not based in any previous
+                    game or region
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Game:</strong> The name of the game
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Description:</strong>
+                    Relevant information of the nuzlocke playthrough, such as
+                    extra rules
+                  </p>
+                </li>
+              </ul>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-text
+              >In case of not introducing a title and/or a game name, the base
+              game will be used</v-card-text
+            >
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-col>
   </v-row>
 </template>
 
@@ -209,7 +213,6 @@ export default class NewNuzlocke extends Vue {
 
 .row {
   width: 100%;
-  height: 100%;
   margin: 0;
 }
 
@@ -218,7 +221,7 @@ export default class NewNuzlocke extends Vue {
 }
 
 #new-nuzlocke {
-  padding: 0 10px 10px 10px;
+  padding: 10px;
 }
 
 #new-nuzlocke-card {

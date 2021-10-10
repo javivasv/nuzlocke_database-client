@@ -1,10 +1,9 @@
 <template>
   <v-row class="content" v-if="gotNuzlocke">
-    <v-row class="title-row">
-      <v-card class="title">{{ nuzlocke.title.toUpperCase() }}</v-card>
-    </v-row>
-    <v-row class="content-row">
-      <v-col cols="8" id="nuzlocke">
+    <v-col cols="8" id="nuzlocke">
+      <v-row class="title-row">
+      </v-row>
+      <v-row class="content-row">
         <v-card id="nuzlocke-card">
           <v-card-title>
             <v-text-field
@@ -14,26 +13,6 @@
               single-line
               hide-details
             ></v-text-field>
-            <!--
-            <v-checkbox
-              class="filter-checkbox"
-              label="Alive"
-              v-model="aliveCheckbox"
-              @change="filterPokemon($event, 'alive')"
-            ></v-checkbox>
-            <v-checkbox
-              class="filter-checkbox"
-              label="Dead"
-              v-model="deadCheckbox"
-              @change="filterPokemon($event, 'dead')"
-            ></v-checkbox>
-            <v-checkbox
-              class="filter-checkbox"
-              label="Not caught"
-              v-model="notCaughtCheckbox"
-              @change="filterPokemon($event, 'notCaught')"
-            ></v-checkbox>
-            -->
           </v-card-title>
           <v-data-table
             :headers="headers"
@@ -92,158 +71,163 @@
             </template>
           </v-data-table>
         </v-card>
-      </v-col>
-      <v-col cols="4" class="info">
-        <v-card class="info-card">
-          <v-fab-transition>
-            <v-img
-              class="pokeball"
-              dark
-              absolute
-              top
-              fab
-              :src="require(`../../../public/img/pokeball.png`)"
-            ></v-img>
-          </v-fab-transition>
-          <v-card-title>
-            <router-link
-              :to="{
-                name: 'add-pokemon',
-                params: { nuzlocke: nuzlocke }
-              }"
-            >
-              <v-btn>Add pokemon</v-btn>
-            </router-link>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-subtitle class="card-text"
-            >Game status: {{ nuzlocke.status.toUpperCase() }}
-          </v-card-subtitle>
-          <!--
+      </v-row>
+    </v-col>
+    <v-col cols="4" class="info">
+      <v-row class="title-row"></v-row>
+      <v-row class="content-row">
+        <v-col class="side-content-col">
+          <v-card class="info-card">
+            <v-fab-transition>
+              <v-img
+                class="pokeball"
+                dark
+                absolute
+                top
+                fab
+                :src="require(`../../../public/img/pokeball.png`)"
+              ></v-img>
+            </v-fab-transition>
+            <v-card-title>
+              <router-link
+                :to="{
+                  name: 'add-pokemon',
+                  params: { nuzlocke: nuzlocke }
+                }"
+              >
+                <v-btn>Add pokemon</v-btn>
+              </router-link>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-subtitle class="card-text"
+              >Game status: {{ nuzlocke.status.toUpperCase() }}
+            </v-card-subtitle>
+            <!--
         <v-divider></v-divider>
         <v-card-subtitle class="card-text">Change status: </v-card-subtitle>
         -->
-          <v-row id="nuzlocke-status">
-            <v-btn
-              v-if="nuzlocke.status !== 'started'"
-              @click="changeNuzlockeStatus('started')"
-              >Started</v-btn
-            >
-            <v-btn
-              v-if="nuzlocke.status !== 'completed'"
-              id="completed-button"
-              @click="changeNuzlockeStatus('completed')"
-              >Completed</v-btn
-            >
-            <v-btn
-              v-if="nuzlocke.status !== 'lost'"
-              id="lost-button"
-              @click="changeNuzlockeStatus('lost')"
-              >Lost</v-btn
-            >
-          </v-row>
-          <v-divider></v-divider>
-          <v-card-text>{{ nuzlocke.description }}</v-card-text>
-        </v-card>
-        <v-card id="filters-card">
-          <v-card-subtitle class="card-text">
-            Status filters
-          </v-card-subtitle>
-          <v-row>
-            <v-col class="filter-col">
-              <v-row>
-                <v-checkbox
-                  class="filter-checkbox"
-                  label="Alive"
-                  v-model="aliveCheckbox"
-                  @change="filterByStatus($event, 'alive')"
-                ></v-checkbox>
-              </v-row>
-            </v-col>
-            <v-col class="filter-col">
-              <v-row>
-                <v-checkbox
-                  class="filter-checkbox"
-                  label="Dead"
-                  v-model="deadCheckbox"
-                  @change="filterByStatus($event, 'dead')"
-                ></v-checkbox>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-divider></v-divider>
-          <v-card-subtitle class="card-text">
-            Obtained filters
-          </v-card-subtitle>
-          <v-row>
-            <v-col class="filter-col">
-              <v-row>
-                <v-checkbox
-                  class="filter-checkbox"
-                  label="Caught"
-                  v-model="caughtCheckbox"
-                  @change="filterByObtained($event, 'caught')"
-                ></v-checkbox>
-              </v-row>
-            </v-col>
-            <v-col class="filter-col">
-              <v-row>
-                <v-checkbox
-                  class="filter-checkbox"
-                  label="Gifted"
-                  v-model="giftedCheckbox"
-                  @change="filterByObtained($event, 'gifted')"
-                ></v-checkbox>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="filter-col">
-              <v-row>
-                <v-checkbox
-                  class="filter-checkbox"
-                  label="Hatched"
-                  v-model="hatchedCheckbox"
-                  @change="filterByObtained($event, 'hatched')"
-                ></v-checkbox>
-              </v-row>
-            </v-col>
-            <v-col class="filter-col">
-              <v-row>
-                <v-checkbox
-                  class="filter-checkbox"
-                  label="Traded"
-                  v-model="tradedCheckbox"
-                  @change="filterByObtained($event, 'traded')"
-                ></v-checkbox>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="filter-col">
-              <v-row>
-                <v-checkbox
-                  class="filter-checkbox"
-                  label="Not caught"
-                  v-model="notCaughtCheckbox"
-                  @change="filterByObtained($event, 'notCaught')"
-                ></v-checkbox>
-              </v-row>
-            </v-col>
-            <v-col></v-col>
-          </v-row>
-        </v-card>
-        <v-btn
-          class="delete-button"
-          v-if="!showDeleteButton"
-          @click="showDelete()"
-          >DELETE POKEMON</v-btn
-        >
-        <v-btn id="cancel-button" v-else @click="cancelDelete()"
-          >CANCEL DELETE</v-btn
-        >
-      </v-col>
-    </v-row>
+            <v-row id="nuzlocke-status">
+              <v-btn
+                v-if="nuzlocke.status !== 'started'"
+                @click="changeNuzlockeStatus('started')"
+                >Started</v-btn
+              >
+              <v-btn
+                v-if="nuzlocke.status !== 'completed'"
+                id="completed-button"
+                @click="changeNuzlockeStatus('completed')"
+                >Completed</v-btn
+              >
+              <v-btn
+                v-if="nuzlocke.status !== 'lost'"
+                id="lost-button"
+                @click="changeNuzlockeStatus('lost')"
+                >Lost</v-btn
+              >
+            </v-row>
+            <v-divider></v-divider>
+            <v-card-text>{{ nuzlocke.description }}</v-card-text>
+          </v-card>
+          <v-card id="filters-card">
+            <v-card-subtitle class="card-text">
+              Status filters
+            </v-card-subtitle>
+            <v-row>
+              <v-col class="filter-col">
+                <v-row>
+                  <v-checkbox
+                    class="filter-checkbox"
+                    label="Alive"
+                    v-model="aliveCheckbox"
+                    @change="filterByStatus($event, 'alive')"
+                  ></v-checkbox>
+                </v-row>
+              </v-col>
+              <v-col class="filter-col">
+                <v-row>
+                  <v-checkbox
+                    class="filter-checkbox"
+                    label="Dead"
+                    v-model="deadCheckbox"
+                    @change="filterByStatus($event, 'dead')"
+                  ></v-checkbox>
+                </v-row>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-card-subtitle class="card-text">
+              Obtained filters
+            </v-card-subtitle>
+            <v-row>
+              <v-col class="filter-col">
+                <v-row>
+                  <v-checkbox
+                    class="filter-checkbox"
+                    label="Caught"
+                    v-model="caughtCheckbox"
+                    @change="filterByObtained($event, 'caught')"
+                  ></v-checkbox>
+                </v-row>
+              </v-col>
+              <v-col class="filter-col">
+                <v-row>
+                  <v-checkbox
+                    class="filter-checkbox"
+                    label="Gifted"
+                    v-model="giftedCheckbox"
+                    @change="filterByObtained($event, 'gifted')"
+                  ></v-checkbox>
+                </v-row>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="filter-col">
+                <v-row>
+                  <v-checkbox
+                    class="filter-checkbox"
+                    label="Hatched"
+                    v-model="hatchedCheckbox"
+                    @change="filterByObtained($event, 'hatched')"
+                  ></v-checkbox>
+                </v-row>
+              </v-col>
+              <v-col class="filter-col">
+                <v-row>
+                  <v-checkbox
+                    class="filter-checkbox"
+                    label="Traded"
+                    v-model="tradedCheckbox"
+                    @change="filterByObtained($event, 'traded')"
+                  ></v-checkbox>
+                </v-row>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="filter-col">
+                <v-row>
+                  <v-checkbox
+                    class="filter-checkbox"
+                    label="Not caught"
+                    v-model="notCaughtCheckbox"
+                    @change="filterByObtained($event, 'notCaught')"
+                  ></v-checkbox>
+                </v-row>
+              </v-col>
+              <v-col></v-col>
+            </v-row>
+          </v-card>
+          <v-btn
+            class="delete-button"
+            v-if="!showDeleteButton"
+            @click="showDelete()"
+            >DELETE POKEMON</v-btn
+          >
+          <v-btn id="cancel-button" v-else @click="cancelDelete()"
+            >CANCEL DELETE</v-btn
+          >
+        </v-col>
+      </v-row>
+    </v-col>
   </v-row>
 </template>
 
@@ -503,7 +487,6 @@ export default class Nuzlocke extends Vue {
 
 .row {
   width: 100%;
-  height: 100%;
   margin: 0;
 }
 
@@ -512,7 +495,7 @@ export default class Nuzlocke extends Vue {
 }
 
 #nuzlocke {
-  padding: 0 10px 10px 10px;
+  padding: 10px;
 }
 
 #nuzlocke-card {

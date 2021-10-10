@@ -42,12 +42,7 @@ export default class extends Vue {
 
 .title-row {
   height: 10% !important;
-  padding-left: 10px;
   align-items: center;
-}
-
-.content-row {
-  height: 90% !important;
 }
 
 .title {
@@ -57,8 +52,17 @@ export default class extends Vue {
   color: white !important;
 }
 
+.content-row {
+  height: 90% !important;
+}
+
+.side-content-col {
+  padding: 0 !important;
+}
+
 .info {
-  padding: 0 10px 10px 10px !important;
+  padding: 10px !important;
+  overflow-y: auto;
 }
 
 .info-card {

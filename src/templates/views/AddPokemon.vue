@@ -1,10 +1,8 @@
 <template>
-  <v-row>
-    <v-row class="title-row">
-      <v-card class="title">ADD POKEMON</v-card>
-    </v-row>
-    <v-row class="content-row">
-      <v-col cols="8" id="add-pokemon">
+  <v-row class="content">
+    <v-col cols="8" id="add-pokemon">
+      <v-row class="title-row"></v-row>
+      <v-row class="content-row">
         <v-card id="add-pokemon-card">
           <v-form v-on:submit.prevent="addPokemon()">
             <v-container>
@@ -106,25 +104,30 @@
             </v-container>
           </v-form>
         </v-card>
-      </v-col>
-      <v-col cols="4" class="info">
-        <v-card class="info-card">
-          <v-fab-transition>
-            <v-img
-              class="pokeball"
-              dark
-              absolute
-              top
-              fab
-              :src="require(`../../../public/img/pokeball.png`)"
-            ></v-img>
-          </v-fab-transition>
-          <v-card-title>
-            <v-btn @click="addPokemon()">Add pokemon</v-btn>
-          </v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
+      </v-row>
+    </v-col>
+    <v-col cols="4" class="info">
+      <v-row class="title-row"></v-row>
+      <v-row class="content-row">
+        <v-col class="side-content-col">
+          <v-card class="info-card">
+            <v-fab-transition>
+              <v-img
+                class="pokeball"
+                dark
+                absolute
+                top
+                fab
+                :src="require(`../../../public/img/pokeball.png`)"
+              ></v-img>
+            </v-fab-transition>
+            <v-card-title>
+              <v-btn @click="addPokemon()">Add pokemon</v-btn>
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-col>
   </v-row>
 </template>
 
@@ -376,7 +379,6 @@ export default class AddPokemon extends Vue {
 
 .row {
   width: 100%;
-  height: 100%;
   margin: 0;
 }
 
@@ -385,7 +387,7 @@ export default class AddPokemon extends Vue {
 }
 
 #add-pokemon {
-  padding: 0 10px 10px 10px;
+  padding: 10px;
 }
 
 #add-pokemon-card {

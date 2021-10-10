@@ -1,10 +1,8 @@
 <template>
   <v-row class="content">
-    <v-row class="title-row">
-      <v-card class="title">NUZLOCKES</v-card>
-    </v-row>
-    <v-row class="content-row">
-      <v-col cols="8" id="nuzlockes">
+    <v-col cols="8" id="nuzlockes">
+      <v-row class="title-row"></v-row>
+      <v-row class="content-row">
         <v-card id="nuzlockes-card">
           <v-card-title>
             <v-text-field
@@ -33,55 +31,60 @@
             </template>
           </v-data-table>
         </v-card>
-      </v-col>
-      <v-col cols="4" class="info">
-        <v-card class="info-card">
-          <v-fab-transition>
-            <v-img
-              class="pokeball"
-              dark
-              absolute
-              top
-              fab
-              :src="require(`../../../public/img/pokeball.png`)"
-            ></v-img>
-          </v-fab-transition>
-          <v-card-title>
-            <router-link :to="{ name: 'new-nuzlocke' }">
-              <v-btn>New nuzlocke</v-btn>
-            </router-link>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-subtitle class="card-text"
-            >Nuzlocke Basic Rules</v-card-subtitle
-          >
-          <v-card-text>
-            <ul>
-              <li>
-                <p class="card-text">
-                  Any Pokémon that faints is considered dead, and must be
-                  released or put in the Pokémon Storage System permanently (or
-                  may be transferred to another game, as long as the Pokémon is
-                  never able to be used again during this run)
-                </p>
-              </li>
-              <li>
-                <p class="card-text">
-                  The player may only catch the first wild Pokémon encountered
-                  in each area, and none else. If the first wild Pokémon
-                  encountered faints or flees, there are no second chances. If
-                  the first encounter in the area is a double battle, the player
-                  is free to choose which of the two wild Pokémon they would
-                  like to catch but may only catch one of them. This restriction
-                  does not apply to Pokémon able to be captured during static
-                  encounters, nor to Shiny Pokémon
-                </p>
-              </li>
-            </ul>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+      </v-row>
+    </v-col>
+    <v-col cols="4" class="info">
+      <v-row class="title-row"></v-row>
+      <v-row class="content-row">
+        <v-col class="side-content-col">
+          <v-card class="info-card">
+            <v-fab-transition>
+              <v-img
+                class="pokeball"
+                dark
+                absolute
+                top
+                fab
+                :src="require(`../../../public/img/pokeball.png`)"
+              ></v-img>
+            </v-fab-transition>
+            <v-card-title>
+              <router-link :to="{ name: 'new-nuzlocke' }">
+                <v-btn>New nuzlocke</v-btn>
+              </router-link>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-subtitle class="card-text"
+              >Nuzlocke Basic Rules</v-card-subtitle
+            >
+            <v-card-text>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    Any Pokémon that faints is considered dead, and must be
+                    released or put in the Pokémon Storage System permanently
+                    (or may be transferred to another game, as long as the
+                    Pokémon is never able to be used again during this run)
+                  </p>
+                </li>
+                <li>
+                  <p class="card-text">
+                    The player may only catch the first wild Pokémon encountered
+                    in each area, and none else. If the first wild Pokémon
+                    encountered faints or flees, there are no second chances. If
+                    the first encounter in the area is a double battle, the
+                    player is free to choose which of the two wild Pokémon they
+                    would like to catch but may only catch one of them. This
+                    restriction does not apply to Pokémon able to be captured
+                    during static encounters, nor to Shiny Pokémon
+                  </p>
+                </li>
+              </ul>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-col>
   </v-row>
 </template>
 
@@ -130,7 +133,6 @@ export default class Nuzlockes extends Vue {
 
 .row {
   width: 100%;
-  height: 100%;
   margin: 0;
 }
 
@@ -139,7 +141,7 @@ export default class Nuzlockes extends Vue {
 }
 
 #nuzlockes {
-  padding: 0 10px 10px 10px;
+  padding: 10px;
 }
 
 #nuzlockes-card {
