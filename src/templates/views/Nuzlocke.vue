@@ -51,9 +51,15 @@
                 <td>{{ item.species.toUpperCase() }}</td>
                 <td>{{ item.location.toUpperCase() }}</td>
                 <td>
-                  {{
-                    item.obtained === "not" ? "-" : item.obtained.toUpperCase()
-                  }}
+                  <template v-if="item.obtained === 'not'">
+                    -
+                  </template>
+                  <template v-else-if="item.obtained === 'caught'">
+                    <span class="iconify" data-icon="mdi:pokeball"></span>
+                  </template>
+                  <template v-else>
+                    <v-icon>{{ obtainedIcon(item.obtained) }}</v-icon>
+                  </template>
                 </td>
                 <td>
                   <v-btn
@@ -139,7 +145,7 @@ export default class Nuzlocke extends Vue {
     { text: "Number", value: "number", align: "center", sortable: true },
     { text: "Species", value: "species", align: "center", sortable: true },
     { text: "Location", value: "location", align: "center", sortable: true },
-    { text: "Obtained", value: "obtained", align: "center", sortable: true },
+    { text: "Obtained", value: "obtained", align: "center", sortable: false },
     {
       text: "Change status",
       value: "change",
@@ -241,6 +247,16 @@ export default class Nuzlocke extends Vue {
       return "not";
     }
   }
+
+  obtainedIcon(obtainedType: string) {
+    if (obtainedType === "gifted") {
+      return "fa-gift";
+    } else if (obtainedType === "hatched") {
+      return "fa-egg";
+    } else if (obtainedType === "traded") {
+      return "fa-exchange-alt";
+    }
+  }
 }
 </script>
 
@@ -325,5 +341,11 @@ tr:hover {
 
 .filter-checkbox::v-deep .v-messages {
   display: none;
+}
+
+.iconify {
+  height: 24px;
+  width: 24px;
+  color: rgba(0, 0, 0, 0.54);
 }
 </style>
