@@ -63,10 +63,17 @@
                 </td>
                 <td>
                   <v-btn
-                    v-if="item.obtained !== 'not'"
+                    v-if="item.obtained !== 'not' && !showDeleteButton"
                     @click="changePokemonStatus(item)"
                     small
                     >CHANGE</v-btn
+                  >
+                  <v-btn
+                    class="delete-button"
+                    v-if="showDeleteButton"
+                    small
+                    @click="deletePokemon(item)"
+                    >DELETE</v-btn
                   >
                 </td>
               </tr>
@@ -126,6 +133,15 @@
           <v-divider></v-divider>
           <v-card-text>{{ nuzlocke.description }}</v-card-text>
         </v-card>
+        <v-btn
+          class="delete-button"
+          v-if="!showDeleteButton"
+          @click="showDelete()"
+          >DELETE POKEMON</v-btn
+        >
+        <v-btn id="cancel-button" v-else @click="cancelDelete()"
+          >CANCEL DELETE</v-btn
+        >
       </v-col>
     </v-row>
   </v-row>
@@ -159,6 +175,7 @@ export default class Nuzlocke extends Vue {
   aliveCheckbox = false;
   deadCheckbox = false;
   notCaughtCheckbox = false;
+  showDeleteButton = false;
 
   created() {
     this.getNuzlocke();
@@ -200,15 +217,37 @@ export default class Nuzlocke extends Vue {
     }
   }
 
-  async changePokemonStatus(item: any) {
+  async changePokemonStatus(pokemon: any) {
     try {
       const userId = this.$store.state.user.id;
       const nuzlockeId = this.$route.params.nuzlocke_id;
       await axios.put(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${item._id}`
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${pokemon._id}`
       );
 
-      item.dead = !item.dead;
+      pokemon.dead = !pokemon.dead;
+    } catch (error) {
+      this.$root.$emit("error", error.response.data.msg);
+    }
+  }
+
+  async deletePokemon(pokemon: any) {
+    try {
+      const userId = this.$store.state.user.id;
+      const nuzlockeId = this.$route.params.nuzlocke_id;
+      await axios.delete(
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${pokemon._id}`
+      );
+
+      let index: any;
+      for (const pokemonObject of this.nuzlocke.pokemon) {
+        if (pokemon._id.toString() === pokemonObject._id.toString()) {
+          index = this.nuzlocke.pokemon.indexOf(pokemonObject);
+          break;
+        }
+      }
+
+      this.nuzlocke.pokemon.splice(index, 1);
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
     }
@@ -256,6 +295,28 @@ export default class Nuzlocke extends Vue {
     } else if (obtainedType === "traded") {
       return "fa-exchange-alt";
     }
+  }
+
+  showDelete() {
+    this.showDeleteButton = true;
+    this.headers.pop();
+    this.headers.push({
+      text: "Delete",
+      value: "delete",
+      align: "center",
+      sortable: false
+    });
+  }
+
+  cancelDelete() {
+    this.showDeleteButton = false;
+    this.headers.pop();
+    this.headers.push({
+      text: "Change status",
+      value: "change",
+      align: "center",
+      sortable: false
+    });
   }
 }
 </script>
@@ -311,7 +372,8 @@ export default class Nuzlocke extends Vue {
   background-color: #4caf50 !important;
 }
 
-#lost-button {
+#lost-button,
+#cancel-button {
   background-color: #999999 !important;
 }
 
@@ -326,7 +388,7 @@ tr:hover {
 
 .dead,
 .dead:hover {
-  background-color: rgb(241, 60, 60) !important;
+  background-color: rgb(231, 85, 85) !important;
 }
 
 .not,
@@ -347,5 +409,9 @@ tr:hover {
   height: 24px;
   width: 24px;
   color: rgba(0, 0, 0, 0.54);
+}
+
+.delete-button {
+  background-color: rgb(241, 60, 60) !important;
 }
 </style>
