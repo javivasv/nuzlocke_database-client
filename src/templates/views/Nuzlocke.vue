@@ -555,11 +555,11 @@ tr:hover {
 
 .dead,
 .dead:hover {
-  background-color: rgb(241, 60, 60, 0.7) !important;
+  background-color: rgb(241, 60, 60, 0.6) !important;
 }
 
 .opacity-dead {
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .not,
