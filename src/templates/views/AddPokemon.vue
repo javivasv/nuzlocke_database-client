@@ -323,10 +323,18 @@ export default class AddPokemon extends Vue {
         data
       );
 
-      this.$root.$emit(
-        "error",
-        this.nickname + " was added to " + this.nuzlocke.title
-      );
+      if (this.nickname === "") {
+        const pokemon = this.species.split(" ");
+        this.$root.$emit(
+          "error",
+          pokemon[2].toUpperCase() + " was added to " + this.nuzlocke.title
+        );
+      } else {
+        this.$root.$emit(
+          "error",
+          this.nickname + " was added to " + this.nuzlocke.title
+        );
+      }
       this.$router.push({ name: "nuzlocke" });
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
