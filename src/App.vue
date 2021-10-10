@@ -85,4 +85,9 @@ export default class extends Vue {
   box-shadow: 0 16px 38px -12px rgb(0 0 0 / 56%),
     0 4px 25px 0px rgb(0 0 0 / 12%), 0 8px 10px -5px rgb(0 0 0 / 20%);
 }
+
+.error-msg {
+  font-size: small;
+  color: red;
+}
 </style>

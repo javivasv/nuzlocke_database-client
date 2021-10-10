@@ -28,8 +28,14 @@
                     ></v-checkbox>
                   </v-col>
                 </v-row>
+                <v-row v-if="baseGameError">
+                  <span class="error-msg">{{ requiredErrorMsg }}</span>
+                </v-row>
                 <v-row>
                   <v-text-field v-model="game" label="Game"></v-text-field>
+                </v-row>
+                <v-row v-if="gameError">
+                  <span class="error-msg">{{ requiredErrorMsg }}</span>
                 </v-row>
                 <v-row>
                   <v-textarea
@@ -136,6 +142,9 @@ export default class NewNuzlocke extends Vue {
   description = "";
   games = staticInfo.games;
   original = false;
+  gameError = false;
+  baseGameError = false;
+  requiredErrorMsg = "This field is required";
 
   created() {
     this.getGames;
@@ -175,9 +184,13 @@ export default class NewNuzlocke extends Vue {
   }
 
   validateData() {
+    let valid = true;
+    this.baseGameError = this.gameError = false;
+
     if (this.original) {
       if (this.game === "") {
-        return false;
+        this.gameError = true;
+        valid = false;
       }
 
       if (this.title === "") {
@@ -185,7 +198,8 @@ export default class NewNuzlocke extends Vue {
       }
     } else {
       if (this.baseGame === "") {
-        return false;
+        this.baseGameError = true;
+        valid = false;
       }
 
       if (this.title === "") {
@@ -197,7 +211,7 @@ export default class NewNuzlocke extends Vue {
       }
     }
 
-    return true;
+    return valid;
   }
 
   selectOriginal(event: any) {
@@ -249,10 +263,10 @@ a {
 }
 
 #base-game-col {
-  padding-left: 0;
+  padding: 0 12px 0 0;
 }
 
 #checkbox-col {
-  padding-right: 0;
+  padding: 0 0 0 12px;
 }
 </style>
