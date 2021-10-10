@@ -350,7 +350,7 @@ export default class AddPokemon extends Vue {
     }
 
     let numberRegex = /#\d+/i;
-    if (!numberRegex.test(this.number)) {
+    if (this.original && !numberRegex.test(this.number)) {
       return false;
     }
 
