@@ -14,6 +14,7 @@
               single-line
               hide-details
             ></v-text-field>
+            <!--
             <v-checkbox
               class="filter-checkbox"
               label="Alive"
@@ -32,6 +33,7 @@
               v-model="notCaughtCheckbox"
               @change="filterPokemon($event, 'notCaught')"
             ></v-checkbox>
+            -->
           </v-card-title>
           <v-data-table
             :headers="headers"
@@ -41,16 +43,20 @@
           >
             <template #item="{ item }">
               <tr :class="pokemonRowClass(item.dead, item.obtained)">
-                <td>
+                <td :class="tdClass(item.dead)">
                   <v-avatar size="80" tile>
                     <v-img :src="item.sprite"></v-img>
                   </v-avatar>
                 </td>
-                <td>{{ item.nickname }}</td>
-                <td>{{ item.number }}</td>
-                <td>{{ item.species.toUpperCase() }}</td>
-                <td>{{ item.location.toUpperCase() }}</td>
-                <td>
+                <td :class="tdClass(item.dead)">{{ item.nickname }}</td>
+                <td :class="tdClass(item.dead)">{{ item.number }}</td>
+                <td :class="tdClass(item.dead)">
+                  {{ item.species.toUpperCase() }}
+                </td>
+                <td :class="tdClass(item.dead)">
+                  {{ item.location.toUpperCase() }}
+                </td>
+                <td :class="tdClass(item.dead)">
                   <template v-if="item.obtained === 'not'">
                     -
                   </template>
@@ -65,18 +71,22 @@
                 </td>
                 <td>
                   <v-btn
+                    :class="statusButtonClass(item.dead)"
                     v-if="item.obtained !== 'not' && !showDeleteButton"
                     @click="changePokemonStatus(item)"
                     small
-                    >CHANGE</v-btn
                   >
+                    <v-icon v-if="item.dead" small>fa-heart</v-icon>
+                    <v-icon v-else small>fa-skull</v-icon>
+                  </v-btn>
                   <v-btn
                     class="delete-button"
                     v-if="showDeleteButton"
                     small
                     @click="deletePokemon(item)"
-                    >DELETE</v-btn
                   >
+                    <v-icon small>fa-trash</v-icon>
+                  </v-btn>
                 </td>
               </tr>
             </template>
@@ -135,6 +145,94 @@
           <v-divider></v-divider>
           <v-card-text>{{ nuzlocke.description }}</v-card-text>
         </v-card>
+        <v-card id="filters-card">
+          <v-card-subtitle class="card-text">
+            Status filters
+          </v-card-subtitle>
+          <v-row>
+            <v-col class="filter-col">
+              <v-row>
+                <v-checkbox
+                  class="filter-checkbox"
+                  label="Alive"
+                  v-model="aliveCheckbox"
+                  @change="filterPokemon($event, 'alive')"
+                ></v-checkbox>
+              </v-row>
+            </v-col>
+            <v-col class="filter-col">
+              <v-row>
+                <v-checkbox
+                  class="filter-checkbox"
+                  label="Dead"
+                  v-model="deadCheckbox"
+                  @change="filterPokemon($event, 'dead')"
+                ></v-checkbox>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <v-card-subtitle class="card-text">
+            Obtained filters
+          </v-card-subtitle>
+          <v-row>
+            <v-col class="filter-col">
+              <v-row>
+                <v-checkbox
+                  class="filter-checkbox"
+                  label="Caught"
+                  v-model="caughtCheckbox"
+                  @change="filterPokemon($event, 'caught')"
+                ></v-checkbox>
+              </v-row>
+            </v-col>
+            <v-col class="filter-col">
+              <v-row>
+                <v-checkbox
+                  class="filter-checkbox"
+                  label="Gifted"
+                  v-model="giftedCheckbox"
+                  @change="filterPokemon($event, 'gifted')"
+                ></v-checkbox>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="filter-col">
+              <v-row>
+                <v-checkbox
+                  class="filter-checkbox"
+                  label="Hatched"
+                  v-model="hatchedCheckbox"
+                  @change="filterPokemon($event, 'hatched')"
+                ></v-checkbox>
+              </v-row>
+            </v-col>
+            <v-col class="filter-col">
+              <v-row>
+                <v-checkbox
+                  class="filter-checkbox"
+                  label="Traded"
+                  v-model="tradedCheckbox"
+                  @change="filterPokemon($event, 'traded')"
+                ></v-checkbox>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="filter-col">
+              <v-row>
+                <v-checkbox
+                  class="filter-checkbox"
+                  label="Not caught"
+                  v-model="notCaughtCheckbox"
+                  @change="filterPokemon($event, 'notCaught')"
+                ></v-checkbox>
+              </v-row>
+            </v-col>
+            <v-col></v-col>
+          </v-row>
+        </v-card>
         <v-btn
           class="delete-button"
           v-if="!showDeleteButton"
@@ -176,8 +274,24 @@ export default class Nuzlocke extends Vue {
   pokemon = [] as any;
   aliveCheckbox = false;
   deadCheckbox = false;
+  caughtCheckbox = false;
+  giftedCheckbox = false;
+  hatchedCheckbox = false;
+  tradedCheckbox = false;
   notCaughtCheckbox = false;
   showDeleteButton = false;
+
+  statusButtonClass(dead: Boolean) {
+    if (!dead) {
+      return "dead-button";
+    }
+  }
+
+  tdClass(dead: Boolean) {
+    if (dead) {
+      return "opacity-dead";
+    }
+  }
 
   created() {
     this.getNuzlocke();
@@ -268,9 +382,43 @@ export default class Nuzlocke extends Vue {
       this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
         return pokemon.dead === true;
       });
+    } else if (event && type === "caught") {
+      this.giftedCheckbox = false;
+      this.hatchedCheckbox = false;
+      this.tradedCheckbox = false;
+      this.notCaughtCheckbox = false;
+      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
+        return pokemon.obtained === "caught";
+      });
+    } else if (event && type === "gifted") {
+      this.caughtCheckbox = false;
+      this.hatchedCheckbox = false;
+      this.tradedCheckbox = false;
+      this.notCaughtCheckbox = false;
+      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
+        return pokemon.obtained === "gifted";
+      });
+    } else if (event && type === "hatched") {
+      this.caughtCheckbox = false;
+      this.giftedCheckbox = false;
+      this.tradedCheckbox = false;
+      this.notCaughtCheckbox = false;
+      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
+        return pokemon.obtained === "hatched";
+      });
+    } else if (event && type === "traded") {
+      this.caughtCheckbox = false;
+      this.giftedCheckbox = false;
+      this.hatchedCheckbox = false;
+      this.notCaughtCheckbox = false;
+      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
+        return pokemon.obtained === "traded";
+      });
     } else if (event && type === "notCaught") {
-      this.aliveCheckbox = false;
-      this.deadCheckbox = false;
+      this.caughtCheckbox = false;
+      this.giftedCheckbox = false;
+      this.hatchedCheckbox = false;
+      this.tradedCheckbox = false;
       this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
         return pokemon.obtained === "not";
       });
@@ -390,12 +538,26 @@ tr:hover {
 
 .dead,
 .dead:hover {
-  background-color: rgb(231, 85, 85) !important;
+  background-color: rgb(241, 60, 60, 0.7) !important;
+}
+
+.opacity-dead {
+  opacity: 0.7;
 }
 
 .not,
 .not:hover {
   background-color: #d3d3d3 !important;
+}
+
+#filters-card {
+  margin-top: 20px;
+  width: 100%;
+  padding: 0 10px 10px 10px;
+}
+
+.filter-col {
+  padding: 0 0 0 25px;
 }
 
 .filter-checkbox {
@@ -407,6 +569,7 @@ tr:hover {
   display: none;
 }
 
+.dead-button,
 .delete-button {
   background-color: rgb(241, 60, 60) !important;
 }
