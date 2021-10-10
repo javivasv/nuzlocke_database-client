@@ -56,7 +56,7 @@
                               label="Original species"
                             ></v-text-field>
                           </v-row>
-                          <v-row v-if="speciesError">
+                          <v-row v-if="originalSpeciesError">
                             <span class="error-msg">{{
                               requiredErrorMsg
                             }}</span>
@@ -185,6 +185,7 @@ export default class AddPokemon extends Vue {
   locationError = false;
   obtainedError = false;
   numberError = false;
+  originalSpeciesError = false;
   requiredErrorMsg = "This field is required";
   numberErrorMsg = "";
 
@@ -193,6 +194,7 @@ export default class AddPokemon extends Vue {
       await this.getNuzlocke();
     } else {
       this.nuzlocke = this.$route.params.nuzlocke;
+      this.gotNuzlocke = true;
     }
 
     if (!this.nuzlocke.original) {
@@ -368,7 +370,7 @@ export default class AddPokemon extends Vue {
 
   validateData() {
     let valid = true;
-    this.speciesError = this.locationError = this.obtainedError = this.numberError = false;
+    this.speciesError = this.locationError = this.obtainedError = this.numberError = this.originalSpeciesError = false;
 
     if (!this.original) {
       if (this.species === "" || this.species === undefined) {
@@ -387,17 +389,24 @@ export default class AddPokemon extends Vue {
       valid = false;
     }
 
-    if (this.original && this.number === "") {
-      this.numberErrorMsg = this.requiredErrorMsg;
-      this.numberError = true;
-      valid = false;
-    }
+    if (this.original) {
+      if (this.number === "") {
+        this.numberErrorMsg = this.requiredErrorMsg;
+        this.numberError = true;
+        valid = false;
+      } else {
+        let numberRegex = /#\d+/i;
+        if (this.original && !numberRegex.test(this.number)) {
+          this.numberErrorMsg = "The number format is invalid";
+          this.numberError = true;
+          valid = false;
+        }
+      }
 
-    let numberRegex = /#\d+/i;
-    if (this.original && !numberRegex.test(this.number)) {
-      this.numberErrorMsg = "The number format is invalid";
-      this.numberError = true;
-      valid = false;
+      if (this.species === "") {
+        this.originalSpeciesError = true;
+        valid = false;
+      }
     }
 
     if (this.obtained === "not") {
