@@ -55,7 +55,9 @@
                     -
                   </template>
                   <template v-else-if="item.obtained === 'caught'">
-                    <span class="iconify" data-icon="mdi:pokeball"></span>
+                    <span>
+                      <v-icon class="iconify" data-icon="mdi:pokeball"></v-icon>
+                    </span>
                   </template>
                   <template v-else>
                     <v-icon>{{ obtainedIcon(item.obtained) }}</v-icon>
@@ -403,12 +405,6 @@ tr:hover {
 
 .filter-checkbox::v-deep .v-messages {
   display: none;
-}
-
-.iconify {
-  height: 24px;
-  width: 24px;
-  color: rgba(0, 0, 0, 0.54);
 }
 
 .delete-button {
