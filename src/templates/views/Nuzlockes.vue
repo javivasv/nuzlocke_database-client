@@ -18,6 +18,7 @@
             :headers="headers"
             :items="nuzlockes"
             :search="search"
+            :items-per-page="5"
             @click:row="checkNuzlocke($event)"
           >
             <!-- eslint-disable-next-line -->

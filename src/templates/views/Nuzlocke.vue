@@ -1,18 +1,32 @@
 <template>
   <v-row class="content" v-if="gotNuzlocke">
     <v-col cols="8" id="nuzlocke">
-      <v-row class="title-row">
-      </v-row>
+      <v-row class="title-row"> </v-row>
       <v-row class="content-row">
         <v-card id="nuzlocke-card">
           <v-card-title>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
+            <v-row id="card-title-row">
+              <v-col class="card-title-col" cols="8">
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col class="card-title-col" cols="4">
+                <v-btn
+                  class="delete-button"
+                  v-if="!showDeleteButton"
+                  @click="showDelete()"
+                  >DELETE POKEMON</v-btn
+                >
+                <v-btn id="cancel-button" v-else @click="cancelDelete()"
+                  >CANCEL DELETE</v-btn
+                >
+              </v-col>
+            </v-row>
           </v-card-title>
           <v-data-table
             :headers="headers"
@@ -216,15 +230,6 @@
               <v-col></v-col>
             </v-row>
           </v-card>
-          <v-btn
-            class="delete-button"
-            v-if="!showDeleteButton"
-            @click="showDelete()"
-            >DELETE POKEMON</v-btn
-          >
-          <v-btn id="cancel-button" v-else @click="cancelDelete()"
-            >CANCEL DELETE</v-btn
-          >
         </v-col>
       </v-row>
     </v-col>
@@ -582,5 +587,12 @@ tr:hover {
 .dead-button,
 .delete-button {
   background-color: rgb(241, 60, 60) !important;
+}
+
+#card-title-row,
+.card-title-col {
+  margin: 0;
+  padding: 0;
+  align-items: center;
 }
 </style>
