@@ -444,6 +444,8 @@ export default class Nuzlocke extends Vue {
   statusButtonClass(dead: Boolean) {
     if (!dead) {
       return "dead-button";
+    } else {
+      return "revive-button";
     }
   }
 
@@ -587,6 +589,10 @@ tr:hover {
 .dead-button,
 .delete-button {
   background-color: rgb(241, 60, 60) !important;
+}
+
+.revive-button {
+  background-color: rgb(20, 194, 43) !important;
 }
 
 #card-title-row,
