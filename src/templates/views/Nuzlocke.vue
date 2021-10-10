@@ -156,7 +156,7 @@
                   class="filter-checkbox"
                   label="Alive"
                   v-model="aliveCheckbox"
-                  @change="filterPokemon($event, 'alive')"
+                  @change="filterByStatus($event, 'alive')"
                 ></v-checkbox>
               </v-row>
             </v-col>
@@ -166,7 +166,7 @@
                   class="filter-checkbox"
                   label="Dead"
                   v-model="deadCheckbox"
-                  @change="filterPokemon($event, 'dead')"
+                  @change="filterByStatus($event, 'dead')"
                 ></v-checkbox>
               </v-row>
             </v-col>
@@ -182,7 +182,7 @@
                   class="filter-checkbox"
                   label="Caught"
                   v-model="caughtCheckbox"
-                  @change="filterPokemon($event, 'caught')"
+                  @change="filterByObtained($event, 'caught')"
                 ></v-checkbox>
               </v-row>
             </v-col>
@@ -192,7 +192,7 @@
                   class="filter-checkbox"
                   label="Gifted"
                   v-model="giftedCheckbox"
-                  @change="filterPokemon($event, 'gifted')"
+                  @change="filterByObtained($event, 'gifted')"
                 ></v-checkbox>
               </v-row>
             </v-col>
@@ -204,7 +204,7 @@
                   class="filter-checkbox"
                   label="Hatched"
                   v-model="hatchedCheckbox"
-                  @change="filterPokemon($event, 'hatched')"
+                  @change="filterByObtained($event, 'hatched')"
                 ></v-checkbox>
               </v-row>
             </v-col>
@@ -214,7 +214,7 @@
                   class="filter-checkbox"
                   label="Traded"
                   v-model="tradedCheckbox"
-                  @change="filterPokemon($event, 'traded')"
+                  @change="filterByObtained($event, 'traded')"
                 ></v-checkbox>
               </v-row>
             </v-col>
@@ -226,7 +226,7 @@
                   class="filter-checkbox"
                   label="Not caught"
                   v-model="notCaughtCheckbox"
-                  @change="filterPokemon($event, 'notCaught')"
+                  @change="filterByObtained($event, 'notCaught')"
                 ></v-checkbox>
               </v-row>
             </v-col>
@@ -280,18 +280,8 @@ export default class Nuzlocke extends Vue {
   tradedCheckbox = false;
   notCaughtCheckbox = false;
   showDeleteButton = false;
-
-  statusButtonClass(dead: Boolean) {
-    if (!dead) {
-      return "dead-button";
-    }
-  }
-
-  tdClass(dead: Boolean) {
-    if (dead) {
-      return "opacity-dead";
-    }
-  }
+  statusFilter = "";
+  obtainedFilter = "";
 
   created() {
     this.getNuzlocke();
@@ -369,62 +359,87 @@ export default class Nuzlocke extends Vue {
     }
   }
 
-  filterPokemon(event: any, type: string) {
-    if (event && type === "alive") {
-      this.deadCheckbox = false;
-      this.notCaughtCheckbox = false;
+  filterPokemon() {
+    this.pokemon = this.nuzlocke.pokemon;
+
+    if (this.statusFilter !== "" && this.obtainedFilter === "") {
       this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        return pokemon.dead === false;
+        if (this.statusFilter === "alive") {
+          return pokemon.dead === false;
+        } else {
+          return pokemon.dead === true;
+        }
       });
-    } else if (event && type === "dead") {
-      this.aliveCheckbox = false;
-      this.notCaughtCheckbox = false;
+    } else if (this.statusFilter === "" && this.obtainedFilter !== "") {
       this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        return pokemon.dead === true;
+        return pokemon.obtained === this.obtainedFilter;
       });
-    } else if (event && type === "caught") {
-      this.giftedCheckbox = false;
-      this.hatchedCheckbox = false;
-      this.tradedCheckbox = false;
-      this.notCaughtCheckbox = false;
+    } else if (this.statusFilter !== "" && this.obtainedFilter !== "") {
       this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        return pokemon.obtained === "caught";
+        if (this.statusFilter === "alive") {
+          return (
+            pokemon.dead === false && pokemon.obtained === this.obtainedFilter
+          );
+        } else {
+          return (
+            pokemon.dead === true && pokemon.obtained === this.obtainedFilter
+          );
+        }
       });
-    } else if (event && type === "gifted") {
-      this.caughtCheckbox = false;
-      this.hatchedCheckbox = false;
-      this.tradedCheckbox = false;
-      this.notCaughtCheckbox = false;
-      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        return pokemon.obtained === "gifted";
-      });
-    } else if (event && type === "hatched") {
-      this.caughtCheckbox = false;
-      this.giftedCheckbox = false;
-      this.tradedCheckbox = false;
-      this.notCaughtCheckbox = false;
-      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        return pokemon.obtained === "hatched";
-      });
-    } else if (event && type === "traded") {
-      this.caughtCheckbox = false;
-      this.giftedCheckbox = false;
-      this.hatchedCheckbox = false;
-      this.notCaughtCheckbox = false;
-      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        return pokemon.obtained === "traded";
-      });
-    } else if (event && type === "notCaught") {
-      this.caughtCheckbox = false;
-      this.giftedCheckbox = false;
-      this.hatchedCheckbox = false;
-      this.tradedCheckbox = false;
-      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        return pokemon.obtained === "not";
-      });
-    } else if (!event) {
-      this.pokemon = this.nuzlocke.pokemon;
     }
+  }
+
+  filterByStatus(event: any, status: string) {
+    this.statusFilter = status;
+
+    if (event) {
+      if (status === "alive") {
+        this.deadCheckbox = false;
+      } else if (status === "dead") {
+        this.aliveCheckbox = false;
+      }
+    } else {
+      this.statusFilter = "";
+    }
+
+    this.filterPokemon();
+  }
+
+  filterByObtained(event: any, obtained: string) {
+    this.obtainedFilter = obtained;
+
+    if (event) {
+      if (obtained === "caught") {
+        this.giftedCheckbox = false;
+        this.hatchedCheckbox = false;
+        this.tradedCheckbox = false;
+        this.notCaughtCheckbox = false;
+      } else if (obtained === "gifted") {
+        this.caughtCheckbox = false;
+        this.hatchedCheckbox = false;
+        this.tradedCheckbox = false;
+        this.notCaughtCheckbox = false;
+      } else if (obtained === "hatched") {
+        this.caughtCheckbox = false;
+        this.giftedCheckbox = false;
+        this.tradedCheckbox = false;
+        this.notCaughtCheckbox = false;
+      } else if (obtained === "traded") {
+        this.caughtCheckbox = false;
+        this.giftedCheckbox = false;
+        this.hatchedCheckbox = false;
+        this.notCaughtCheckbox = false;
+      } else if (obtained === "notCaught") {
+        this.caughtCheckbox = false;
+        this.giftedCheckbox = false;
+        this.hatchedCheckbox = false;
+        this.tradedCheckbox = false;
+      }
+    } else {
+      this.obtainedFilter = "";
+    }
+
+    this.filterPokemon();
   }
 
   pokemonRowClass(status: Boolean, obtained: string) {
@@ -434,6 +449,18 @@ export default class Nuzlocke extends Vue {
       }
     } else if (obtained === "not") {
       return "not";
+    }
+  }
+
+  statusButtonClass(dead: Boolean) {
+    if (!dead) {
+      return "dead-button";
+    }
+  }
+
+  tdClass(dead: Boolean) {
+    if (dead) {
+      return "opacity-dead";
     }
   }
 
