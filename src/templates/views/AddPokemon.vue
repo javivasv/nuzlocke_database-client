@@ -1,5 +1,5 @@
 <template>
-  <v-row class="content">
+  <v-row class="content" v-if="gotNuzlocke">
     <v-col cols="8" id="add-pokemon">
       <v-row class="title-row"></v-row>
       <v-row class="content-row">
@@ -16,34 +16,51 @@
                   <v-col cols="9" id="species-col">
                     <v-row>
                       <template v-if="!original">
-                        <v-autocomplete
-                          v-if="gotPokemons"
-                          v-model="species"
-                          :items="pokemons"
-                          label="Species"
-                          @change="pokemonSprite($event)"
-                        >
-                          <template v-slot:selection="species">
-                            {{ species.item.toUpperCase() }}
-                          </template>
-                          <template v-slot:item="species">
-                            {{ species.item.toUpperCase() }}
-                          </template>
-                        </v-autocomplete>
+                        <v-row>
+                          <v-autocomplete
+                            v-if="gotPokemons"
+                            v-model="species"
+                            :items="pokemons"
+                            label="Species"
+                            @change="pokemonSprite($event)"
+                          >
+                            <template v-slot:selection="species">
+                              {{ species.item.toUpperCase() }}
+                            </template>
+                            <template v-slot:item="species">
+                              {{ species.item.toUpperCase() }}
+                            </template>
+                          </v-autocomplete>
+                        </v-row>
+                        <v-row v-if="speciesError">
+                          <span class="error-msg">{{ requiredErrorMsg }}</span>
+                        </v-row>
                       </template>
                       <template v-else>
                         <v-col id="species-left-col">
-                          <v-text-field
-                            v-model="number"
-                            label="Number"
-                            placeholder="Format: #000"
-                          ></v-text-field>
+                          <v-row>
+                            <v-text-field
+                              v-model="number"
+                              label="Number"
+                              placeholder="Format: #000"
+                            ></v-text-field>
+                          </v-row>
+                          <v-row v-if="numberError">
+                            <span class="error-msg">{{ numberErrorMsg }}</span>
+                          </v-row>
                         </v-col>
                         <v-col id="species-right-col">
-                          <v-text-field
-                            v-model="species"
-                            label="Original species"
-                          ></v-text-field>
+                          <v-row>
+                            <v-text-field
+                              v-model="species"
+                              label="Original species"
+                            ></v-text-field>
+                          </v-row>
+                          <v-row v-if="speciesError">
+                            <span class="error-msg">{{
+                              requiredErrorMsg
+                            }}</span>
+                          </v-row>
                         </v-col>
                       </template>
                     </v-row>
@@ -86,6 +103,9 @@
                     ></v-text-field>
                   </template>
                 </v-row>
+                <v-row v-if="locationError">
+                  <span class="error-msg">{{ requiredErrorMsg }}</span>
+                </v-row>
                 <v-row>
                   <v-select
                     v-model="obtained"
@@ -99,6 +119,9 @@
                       {{ obtainedOptions.item.toUpperCase() }}
                     </template>
                   </v-select>
+                </v-row>
+                <v-row v-if="obtainedError">
+                  <span class="error-msg">{{ requiredErrorMsg }}</span>
                 </v-row>
               </v-col>
             </v-container>
@@ -144,6 +167,7 @@ import BackButton from "../components/BackButton.vue";
 })
 export default class AddPokemon extends Vue {
   nuzlocke: any;
+  gotNuzlocke = false;
   pokemons = [] as any;
   gotPokemons = false;
   locations = [] as any;
@@ -157,15 +181,12 @@ export default class AddPokemon extends Vue {
   sprite = "";
   original = false;
   number = "";
-
-  selectOriginal(event: any) {
-    this.number = "";
-    this.species = "";
-
-    if (event) {
-      this.sprite = "";
-    }
-  }
+  speciesError = false;
+  locationError = false;
+  obtainedError = false;
+  numberError = false;
+  requiredErrorMsg = "This field is required";
+  numberErrorMsg = "";
 
   async created() {
     if (!this.$route.params.nuzlocke) {
@@ -189,6 +210,7 @@ export default class AddPokemon extends Vue {
         `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`
       );
       this.nuzlocke = res.data.nuzlocke;
+      this.gotNuzlocke = true;
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
     }
@@ -345,31 +367,53 @@ export default class AddPokemon extends Vue {
   }
 
   validateData() {
-    if (
-      this.species === "" ||
-      this.species === undefined ||
-      this.location === "" ||
-      this.location === undefined ||
-      this.obtained === "" ||
-      this.obtained === undefined
-    ) {
-      return false;
+    let valid = true;
+    this.speciesError = this.locationError = this.obtainedError = this.numberError = false;
+
+    if (!this.original) {
+      if (this.species === "" || this.species === undefined) {
+        this.speciesError = true;
+        valid = false;
+      }
+    }
+
+    if (this.location === "" || this.location === undefined) {
+      this.locationError = true;
+      valid = false;
+    }
+
+    if (this.obtained === "" || this.obtained === undefined) {
+      this.obtainedError = true;
+      valid = false;
     }
 
     if (this.original && this.number === "") {
-      return false;
+      this.numberErrorMsg = this.requiredErrorMsg;
+      this.numberError = true;
+      valid = false;
     }
 
     let numberRegex = /#\d+/i;
     if (this.original && !numberRegex.test(this.number)) {
-      return false;
+      this.numberErrorMsg = "The number format is invalid";
+      this.numberError = true;
+      valid = false;
     }
 
     if (this.obtained === "not") {
       this.nickname = "";
     }
 
-    return true;
+    return valid;
+  }
+
+  selectOriginal(event: any) {
+    this.number = "";
+    this.species = "";
+
+    if (event) {
+      this.sprite = "";
+    }
   }
 }
 </script>
@@ -420,11 +464,11 @@ a {
 
 #species-col,
 #species-left-col {
-  padding-left: 0;
+  padding: 0 12px 0 0;
 }
 
 #checkbox-col,
 #species-right-col {
-  padding-right: 0;
+  padding: 0 0 0 12px;
 }
 </style>
