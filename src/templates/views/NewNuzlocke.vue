@@ -10,7 +10,7 @@
                 <v-row>
                   <v-text-field v-model="title" label="Title"></v-text-field>
                 </v-row>
-                <v-row>
+                <v-row class="input-row">
                   <v-col cols="9" id="base-game-col">
                     <v-autocomplete
                       v-model="baseGame"
@@ -31,13 +31,13 @@
                 <v-row v-if="baseGameError">
                   <span class="error-msg">{{ requiredErrorMsg }}</span>
                 </v-row>
-                <v-row>
+                <v-row class="input-row">
                   <v-text-field v-model="game" label="Game"></v-text-field>
                 </v-row>
                 <v-row v-if="gameError">
                   <span class="error-msg">{{ requiredErrorMsg }}</span>
                 </v-row>
-                <v-row>
+                <v-row class="input-row">
                   <v-textarea
                     v-model="description"
                     label="Description"
@@ -265,5 +265,13 @@ a {
 
 #checkbox-col {
   padding: 0 0 0 12px;
+}
+
+.v-text-field::v-deep .v-text-field__details {
+  display: none;
+}
+
+.input-row {
+  margin-top: 20px;
 }
 </style>

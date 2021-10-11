@@ -80,14 +80,14 @@
                     ></v-checkbox>
                   </v-col>
                 </v-row>
-                <v-row>
+                <v-row class="input-row">
                   <v-text-field
                     v-model="nickname"
                     label="Nickname"
                     :disabled="obtained !== 'not' ? false : true"
                   ></v-text-field>
                 </v-row>
-                <v-row>
+                <v-row class="input-row">
                   <template v-if="!nuzlocke.original">
                     <v-autocomplete
                       v-if="gotLocations"
@@ -113,7 +113,7 @@
                 <v-row v-if="locationError">
                   <span class="error-msg">{{ requiredErrorMsg }}</span>
                 </v-row>
-                <v-row>
+                <v-row class="input-row">
                   <v-select
                     v-model="obtained"
                     :items="obtainedOptions"
@@ -500,5 +500,13 @@ a {
 .checkbox-col,
 #species-right-col {
   padding: 0 0 0 12px;
+}
+
+.v-text-field::v-deep .v-text-field__details {
+  display: none;
+}
+
+.input-row {
+  margin-top: 20px;
 }
 </style>
