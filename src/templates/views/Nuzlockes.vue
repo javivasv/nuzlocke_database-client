@@ -5,13 +5,28 @@
       <v-row class="content-row">
         <v-card id="nuzlockes-card">
           <v-card-title>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
+            <v-row id="card-title-row">
+              <v-col class="card-title-col" cols="8">
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col class="card-title-col" cols="4">
+                <v-btn
+                  class="delete-button"
+                  v-if="!showDeleteButton"
+                  @click="showDelete()"
+                  >DELETE NUZLOCKE</v-btn
+                >
+                <v-btn id="cancel-button" v-else @click="cancelDelete()"
+                  >CANCEL DELETE</v-btn
+                >
+              </v-col>
+            </v-row>
           </v-card-title>
           <v-data-table
             v-if="gotNuzlockes"
@@ -29,6 +44,18 @@
             <!-- eslint-disable-next-line -->
             <template #item.status="{ item }">
               {{ item.status.toUpperCase() }}
+            </template>
+
+            <!-- eslint-disable-next-line -->
+            <template #item.delete="{ item }">
+              <v-btn
+                class="delete-button"
+                v-if="showDeleteButton"
+                small
+                @click="deleteNuzlocke(item, $event)"
+              >
+                <v-icon small>fa-trash</v-icon>
+              </v-btn>
             </template>
           </v-data-table>
         </v-card>
@@ -99,16 +126,13 @@ export default class Nuzlockes extends Vue {
   search = "";
   nuzlockes = [] as any;
   headers = [
-    { text: "Title", value: "title", align: "center", filterable: true },
-    { text: "Game", value: "game", align: "center", filterable: true },
-    { text: "Base game", value: "baseGame", align: "center", filterable: true },
-    { text: "Status", value: "status", align: "center", filterable: true }
+    { text: "Title", value: "title", align: "center", sortable: true },
+    { text: "Game", value: "game", align: "center", sortable: true },
+    { text: "Base game", value: "baseGame", align: "center", sortable: true },
+    { text: "Status", value: "status", align: "center", sortable: true }
   ];
   gotNuzlockes = false;
-
-  checkNuzlocke(event: any) {
-    this.$router.push({ name: "nuzlocke", params: { nuzlocke_id: event._id } });
-  }
+  showDeleteButton = false;
 
   created() {
     this.getNuzlockes();
@@ -125,6 +149,49 @@ export default class Nuzlockes extends Vue {
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
     }
+  }
+
+  async deleteNuzlocke(nuzlocke: any, event: any) {
+    event.stopPropagation();
+
+    try {
+      const userId = this.$store.state.user.id;
+      const nuzlockeId = nuzlocke._id;
+      await axios.delete(
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`
+      );
+
+      let index: any;
+      for (const nuzlockeObject of this.nuzlockes) {
+        if (nuzlocke._id.toString() === nuzlockeObject._id.toString()) {
+          index = this.nuzlockes.indexOf(nuzlockeObject);
+          break;
+        }
+      }
+
+      this.nuzlockes.splice(index, 1);
+    } catch (error) {
+      this.$root.$emit("error", error.response.data.msg);
+    }
+  }
+
+  checkNuzlocke(event: any) {
+    this.$router.push({ name: "nuzlocke", params: { nuzlocke_id: event._id } });
+  }
+
+  showDelete() {
+    this.showDeleteButton = true;
+    this.headers.push({
+      text: "Delete",
+      value: "delete",
+      align: "center",
+      sortable: false
+    });
+  }
+
+  cancelDelete() {
+    this.showDeleteButton = false;
+    this.headers.pop();
   }
 }
 </script>
@@ -171,5 +238,20 @@ export default class Nuzlockes extends Vue {
 
 a {
   text-decoration: none;
+}
+
+#card-title-row,
+.card-title-col {
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.delete-button {
+  background-color: rgb(241, 60, 60) !important;
+}
+
+#cancel-button {
+  background-color: #999999 !important;
 }
 </style>
