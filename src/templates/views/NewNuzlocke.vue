@@ -152,7 +152,7 @@ export default class NewNuzlocke extends Vue {
 
   async getGames() {
     try {
-      const res = await axios.get("https://pokeapi.co/api/v2/generation");
+      await axios.get("https://pokeapi.co/api/v2/generation");
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
     }
@@ -173,10 +173,7 @@ export default class NewNuzlocke extends Vue {
 
     try {
       const userId = this.$store.state.user.id;
-      const res = await axios.post(
-        `${staticInfo.server}/user/${userId}/nuzlocke`,
-        data
-      );
+      await axios.post(`${staticInfo.server}/user/${userId}/nuzlocke`, data);
       this.$router.push({ name: "nuzlockes" });
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
@@ -203,7 +200,7 @@ export default class NewNuzlocke extends Vue {
       }
 
       if (this.title === "") {
-        this.title = this.game;
+        this.title = this.baseGame;
       }
 
       if (this.game === "") {
