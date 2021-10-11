@@ -536,7 +536,7 @@ export default class Nuzlocke extends Vue {
 }
 
 #completed-button {
-  background-color: #4caf50 !important;
+  background-color: rgb(20, 194, 43) !important;
 }
 
 #lost-button,

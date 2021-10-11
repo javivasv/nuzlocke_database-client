@@ -13,7 +13,7 @@
                   </v-avatar>
                 </v-row>
                 <v-row>
-                  <v-col cols="9" id="species-col">
+                  <v-col cols="7" id="species-col">
                     <v-row>
                       <template v-if="!original">
                         <v-row>
@@ -37,7 +37,7 @@
                         </v-row>
                       </template>
                       <template v-else>
-                        <v-col id="species-left-col">
+                        <v-col cols="5" id="species-left-col">
                           <v-row>
                             <v-text-field
                               v-model="number"
@@ -49,7 +49,7 @@
                             <span class="error-msg">{{ numberErrorMsg }}</span>
                           </v-row>
                         </v-col>
-                        <v-col id="species-right-col">
+                        <v-col cols="7" id="species-right-col">
                           <v-row>
                             <v-text-field
                               v-model="species"
@@ -65,11 +65,18 @@
                       </template>
                     </v-row>
                   </v-col>
-                  <v-col cols="3" id="checkbox-col">
+                  <v-col cols="3" class="checkbox-col">
                     <v-checkbox
                       label="Original species"
                       v-model="original"
                       @change="selectOriginal($event)"
+                    ></v-checkbox>
+                  </v-col>
+                  <v-col cols="2" class="checkbox-col">
+                    <v-checkbox
+                      label="Shiny"
+                      v-model="shiny"
+                      @change="selectShiny()"
                     ></v-checkbox>
                   </v-col>
                 </v-row>
@@ -180,6 +187,7 @@ export default class AddPokemon extends Vue {
   gamesRegions = staticInfo.regionsGames;
   sprite = "";
   original = false;
+  shiny = false;
   number = "";
   speciesError = false;
   locationError = false;
@@ -306,7 +314,12 @@ export default class AddPokemon extends Vue {
         const res = await axios.get(
           "https://pokeapi.co/api/v2/pokemon/" + pokemonName
         );
-        this.sprite = res.data.sprites.front_default;
+
+        if (this.shiny) {
+          this.sprite = res.data.sprites.front_shiny;
+        } else {
+          this.sprite = res.data.sprites.front_default;
+        }
       } catch (error) {
         this.$root.$emit("error", error.response.data.msg);
       }
@@ -326,6 +339,7 @@ export default class AddPokemon extends Vue {
         obtained: this.obtained,
         number: this.number,
         original: this.original,
+        shiny: this.shiny,
         species: this.species.toLowerCase(),
         sprite: this.sprite
       };
@@ -337,6 +351,7 @@ export default class AddPokemon extends Vue {
         obtained: this.obtained,
         number: pokemon[0],
         original: this.original,
+        shiny: this.shiny,
         species: pokemon[2],
         sprite: this.sprite
       };
@@ -424,6 +439,12 @@ export default class AddPokemon extends Vue {
       this.sprite = "";
     }
   }
+
+  selectShiny() {
+    if (!this.original && this.species !== "" && this.species !== undefined) {
+      this.pokemonSprite(this.species);
+    }
+  }
 }
 </script>
 
@@ -476,7 +497,7 @@ a {
   padding: 0 12px 0 0;
 }
 
-#checkbox-col,
+.checkbox-col,
 #species-right-col {
   padding: 0 0 0 12px;
 }
