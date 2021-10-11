@@ -222,8 +222,8 @@
                   <v-checkbox
                     class="filter-checkbox"
                     label="Not caught"
-                    v-model="notCaughtCheckbox"
-                    @change="filterByObtained($event, 'notCaught')"
+                    v-model="notCheckbox"
+                    @change="filterByObtained($event, 'not')"
                   ></v-checkbox>
                 </v-row>
               </v-col>
@@ -267,7 +267,7 @@ export default class Nuzlocke extends Vue {
   giftedCheckbox = false;
   hatchedCheckbox = false;
   tradedCheckbox = false;
-  notCaughtCheckbox = false;
+  notCheckbox = false;
   showDeleteButton = false;
   statusFilter = "";
   obtainedFilter = "";
@@ -402,23 +402,23 @@ export default class Nuzlocke extends Vue {
         this.giftedCheckbox = false;
         this.hatchedCheckbox = false;
         this.tradedCheckbox = false;
-        this.notCaughtCheckbox = false;
+        this.notCheckbox = false;
       } else if (obtained === "gifted") {
         this.caughtCheckbox = false;
         this.hatchedCheckbox = false;
         this.tradedCheckbox = false;
-        this.notCaughtCheckbox = false;
+        this.notCheckbox = false;
       } else if (obtained === "hatched") {
         this.caughtCheckbox = false;
         this.giftedCheckbox = false;
         this.tradedCheckbox = false;
-        this.notCaughtCheckbox = false;
+        this.notCheckbox = false;
       } else if (obtained === "traded") {
         this.caughtCheckbox = false;
         this.giftedCheckbox = false;
         this.hatchedCheckbox = false;
-        this.notCaughtCheckbox = false;
-      } else if (obtained === "notCaught") {
+        this.notCheckbox = false;
+      } else if (obtained === "not") {
         this.caughtCheckbox = false;
         this.giftedCheckbox = false;
         this.hatchedCheckbox = false;
