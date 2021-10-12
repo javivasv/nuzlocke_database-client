@@ -20,7 +20,7 @@
                   </v-avatar>
                 </v-row>
                 <v-row>
-                  <v-col cols="7" id="species-col">
+                  <v-col cols="9" id="species-col">
                     <v-row>
                       <template v-if="!original">
                         <v-row>
@@ -29,7 +29,7 @@
                             v-model="species"
                             :items="pokemons"
                             label="Species"
-                            @change="pokemonSprite($event)"
+                            @change="selectPokemon($event)"
                           >
                             <template v-slot:selection="species">
                               {{ species.item.toUpperCase() }}
@@ -73,21 +73,45 @@
                     </v-row>
                   </v-col>
                   <v-col cols="3" class="checkbox-col">
-                    <v-checkbox
-                      label="Original species"
-                      v-model="original"
-                      @change="selectOriginal($event)"
-                    ></v-checkbox>
-                  </v-col>
-                  <v-col cols="2" class="checkbox-col">
-                    <v-checkbox
-                      label="Shiny"
-                      v-model="shiny"
-                      @change="selectShiny()"
-                    ></v-checkbox>
+                    <v-row justify="center">
+                      <v-checkbox
+                        label="Original species"
+                        v-model="original"
+                        @change="selectOriginal($event)"
+                      ></v-checkbox>
+                    </v-row>
                   </v-col>
                 </v-row>
-                <v-row class="input-row">
+                <v-row v-if="!original">
+                  <v-col class="checkbox-col">
+                    <v-row justify="center">
+                      <v-checkbox
+                        label="Shiny"
+                        v-model="shiny"
+                        @change="select('shiny')"
+                      ></v-checkbox>
+                    </v-row>
+                  </v-col>
+                  <v-col v-if="alolanCheckbox" class="checkbox-col">
+                    <v-row justify="center">
+                      <v-checkbox
+                        label="Alolan"
+                        v-model="alolan"
+                        @change="select('alolan')"
+                      ></v-checkbox>
+                    </v-row>
+                  </v-col>
+                  <v-col v-if="galarianCheckbox" class="checkbox-col">
+                    <v-row justify="center">
+                      <v-checkbox
+                        label="Galarian"
+                        v-model="galarian"
+                        @change="select('galarian')"
+                      ></v-checkbox>
+                    </v-row>
+                  </v-col>
+                </v-row>
+                <v-row>
                   <v-text-field
                     v-model="nickname"
                     label="Nickname"
@@ -198,6 +222,10 @@ export default class AddPokemon extends Vue {
   originalSpeciesError = false;
   requiredErrorMsg = "This field is required";
   numberErrorMsg = "";
+  alolan = false;
+  alolanCheckbox = false;
+  galarian = false;
+  galarianCheckbox = false;
 
   async created() {
     if (!this.$route.params.nuzlocke) {
@@ -307,24 +335,50 @@ export default class AddPokemon extends Vue {
     }
   }
 
-  async pokemonSprite(event: any) {
+  selectPokemon(event: any) {
+    this.alolan = this.galarian = false;
+
     if (event === undefined) {
       this.sprite = "";
+      this.shiny = this.alolanCheckbox = this.galarianCheckbox = false;
     } else {
       const pokemonName = event.split(" ")[2];
-      try {
-        const res = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon/" + pokemonName
-        );
 
-        if (this.shiny) {
-          this.sprite = res.data.sprites.front_shiny;
-        } else {
-          this.sprite = res.data.sprites.front_default;
-        }
-      } catch (error) {
-        this.$root.$emit("error", error.response.data.msg);
+      if (staticInfo.alolanVariants.includes(pokemonName)) {
+        this.alolanCheckbox = true;
+      } else {
+        this.alolanCheckbox = false;
       }
+
+      if (staticInfo.galarianVariants.includes(pokemonName)) {
+        this.galarianCheckbox = true;
+      } else {
+        this.galarianCheckbox = false;
+      }
+
+      this.pokemonSprite(pokemonName);
+    }
+  }
+
+  async pokemonSprite(pokemonName: any) {
+    if (this.alolan) {
+      pokemonName = pokemonName + "-alola";
+    } else if (this.galarian) {
+      pokemonName = pokemonName + "-galar";
+    }
+
+    try {
+      const res = await axios.get(
+        "https://pokeapi.co/api/v2/pokemon/" + pokemonName
+      );
+
+      if (this.shiny) {
+        this.sprite = res.data.sprites.front_shiny;
+      } else {
+        this.sprite = res.data.sprites.front_default;
+      }
+    } catch (error) {
+      this.$root.$emit("error", error.response.data.msg);
     }
   }
 
@@ -341,7 +395,6 @@ export default class AddPokemon extends Vue {
         obtained: this.obtained,
         number: this.number,
         original: this.original,
-        shiny: this.shiny,
         species: this.species.toLowerCase(),
         sprite: this.sprite
       };
@@ -353,7 +406,6 @@ export default class AddPokemon extends Vue {
         obtained: this.obtained,
         number: pokemon[0],
         original: this.original,
-        shiny: this.shiny,
         species: pokemon[2],
         sprite: this.sprite
       };
@@ -434,17 +486,26 @@ export default class AddPokemon extends Vue {
   }
 
   selectOriginal(event: any) {
-    this.number = "";
-    this.species = "";
-
     if (event) {
+      this.number = "";
+      this.species = "";
       this.sprite = "";
+      this.shiny = false;
+      this.alolan = false;
+      this.galarian = false;
     }
   }
 
-  selectShiny() {
-    if (!this.original && this.species !== "" && this.species !== undefined) {
-      this.pokemonSprite(this.species);
+  select(form: string) {
+    if (form === "alolan") {
+      this.galarian = false;
+    } else if (form === "galarian") {
+      this.alolan = false;
+    }
+
+    if (this.species !== "" && this.species !== undefined) {
+      const pokemonName = this.species.split(" ")[2];
+      this.pokemonSprite(pokemonName);
     }
   }
 
@@ -498,12 +559,15 @@ a {
   justify-content: center;
 }
 
-#species-col,
 #species-left-col {
   padding: 0 12px 0 0;
 }
 
-.checkbox-col,
+#species-col,
+.checkbox-col {
+  padding: 0;
+}
+
 #species-right-col {
   padding: 0 0 0 12px;
 }

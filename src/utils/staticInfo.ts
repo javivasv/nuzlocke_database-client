@@ -87,3 +87,46 @@ export const regionsGames = [
 ];
 
 export const obtainedOptions = ["caught", "gifted", "hatched", "traded", "not"];
+
+export const alolanVariants = [
+  "rattata",
+  "raticate",
+  "raichu",
+  "sandshrew",
+  "sandslash",
+  "vulpix",
+  "ninetails",
+  "diglett",
+  "dugtrio",
+  "meowth",
+  "persian",
+  "geodude",
+  "graveler",
+  "golem",
+  "grimer",
+  "muk",
+  "exeggutor",
+  "marowak"
+];
+
+export const galarianVariants = [
+  "meowth",
+  "ponyta",
+  "rapidash",
+  "slowpoke",
+  "slowbro",
+  "farfetchd",
+  "weezing",
+  "mr-mime",
+  "articuno",
+  "zapdos",
+  "moltres",
+  "slowking",
+  "corsola",
+  "zigzagoon",
+  "linoone",
+  "darumaka",
+  "darmanitan",
+  "yamask",
+  "stunfisk"
+];
