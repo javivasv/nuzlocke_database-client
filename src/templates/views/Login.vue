@@ -14,18 +14,22 @@
                   label="Username"
                 ></v-text-field>
               </v-row>
-              <v-row>
+              <v-row v-if="usernameError">
+                <span class="error-msg">{{ requiredErrorMsg }}</span>
+              </v-row>
+              <v-row class="input-row">
                 <v-text-field
                   v-model="password"
                   label="Password"
                   type="password"
                 ></v-text-field>
               </v-row>
-
+              <v-row v-if="passwordError">
+                <span class="error-msg">{{ requiredErrorMsg }}</span>
+              </v-row>
               <v-row id="action-row">
                 <v-btn type="submit">Log in</v-btn>
               </v-row>
-
               <v-row id="register-row">
                 <router-link :to="{ name: 'register' }">
                   <strong>Register</strong>
@@ -49,6 +53,9 @@ export default class Login extends Vue {
   background = require("../../../public/img/isle_of_armor_landscape.png");
   username = "";
   password = "";
+  usernameError = false;
+  passwordError = false;
+  requiredErrorMsg = "This field is required";
 
   async login() {
     if (!this.validateData()) {
@@ -74,11 +81,20 @@ export default class Login extends Vue {
   }
 
   validateData() {
-    if (this.username === "" || this.password === "") {
-      return false;
+    let valid = true;
+    this.usernameError = this.passwordError = false;
+
+    if (this.username === "") {
+      this.usernameError = true;
+      valid = false;
     }
 
-    return true;
+    if (this.password === "") {
+      this.passwordError = true;
+      valid = false;
+    }
+
+    return valid;
   }
 }
 </script>
@@ -106,6 +122,7 @@ export default class Login extends Vue {
 }
 
 #action-row {
+  margin-top: 20px;
   justify-content: center;
 }
 
@@ -121,5 +138,13 @@ export default class Login extends Vue {
 a {
   text-decoration: none;
   color: $primaryColor !important;
+}
+
+.v-text-field::v-deep .v-text-field__details {
+  display: none;
+}
+
+.input-row {
+  margin-top: 20px;
 }
 </style>

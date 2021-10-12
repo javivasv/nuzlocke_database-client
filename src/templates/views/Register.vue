@@ -14,12 +14,30 @@
                   label="Username"
                 ></v-text-field>
               </v-row>
-              <v-row>
+              <v-row v-if="usernameError">
+                <span class="error-msg">{{ requiredErrorMsg }}</span>
+              </v-row>
+              <v-row class="input-row">
                 <v-text-field
                   v-model="password"
                   label="Password"
                   type="password"
                 ></v-text-field>
+              </v-row>
+              <v-row v-if="passwordError">
+                <span class="error-msg">{{ requiredErrorMsg }}</span>
+              </v-row>
+              <v-row class="input-row">
+                <v-text-field
+                  v-model="passwordConfirmation"
+                  label="Password confirmation"
+                  type="password"
+                ></v-text-field>
+              </v-row>
+              <v-row v-if="passwordConfirmationError">
+                <span class="error-msg">{{
+                  passwordConfirmationErrorMsg
+                }}</span>
               </v-row>
               <v-row id="action-row">
                 <v-btn type="submit">Register</v-btn>
@@ -47,6 +65,12 @@ export default class Register extends Vue {
   background = require("../../../public/img/isle_of_armor_landscape.png");
   username = "";
   password = "";
+  passwordConfirmation = "";
+  usernameError = false;
+  passwordError = false;
+  passwordConfirmationError = false;
+  requiredErrorMsg = "This field is required";
+  passwordConfirmationErrorMsg = "";
 
   async register() {
     if (!this.validateData()) {
@@ -67,11 +91,32 @@ export default class Register extends Vue {
   }
 
   validateData() {
-    if (this.username === "" || this.password === "") {
-      return false;
+    let valid = true;
+    this.usernameError = this.passwordError = this.passwordConfirmationError = false;
+
+    if (this.username === "") {
+      this.usernameError = true;
+      valid = false;
     }
 
-    return true;
+    if (this.password === "") {
+      this.passwordError = true;
+      valid = false;
+    }
+
+    if (this.passwordConfirmation === "") {
+      this.passwordConfirmationErrorMsg = this.requiredErrorMsg;
+      this.passwordConfirmationError = true;
+      valid = false;
+    }
+
+    if (this.password !== this.passwordConfirmation) {
+      this.passwordConfirmationErrorMsg = "The passwords does not match";
+      this.passwordConfirmationError = true;
+      valid = false;
+    }
+
+    return valid;
   }
 }
 </script>
@@ -99,6 +144,7 @@ export default class Register extends Vue {
 }
 
 #action-row {
+  margin-top: 20px;
   justify-content: center;
 }
 
@@ -114,5 +160,13 @@ export default class Register extends Vue {
 a {
   text-decoration: none;
   color: $primaryColor !important;
+}
+
+.v-text-field::v-deep .v-text-field__details {
+  display: none;
+}
+
+.input-row {
+  margin-top: 20px;
 }
 </style>
