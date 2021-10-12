@@ -1,6 +1,9 @@
 <template>
   <v-app>
-    <div id="register-view">
+    <div
+      id="register-view"
+      :style="{ backgroundImage: 'url(' + background + ')' }"
+    >
       <v-card>
         <v-form v-on:submit.prevent="register()">
           <v-container>
@@ -41,6 +44,7 @@ import * as staticInfo from "../../utils/staticInfo";
 
 @Component({})
 export default class Register extends Vue {
+  background = require("../../../public/img/isle_of_armor_landscape.png");
   username = "";
   password = "";
 
@@ -55,7 +59,7 @@ export default class Register extends Vue {
     };
 
     try {
-      const res = await axios.post(`${staticInfo.server}/user`, data);
+      await axios.post(`${staticInfo.server}/user`, data);
       this.$router.push({ name: "login" });
     } catch (error) {
       this.$root.$emit("error", error.response.data.msg);
@@ -82,6 +86,7 @@ export default class Register extends Vue {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-size: cover;
 }
 
 .v-card {

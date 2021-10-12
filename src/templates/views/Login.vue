@@ -1,6 +1,9 @@
 <template>
   <v-app>
-    <div id="login-view">
+    <div
+      id="login-view"
+      :style="{ backgroundImage: 'url(' + background + ')' }"
+    >
       <v-card>
         <v-form v-on:submit.prevent="login()">
           <v-container>
@@ -43,6 +46,7 @@ import * as staticInfo from "../../utils/staticInfo";
 
 @Component
 export default class Login extends Vue {
+  background = require("../../../public/img/isle_of_armor_landscape.png");
   username = "";
   password = "";
 
@@ -89,6 +93,7 @@ export default class Login extends Vue {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-size: cover;
 }
 
 .v-card {
