@@ -76,7 +76,7 @@ export default class Login extends Vue {
       this.$store.state.user.username = this.username;
       this.$router.push({ name: "home" });
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 

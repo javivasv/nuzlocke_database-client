@@ -294,7 +294,7 @@ export default class Nuzlocke extends Vue {
       this.pokemon = res.data.nuzlocke.pokemon;
       this.gotNuzlocke = true;
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 
@@ -315,7 +315,7 @@ export default class Nuzlocke extends Vue {
       this.nuzlocke.status = status;
       this.$forceUpdate();
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 
@@ -329,7 +329,7 @@ export default class Nuzlocke extends Vue {
 
       pokemon.dead = !pokemon.dead;
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 
@@ -351,7 +351,7 @@ export default class Nuzlocke extends Vue {
 
       this.nuzlocke.pokemon.splice(index, 1);
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 

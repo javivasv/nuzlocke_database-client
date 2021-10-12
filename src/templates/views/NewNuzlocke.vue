@@ -146,18 +146,6 @@ export default class NewNuzlocke extends Vue {
   baseGameError = false;
   requiredErrorMsg = "This field is required";
 
-  created() {
-    this.getGames;
-  }
-
-  async getGames() {
-    try {
-      await axios.get("https://pokeapi.co/api/v2/generation");
-    } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
-    }
-  }
-
   async createNuzlocke() {
     if (!this.validateData()) {
       return;
@@ -174,9 +162,10 @@ export default class NewNuzlocke extends Vue {
     try {
       const userId = this.$store.state.user.id;
       await axios.post(`${staticInfo.server}/user/${userId}/nuzlocke`, data);
+      this.$root.$emit("notification", this.title + " nuzlocke created");
       this.$router.push({ name: "nuzlockes" });
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 

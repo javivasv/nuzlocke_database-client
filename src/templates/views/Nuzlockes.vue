@@ -149,7 +149,7 @@ export default class Nuzlockes extends Vue {
       this.nuzlockes = res.data.nuzlockes;
       this.gotNuzlockes = true;
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 
@@ -173,7 +173,7 @@ export default class Nuzlockes extends Vue {
 
       this.nuzlockes.splice(index, 1);
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 

@@ -2,7 +2,7 @@
   <div id="app">
     <router-view />
     <v-snackbar v-model="snackbar" :timeout="timeout">
-      {{ errorMsg }}
+      {{ notificationMsg }}
     </v-snackbar>
   </div>
 </template>
@@ -13,12 +13,12 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class extends Vue {
   snackbar = false;
-  timeout = 3000;
-  errorMsg = "";
+  timeout = 5000;
+  notificationMsg = "";
 
   mounted() {
-    this.$root.$on("error", (errorMsg: string) => {
-      this.errorMsg = errorMsg;
+    this.$root.$on("notification", (notificationMsg: string) => {
+      this.notificationMsg = notificationMsg;
       this.snackbar = true;
     });
   }
@@ -86,5 +86,9 @@ export default class extends Vue {
 .error-msg {
   font-size: small;
   color: red;
+}
+
+.v-snack__content {
+  justify-content: center !important;
 }
 </style>

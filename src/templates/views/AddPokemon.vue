@@ -286,7 +286,7 @@ export default class AddPokemon extends Vue {
       this.nuzlocke = res.data.nuzlocke;
       this.gotNuzlocke = true;
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 
@@ -347,7 +347,7 @@ export default class AddPokemon extends Vue {
 
       this.gotPokemons = true;
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", "An error occurred getting the pokemon");
     }
   }
 
@@ -401,7 +401,10 @@ export default class AddPokemon extends Vue {
 
       this.gotLocations = true;
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit(
+        "notification",
+        "An error occurred getting the locations"
+      );
     }
   }
 
@@ -427,7 +430,10 @@ export default class AddPokemon extends Vue {
         this.sprite = res.data.sprites.front_default;
       }
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit(
+        "notification",
+        "An error occurred getting the pokemon sprite"
+      );
     }
   }
 
@@ -463,7 +469,7 @@ export default class AddPokemon extends Vue {
     try {
       const userId = this.$store.state.user.id;
       const nuzlockeId = this.nuzlocke._id;
-      const res = await axios.post(
+      await axios.post(
         `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon`,
         data
       );
@@ -471,18 +477,18 @@ export default class AddPokemon extends Vue {
       if (this.nickname === "") {
         const pokemon = this.species.split(" ");
         this.$root.$emit(
-          "error",
+          "notification",
           pokemon[2].toUpperCase() + " was added to " + this.nuzlocke.title
         );
       } else {
         this.$root.$emit(
-          "error",
+          "notification",
           this.nickname + " was added to " + this.nuzlocke.title
         );
       }
       this.$router.push({ name: "nuzlocke" });
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 

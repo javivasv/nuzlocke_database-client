@@ -86,7 +86,7 @@ export default class Register extends Vue {
       await axios.post(`${staticInfo.server}/user`, data);
       this.$router.push({ name: "login" });
     } catch (error) {
-      this.$root.$emit("error", error.response.data.msg);
+      this.$root.$emit("notification", error.response.data.msg);
     }
   }
 
