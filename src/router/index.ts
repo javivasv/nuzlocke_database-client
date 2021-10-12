@@ -9,22 +9,27 @@ import Nuzlocke from "../templates/views/Nuzlocke.vue";
 import Dashboard from "../templates/views/Dashboard.vue";
 import Login from "../templates/views/Login.vue";
 import Register from "../templates/views/Register.vue";
+import axios from "axios";
+import * as staticInfo from "../utils/staticInfo";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/login",
+    beforeEnter: checkAuth,
     name: "login",
     component: Login
   },
   {
     path: "/register",
+    beforeEnter: checkAuth,
     name: "register",
     component: Register
   },
   {
     path: "/",
+    beforeEnter: checkAuth,
     component: Dashboard,
     children: [
       {
@@ -64,6 +69,41 @@ const routes = [
     redirect: "/login"
   }
 ];
+
+async function checkAuth(to: any, from: any, next: any) {
+  const isAuthenticated = await verify();
+
+  if (isAuthenticated && (to.name === "login" || to.name === "register")) {
+    next({ name: "home" });
+  } else if (isAuthenticated && to.name !== "login" && to.name !== "register") {
+    next();
+  } else if (
+    !isAuthenticated &&
+    (to.name === "login" || to.name === "register")
+  ) {
+    next();
+  } else if (
+    !isAuthenticated &&
+    to.name !== "login" &&
+    to.name !== "register"
+  ) {
+    next({ name: "login" });
+  }
+}
+
+async function verify() {
+  try {
+    await axios.get(`${staticInfo.server}/user`, {
+      headers: {
+        authorization: localStorage.getItem("pndb_jwt")
+      }
+    });
+
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
 
 const router = new VueRouter({
   mode: "history",

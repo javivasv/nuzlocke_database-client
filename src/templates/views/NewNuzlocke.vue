@@ -161,7 +161,11 @@ export default class NewNuzlocke extends Vue {
 
     try {
       const userId = this.$store.state.user.id;
-      await axios.post(`${staticInfo.server}/user/${userId}/nuzlocke`, data);
+      await axios.post(`${staticInfo.server}/user/${userId}/nuzlocke`, data, {
+        headers: {
+          authorization: localStorage.getItem("pndb_jwt")
+        }
+      });
       this.$root.$emit("notification", this.title + " nuzlocke created");
       this.$router.push({ name: "nuzlockes" });
     } catch (error) {

@@ -281,7 +281,12 @@ export default class AddPokemon extends Vue {
       const userId = this.$store.state.user.id;
       const nuzlockeId = this.$route.params.nuzlocke_id;
       const res = await axios.get(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`,
+        {
+          headers: {
+            authorization: localStorage.getItem("pndb_jwt")
+          }
+        }
       );
       this.nuzlocke = res.data.nuzlocke;
       this.gotNuzlocke = true;
@@ -471,7 +476,12 @@ export default class AddPokemon extends Vue {
       const nuzlockeId = this.nuzlocke._id;
       await axios.post(
         `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon`,
-        data
+        data,
+        {
+          headers: {
+            authorization: localStorage.getItem("pndb_jwt")
+          }
+        }
       );
 
       if (this.nickname === "") {

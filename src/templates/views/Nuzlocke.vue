@@ -288,7 +288,12 @@ export default class Nuzlocke extends Vue {
       const userId = this.$store.state.user.id;
       const nuzlockeId = this.$route.params.nuzlocke_id;
       const res = await axios.get(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`,
+        {
+          headers: {
+            authorization: localStorage.getItem("pndb_jwt")
+          }
+        }
       );
       this.nuzlocke = res.data.nuzlocke;
       this.pokemon = res.data.nuzlocke.pokemon;
@@ -309,7 +314,12 @@ export default class Nuzlocke extends Vue {
       const nuzlockeId = this.$route.params.nuzlocke_id;
       await axios.put(
         `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`,
-        data
+        data,
+        {
+          headers: {
+            authorization: localStorage.getItem("pndb_jwt")
+          }
+        }
       );
 
       this.nuzlocke.status = status;
@@ -324,7 +334,13 @@ export default class Nuzlocke extends Vue {
       const userId = this.$store.state.user.id;
       const nuzlockeId = this.$route.params.nuzlocke_id;
       await axios.put(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${pokemon._id}`
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${pokemon._id}`,
+        null,
+        {
+          headers: {
+            authorization: localStorage.getItem("pndb_jwt")
+          }
+        }
       );
 
       pokemon.dead = !pokemon.dead;
@@ -338,7 +354,12 @@ export default class Nuzlocke extends Vue {
       const userId = this.$store.state.user.id;
       const nuzlockeId = this.$route.params.nuzlocke_id;
       await axios.delete(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${pokemon._id}`
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${pokemon._id}`,
+        {
+          headers: {
+            authorization: localStorage.getItem("pndb_jwt")
+          }
+        }
       );
 
       let index: any;

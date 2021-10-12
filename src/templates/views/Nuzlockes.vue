@@ -144,8 +144,14 @@ export default class Nuzlockes extends Vue {
     try {
       const userId = this.$store.state.user.id;
       const res = await axios.get(
-        `${staticInfo.server}/user/${userId}/nuzlockes`
+        `${staticInfo.server}/user/${userId}/nuzlockes`,
+        {
+          headers: {
+            authorization: localStorage.getItem("pndb_jwt")
+          }
+        }
       );
+
       this.nuzlockes = res.data.nuzlockes;
       this.gotNuzlockes = true;
     } catch (error) {
@@ -160,7 +166,12 @@ export default class Nuzlockes extends Vue {
       const userId = this.$store.state.user.id;
       const nuzlockeId = nuzlocke._id;
       await axios.delete(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`
+        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`,
+        {
+          headers: {
+            authorization: localStorage.getItem("pndb_jwt")
+          }
+        }
       );
 
       let index: any;
