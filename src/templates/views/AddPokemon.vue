@@ -185,6 +185,72 @@
             <v-card-title>
               <v-btn @click="addPokemon()">Add pokemon</v-btn>
             </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Species:</strong> The species of the pokemon
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Original species:</strong> In case of being a
+                    pokemon species not already existing in any previous game or
+                    region. If an original species, the pokedex number must be
+                    given
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Shiny:</strong> The pokemon sprite is shown with the
+                    shiny coloration
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Alolan/Galarian:</strong> The pokemon sprite is
+                    shown with the regional variant design
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Nickname:</strong> The nickname given to the
+                    pokemon, if given one
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Location:</strong> The location in which the pokemon
+                    was obtained or encountered
+                  </p>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <p class="card-text">
+                    <strong>Obtained:</strong> The way in which the pokemon was
+                    obtained, if it was obtained
+                  </p>
+                </li>
+              </ul>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-text>
+              For simplicity, pokemon with different forms are only shown with a
+              default form sprite. However, pokemon with alolan and/or galarian
+              regional variants have their own sprites
+            </v-card-text>
           </v-card>
         </v-col>
       </v-row>

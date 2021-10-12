@@ -126,7 +126,7 @@ export const galarianVariants = [
   "zigzagoon",
   "linoone",
   "darumaka",
-  "darmanitan",
+  "darmanitan-standard",
   "yamask",
   "stunfisk"
 ];
