@@ -1,7 +1,9 @@
 <template>
   <v-row class="content">
     <v-col cols="8" id="nuzlockes">
-      <v-row class="title-row"></v-row>
+      <v-row class="title-row">
+        <h1>NUZLOCKES</h1>
+      </v-row>
       <v-row class="content-row">
         <v-card id="nuzlockes-card">
           <v-card-title>

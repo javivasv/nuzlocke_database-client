@@ -1,7 +1,14 @@
 <template>
   <v-row class="content" v-if="gotNuzlocke">
     <v-col cols="8" id="nuzlocke">
-      <v-row class="title-row"> </v-row>
+      <v-row class="title-row">
+        <v-btn @click="back()">
+          <v-icon>fa-arrow-left</v-icon>
+        </v-btn>
+        <h1 class="inner-view-title">
+          NUZLOCKE - {{ nuzlocke.title.toUpperCase() }}
+        </h1>
+      </v-row>
       <v-row class="content-row">
         <v-card id="nuzlocke-card">
           <v-card-title>
@@ -485,6 +492,10 @@ export default class Nuzlocke extends Vue {
       align: "center",
       sortable: false
     });
+  }
+
+  back() {
+    this.$router.push({ name: "nuzlockes" });
   }
 }
 </script>

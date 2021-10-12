@@ -1,7 +1,14 @@
 <template>
   <v-row class="content" v-if="gotNuzlocke">
     <v-col cols="8" id="add-pokemon">
-      <v-row class="title-row"></v-row>
+      <v-row class="title-row">
+        <v-btn @click="back()">
+          <v-icon>fa-arrow-left</v-icon>
+        </v-btn>
+        <h1 class="inner-view-title">
+          ADD POKEMON TO: {{ nuzlocke.title.toUpperCase() }}
+        </h1>
+      </v-row>
       <v-row class="content-row">
         <v-card id="add-pokemon-card">
           <v-form v-on:submit.prevent="addPokemon()">
@@ -165,13 +172,8 @@
 import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 import * as staticInfo from "../../utils/staticInfo";
-import BackButton from "../components/BackButton.vue";
 
-@Component({
-  components: {
-    BackButton
-  }
-})
+@Component({})
 export default class AddPokemon extends Vue {
   nuzlocke: any;
   gotNuzlocke = false;
@@ -444,6 +446,10 @@ export default class AddPokemon extends Vue {
     if (!this.original && this.species !== "" && this.species !== undefined) {
       this.pokemonSprite(this.species);
     }
+  }
+
+  back() {
+    this.$router.go(-1);
   }
 }
 </script>

@@ -1,7 +1,12 @@
 <template>
   <v-row class="content">
     <v-col cols="8" id="new-nuzlocke">
-      <v-row class="title-row"></v-row>
+      <v-row class="title-row">
+        <v-btn @click="back()">
+          <v-icon>fa-arrow-left</v-icon>
+        </v-btn>
+        <h1 class="inner-view-title">NEW NUZLOCKE</h1>
+      </v-row>
       <v-row class="content-row">
         <v-card id="new-nuzlocke-card">
           <v-form v-on:submit.prevent="createNuzlocke()">
@@ -128,13 +133,8 @@
 import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 import * as staticInfo from "../../utils/staticInfo";
-import BackButton from "../components/BackButton.vue";
 
-@Component({
-  components: {
-    BackButton
-  }
-})
+@Component({})
 export default class NewNuzlocke extends Vue {
   title = "";
   baseGame = "";
@@ -215,6 +215,10 @@ export default class NewNuzlocke extends Vue {
     if (event) {
       this.baseGame = "";
     }
+  }
+
+  back() {
+    this.$router.push({ name: "nuzlockes" });
   }
 }
 </script>

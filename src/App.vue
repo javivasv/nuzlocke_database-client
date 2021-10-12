@@ -45,11 +45,8 @@ export default class extends Vue {
   align-items: center;
 }
 
-.title {
-  height: fit-content;
-  padding: 10px 50px 10px 50px;
-  background-color: $secondaryColor !important;
-  color: white !important;
+.inner-view-title {
+  margin-left: 20px;
 }
 
 .content-row {
