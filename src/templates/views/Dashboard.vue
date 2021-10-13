@@ -71,7 +71,14 @@ export default class Dashboard extends Vue {
   created() {
     if (this.$store.state.user.id === "") {
       this.$store.state.user.id = localStorage.getItem("pndb_user_id");
+      this.$store.state.user.username = localStorage.getItem("pndb_username");
     }
+  }
+
+  mounted() {
+    this.$root.$on("logout", () => {
+      this.logout();
+    });
   }
 
   active(itemName: string) {

@@ -291,7 +291,11 @@ export default class AddPokemon extends Vue {
       this.nuzlocke = res.data.nuzlocke;
       this.gotNuzlocke = true;
     } catch (error) {
-      this.$root.$emit("notification", error.response.data.msg);
+      if (error.response.status === 400) {
+        this.$root.$emit("logout");
+      } else {
+        this.$root.$emit("notification", error.response.data.msg);
+      }
     }
   }
 
@@ -498,7 +502,11 @@ export default class AddPokemon extends Vue {
       }
       this.$router.push({ name: "nuzlocke" });
     } catch (error) {
-      this.$root.$emit("notification", error.response.data.msg);
+      if (error.response.status === 400) {
+        this.$root.$emit("logout");
+      } else {
+        this.$root.$emit("notification", error.response.data.msg);
+      }
     }
   }
 

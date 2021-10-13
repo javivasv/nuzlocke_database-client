@@ -169,7 +169,11 @@ export default class NewNuzlocke extends Vue {
       this.$root.$emit("notification", this.title + " nuzlocke created");
       this.$router.push({ name: "nuzlockes" });
     } catch (error) {
-      this.$root.$emit("notification", error.response.data.msg);
+      if (error.response.status === 400) {
+        this.$root.$emit("logout");
+      } else {
+        this.$root.$emit("notification", error.response.data.msg);
+      }
     }
   }
 

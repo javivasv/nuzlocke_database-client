@@ -73,21 +73,18 @@ const routes = [
 async function checkAuth(to: any, from: any, next: any) {
   const isAuthenticated = await verify();
 
-  if (isAuthenticated && (to.name === "login" || to.name === "register")) {
-    next({ name: "home" });
-  } else if (isAuthenticated && to.name !== "login" && to.name !== "register") {
-    next();
-  } else if (
-    !isAuthenticated &&
-    (to.name === "login" || to.name === "register")
-  ) {
-    next();
-  } else if (
-    !isAuthenticated &&
-    to.name !== "login" &&
-    to.name !== "register"
-  ) {
-    next({ name: "login" });
+  if (isAuthenticated) {
+    if (to.name === "login" || to.name === "register") {
+      next({ name: "home" });
+    } else if (to.name !== "login" && to.name !== "register") {
+      next();
+    }
+  } else {
+    if (to.name === "login" || to.name === "register") {
+      next();
+    } else if (to.name !== "login" && to.name !== "register") {
+      next({ name: "login" });
+    }
   }
 }
 
@@ -101,6 +98,9 @@ async function verify() {
 
     return true;
   } catch (error) {
+    localStorage.setItem("pndb_jwt", "");
+    localStorage.setItem("pndb_user_id", "");
+    localStorage.setItem("pndb_username", "");
     return false;
   }
 }

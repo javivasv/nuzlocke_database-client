@@ -155,7 +155,11 @@ export default class Nuzlockes extends Vue {
       this.nuzlockes = res.data.nuzlockes;
       this.gotNuzlockes = true;
     } catch (error) {
-      this.$root.$emit("notification", error.response.data.msg);
+      if (error.response.status === 400) {
+        this.$root.$emit("logout");
+      } else {
+        this.$root.$emit("notification", error.response.data.msg);
+      }
     }
   }
 
@@ -184,7 +188,11 @@ export default class Nuzlockes extends Vue {
 
       this.nuzlockes.splice(index, 1);
     } catch (error) {
-      this.$root.$emit("notification", error.response.data.msg);
+      if (error.response.status === 400) {
+        this.$root.$emit("logout");
+      } else {
+        this.$root.$emit("notification", error.response.data.msg);
+      }
     }
   }
 
