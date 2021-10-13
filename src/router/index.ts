@@ -9,8 +9,7 @@ import Nuzlocke from "../templates/views/Nuzlocke.vue";
 import Dashboard from "../templates/views/Dashboard.vue";
 import Login from "../templates/views/Login.vue";
 import Register from "../templates/views/Register.vue";
-import axios from "axios";
-import * as staticInfo from "../utils/staticInfo";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -71,37 +70,25 @@ const routes = [
 ];
 
 async function checkAuth(to: any, from: any, next: any) {
-  const isAuthenticated = await verify();
+  const isAuthenticated = await store.dispatch("GET_AUTH");
 
   if (isAuthenticated) {
     if (to.name === "login" || to.name === "register") {
       next({ name: "home" });
-    } else if (to.name !== "login" && to.name !== "register") {
+    } else {
       next();
     }
   } else {
-    if (to.name === "login" || to.name === "register") {
+    if (
+      to.name === "nuzlockes" ||
+      to.name === "new-nuzlocke" ||
+      to.name === "nuzlocke" ||
+      to.name === "add-pokemon"
+    ) {
+      next({ name: "home" });
+    } else {
       next();
-    } else if (to.name !== "login" && to.name !== "register") {
-      next({ name: "login" });
     }
-  }
-}
-
-async function verify() {
-  try {
-    await axios.get(`${staticInfo.server}/user`, {
-      headers: {
-        authorization: localStorage.getItem("pndb_jwt")
-      }
-    });
-
-    return true;
-  } catch (error) {
-    localStorage.setItem("pndb_jwt", "");
-    localStorage.setItem("pndb_user_id", "");
-    localStorage.setItem("pndb_username", "");
-    return false;
   }
 }
 

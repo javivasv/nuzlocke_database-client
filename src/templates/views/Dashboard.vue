@@ -19,7 +19,7 @@
               <v-list>
                 <v-list-item
                   :class="active(item.link)"
-                  v-for="item in items"
+                  v-for="item in sidebarItems()"
                   :key="item.title"
                   link
                   @click="redirect(item.link)"
@@ -35,13 +35,27 @@
               </v-list>
 
               <template v-slot:append>
-                <v-list-item class="item" link @click="logout()">
+                <v-list-item
+                  v-if="isAuthenticated()"
+                  class="item"
+                  link
+                  @click="logout()"
+                >
                   <v-list-item-icon>
                     <v-icon>fa-sign-out-alt</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>
                     <v-list-item-title>Log out</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-else class="item" link @click="login()">
+                  <v-list-item-icon>
+                    <v-icon>fa-sign-in-alt</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>Log in</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </template>
@@ -66,18 +80,15 @@ import { Component, Vue } from "vue-property-decorator";
 export default class Dashboard extends Vue {
   sidebarBackground = require("../../../public/img/ecruteak_city_landscape_opaque.png");
   contentBackground = require("../../../public/img/pokeball_pattern_opaque.png");
-  items = [
+  logged = [
     { title: "Home", icon: "fa-home", link: "home" },
     { title: "Nuzlockes", icon: "fa-clipboard-list", link: "nuzlockes" },
     { title: "Info", icon: "fa-info", link: "info" }
   ];
-
-  created() {
-    if (this.$store.state.user.id === "") {
-      this.$store.state.user.id = localStorage.getItem("pndb_user_id");
-      this.$store.state.user.username = localStorage.getItem("pndb_username");
-    }
-  }
+  notLogged = [
+    { title: "Home", icon: "fa-home", link: "home" },
+    { title: "Info", icon: "fa-info", link: "info" }
+  ];
 
   mounted() {
     this.$root.$on("logout", () => {
@@ -115,7 +126,26 @@ export default class Dashboard extends Vue {
     localStorage.setItem("pndb_username", "");
     this.$store.state.user.id = "";
     this.$store.state.user.username = "";
+  }
+
+  login() {
     this.$router.push({ name: "login" });
+  }
+
+  isAuthenticated() {
+    if (this.$store.state.user.id === "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  sidebarItems() {
+    if (this.$store.state.user.id === "") {
+      return this.notLogged;
+    } else {
+      return this.logged;
+    }
   }
 }
 </script>

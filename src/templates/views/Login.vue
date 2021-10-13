@@ -30,7 +30,10 @@
               <v-row id="action-row">
                 <v-btn type="submit">Log in</v-btn>
               </v-row>
-              <v-row id="register-row">
+              <v-row id="links-row">
+                <router-link :to="{ name: 'home' }">
+                  <strong>Home</strong>
+                </router-link>
                 <router-link :to="{ name: 'register' }">
                   <strong>Register</strong>
                 </router-link>
@@ -131,8 +134,9 @@ export default class Login extends Vue {
   color: white !important;
 }
 
-#register-row {
-  justify-content: flex-end;
+#links-row {
+  margin-top: 20px;
+  justify-content: space-between;
 }
 
 a {
