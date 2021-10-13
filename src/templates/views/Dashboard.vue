@@ -8,7 +8,7 @@
               class="accent-4"
               dark
               permanent
-              :style="{ backgroundImage: 'url(' + background + ')' }"
+              :style="{ backgroundImage: 'url(' + sidebarBackground + ')' }"
             >
               <v-list-item class="px-2">
                 <v-list-item-title>PNDB</v-list-item-title>
@@ -49,7 +49,10 @@
           </v-card>
         </template>
       </div>
-      <div id="content">
+      <div
+        id="content"
+        :style="{ backgroundImage: 'url(' + contentBackground + ')' }"
+      >
         <router-view></router-view>
       </div>
     </v-row>
@@ -61,7 +64,8 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class Dashboard extends Vue {
-  background = require("../../../public/img/ecruteak_city_landscape_opaque.png");
+  sidebarBackground = require("../../../public/img/ecruteak_city_landscape_opaque.png");
+  contentBackground = require("../../../public/img/pokeball_pattern_opaque.png");
   items = [
     { title: "Home", icon: "fa-home", link: "home" },
     { title: "Nuzlockes", icon: "fa-clipboard-list", link: "nuzlockes" },
@@ -156,5 +160,6 @@ export default class Dashboard extends Vue {
   width: 80%;
   height: 100%;
   position: relative;
+  background-repeat: repeat;
 }
 </style>
