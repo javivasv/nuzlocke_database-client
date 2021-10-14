@@ -2,15 +2,45 @@
   <v-row class="content">
     <v-col cols="8" id="home-info">
       <v-card id="welcome-card">
-        <v-row justify="center">
-          <h1>Welcome to the Pokemon Nuzlocke DataBase!</h1>
-        </v-row>
+        <v-card-title>
+          <h2>Welcome to the Pokemon Nuzlocke DataBase!</h2>
+        </v-card-title>
         <v-card-text>
           Here you can keep track of all of your pokemon nuzlocke playthroughs
         </v-card-text>
       </v-card>
       <v-card id="videos-card">
-        <h1>VIDEOS</h1>
+        <v-row justify="center">
+          <youtube
+            :video-id="videoId"
+            player-height="280"
+            player-width="500"
+          ></youtube>
+        </v-row>
+        <v-row id="previews-row">
+          <v-slide-group show-arrows center-active>
+            <v-slide-item
+              v-for="video in videos"
+              :key="video.id"
+              v-slot:default="{ toggle }"
+              @change="selectVideo(video.id)"
+            >
+              <v-card class="preview" @click="toggle">
+                <v-img
+                  max-height="120"
+                  max-width="200"
+                  :src="video.thumbnail"
+                ></v-img>
+                <v-card-subtitle>
+                  <strong>{{ video.title }}</strong>
+                </v-card-subtitle>
+                <v-card-text>
+                  {{ video.channel }}
+                </v-card-text>
+              </v-card>
+            </v-slide-item>
+          </v-slide-group>
+        </v-row>
       </v-card>
     </v-col>
     <v-col cols="4" id="rules">
@@ -71,9 +101,19 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import * as staticInfo from "../../utils/staticInfo";
+import VueYouTubeEmbed from "vue-youtube-embed";
+Vue.use(VueYouTubeEmbed);
 
 @Component({})
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  videos = staticInfo.videos.sort(() => Math.random() - 0.5);
+  videoId = this.videos[0].id;
+
+  selectVideo(videoId: string) {
+    this.videoId = videoId;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -88,8 +128,16 @@ export default class Home extends Vue {}
   height: 100%;
 }
 
+#videos-card {
+  padding: 10px;
+}
+
 .v-card {
   width: 100%;
+}
+
+.v-card__title {
+  justify-content: center;
 }
 
 #home-info,
@@ -104,5 +152,16 @@ export default class Home extends Vue {}
 
 .card-text {
   color: #999999;
+}
+
+#previews-row {
+  margin-top: 20px;
+}
+
+.preview {
+  width: 200px;
+  padding: 0;
+  margin: 0 10px 0 10px;
+  cursor: pointer;
 }
 </style>
