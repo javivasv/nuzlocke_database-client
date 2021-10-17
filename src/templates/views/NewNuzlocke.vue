@@ -78,7 +78,6 @@
                 <li>
                   <p class="card-text">
                     <strong>Title:</strong> The title of the nuzlocke
-                    playthrough
                   </p>
                 </li>
               </ul>
@@ -111,8 +110,7 @@
                 <li>
                   <p class="card-text">
                     <strong>Description:</strong>
-                    Relevant information of the nuzlocke playthrough, such as
-                    extra rules
+                    Relevant information of the nuzlocke, such as extra rules
                   </p>
                 </li>
               </ul>

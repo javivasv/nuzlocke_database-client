@@ -28,6 +28,10 @@ export default class extends Vue {
 <style lang="scss">
 @import "styles/global.scss";
 
+#html {
+  overflow: hidden;
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

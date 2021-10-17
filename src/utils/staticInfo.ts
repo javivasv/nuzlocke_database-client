@@ -135,37 +135,52 @@ export const videos = [
   {
     channel: "pChal Daily",
     title: "Emerald Kaizo Attempt 151: The Final Battles Part I",
-    id: "7Go0SlJWNYE",
-    thumbnail: require("../../public/video-thumbnails/7Go0SlJWNYE.png")
+    id: "7Go0SlJWNYE"
   },
   {
     channel: "pChal Daily",
     title: "Emerald Kaizo Attempt 151: The Final Battle Part II",
-    id: "cUlo1zRiU2s",
-    thumbnail: require("../../public/video-thumbnails/cUlo1zRiU2s.png")
+    id: "cUlo1zRiU2s"
   },
   {
     channel: "Jaiden Animations",
     title: "I Attempted a Pokemon Platinum Nuzlocke",
-    id: "ejys3sT2LHw",
-    thumbnail: require("../../public/video-thumbnails/ejys3sT2LHw.png")
+    id: "ejys3sT2LHw"
   },
   {
     channel: "Jaiden Animations",
     title: "I Attempted my First Pokemon Nuzlocke",
-    id: "plSyrHqUh78",
-    thumbnail: require("../../public/video-thumbnails/plSyrHqUh78.png")
+    id: "plSyrHqUh78"
   },
   {
     channel: "MandJTV",
     title: "My First Pokemon Nuzlocke",
-    id: "KChZVfULMjA",
-    thumbnail: require("../../public/video-thumbnails/KChZVfULMjA.png")
+    id: "KChZVfULMjA"
   },
   {
     channel: "MandJTV",
     title: "My Nuzlocke Where I Randomly Traded Every Pokémon",
-    id: "HwR8NkkRNls",
-    thumbnail: require("../../public/video-thumbnails/HwR8NkkRNls.png")
+    id: "HwR8NkkRNls"
+  },
+  {
+    channel: "WolfeyVGC",
+    title:
+      "How I Beat the Hardest Nuzlocke of all Time (Emerald Kaizo Hardcore Nuzlocke)",
+    id: "GPZ62QvzaGo"
+  },
+  {
+    channel: "Alpharad",
+    title: "How I Survived My First Pokémon Nuzlocke",
+    id: "DAfXft7i0P8"
+  },
+  {
+    channel: "Ludwig",
+    title: "I made Pokémon Platinum Impossibly Hard",
+    id: "1SGUOyu-7TY"
+  },
+  {
+    channel: "ConnorDawg",
+    title: "My First Ever Pokemon Nuzlocke",
+    id: "cieGDzts-gg"
   }
 ];

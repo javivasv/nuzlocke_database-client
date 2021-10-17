@@ -83,6 +83,7 @@
                 <v-btn>New nuzlocke</v-btn>
               </router-link>
             </v-card-title>
+            <!--
             <v-divider></v-divider>
             <v-card-subtitle class="card-text"
               >Nuzlocke Basic Rules</v-card-subtitle
@@ -111,6 +112,7 @@
                 </li>
               </ul>
             </v-card-text>
+            -->
           </v-card>
         </v-col>
       </v-row>

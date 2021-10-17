@@ -123,10 +123,6 @@
             <v-card-subtitle class="card-text"
               >Game status: {{ nuzlocke.status.toUpperCase() }}
             </v-card-subtitle>
-            <!--
-        <v-divider></v-divider>
-        <v-card-subtitle class="card-text">Change status: </v-card-subtitle>
-        -->
             <v-row id="nuzlocke-status">
               <v-btn
                 v-if="nuzlocke.status !== 'started'"
@@ -146,7 +142,7 @@
                 >Lost</v-btn
               >
             </v-row>
-            <v-divider></v-divider>
+            <v-divider v-if="nuzlocke.description !== ''"></v-divider>
             <v-card-text>{{ nuzlocke.description }}</v-card-text>
           </v-card>
           <v-card id="filters-card">
@@ -259,8 +255,8 @@ export default class Nuzlocke extends Vue {
     { text: "Location", value: "location", align: "center", sortable: true },
     { text: "Obtained", value: "obtained", align: "center", sortable: false },
     {
-      text: "Change status",
-      value: "change",
+      text: "Status",
+      value: "status",
       align: "center",
       sortable: false
     }

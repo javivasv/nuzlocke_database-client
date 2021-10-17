@@ -65,7 +65,7 @@ const routes = [
   },
   {
     path: "*",
-    redirect: "/login"
+    redirect: "/home"
   }
 ];
 
@@ -74,6 +74,8 @@ async function checkAuth(to: any, from: any, next: any) {
 
   if (isAuthenticated) {
     if (to.name === "login" || to.name === "register") {
+      next({ name: "home" });
+    } else if (to.path === "/") {
       next({ name: "home" });
     } else {
       next();
@@ -85,6 +87,8 @@ async function checkAuth(to: any, from: any, next: any) {
       to.name === "nuzlocke" ||
       to.name === "add-pokemon"
     ) {
+      next({ name: "home" });
+    } else if (to.path === "/") {
       next({ name: "home" });
     } else {
       next();

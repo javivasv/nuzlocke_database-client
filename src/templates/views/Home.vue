@@ -6,7 +6,22 @@
           <h2>Welcome to the Pokemon Nuzlocke DataBase!</h2>
         </v-card-title>
         <v-card-text>
-          Here you can keep track of all of your pokemon nuzlocke playthroughs
+          Here you can keep track of all of your pokemon nuzlockes. You will be
+          able to register a nuzlocke of a preexisting game, a romhack or a
+          completely original game. You will also be able to register every
+          pokemon you obtain (or not) during the run, as well as change its
+          status (alive or dead), in order to keep it organized and updated.
+        </v-card-text>
+        <v-card-subtitle>
+          <strong>What is a Nuzlocke?</strong>
+        </v-card-subtitle>
+        <v-card-text>
+          A Nuzlocke is a set of rules intended to create a higher level of
+          difficulty while playing the Pokémon games. Many challengers feel that
+          the rules also serve the purpose of encouraging the use of Pokémon the
+          player would not normally choose, and promoting closer bonds with the
+          player's Pokémon. The rules are not an in-game function, but are
+          self-imposed on the part of the player, and thus subject to variation.
         </v-card-text>
       </v-card>
       <v-card id="videos-card">
@@ -29,7 +44,7 @@
                 <v-img
                   max-height="120"
                   max-width="200"
-                  :src="video.thumbnail"
+                  :src="thumbnailPath(video.id)"
                 ></v-img>
                 <v-card-subtitle>
                   <strong>{{ video.title }}</strong>
@@ -45,9 +60,11 @@
     </v-col>
     <v-col cols="4" id="rules">
       <v-card class="info-card">
-        <v-card-subtitle class="card-text"
-          >Nuzlocke Basic Rules</v-card-subtitle
-        >
+        <v-card-subtitle class="card-text">
+          <strong>
+            Nuzlocke Basic Rules
+          </strong>
+        </v-card-subtitle>
         <v-card-text>
           <ul>
             <li>
@@ -74,11 +91,18 @@
         </v-card-text>
       </v-card>
       <v-card class="info-card" id="secondary-rules">
-        <v-card-subtitle class="card-text"
-          >Other commonly used rules</v-card-subtitle
-        >
+        <v-card-subtitle class="card-text">
+          <strong>Commonly accepted extra rules</strong>
+        </v-card-subtitle>
         <v-card-text>
           <ul>
+            <li>
+              <p class="card-text">
+                The two basic rules are not in effect until the player has
+                gained their first Poké Balls and thus the ability to catch
+                Pokémon
+              </p>
+            </li>
             <li>
               <p class="card-text">
                 The player must nickname all of their Pokémon, for the sake of
@@ -87,9 +111,26 @@
             </li>
             <li>
               <p class="card-text">
-                The "first wild Pokémon in each area" rule does not apply in an
-                area until a species or evolution line is encountered that has
-                not been caught yet
+                Species/Dupes Clause: The "first wild Pokémon in each area" rule
+                does not apply in an area until a species or evolution line is
+                encountered that has not been caught yet
+              </p>
+            </li>
+            <li>
+              <p class="card-text">
+                Shiny Clause: Shiny Pokémon do not need to be released if they
+                faint
+              </p>
+            </li>
+            <li>
+              <p class="card-text">
+                If the player has no Pokémon that can use a field move that is
+                required to continue the game, they may catch another Pokémon
+                that can learn the required field move. However, this Pokémon
+                cannot be used in battle for any reason, and must be released,
+                permanently put into a PC box, or migrated as soon as it is no
+                longer needed or if the player catches another Pokémon that can
+                use this field move
               </p>
             </li>
           </ul>
@@ -113,6 +154,10 @@ export default class Home extends Vue {
   selectVideo(videoId: string) {
     this.videoId = videoId;
   }
+
+  thumbnailPath(videoId: string) {
+    return require("../../../public/video-thumbnails/" + videoId + ".png");
+  }
 }
 </script>
 
@@ -122,6 +167,10 @@ export default class Home extends Vue {
 .row {
   width: 100%;
   margin: 0;
+}
+
+.content {
+  overflow-y: auto;
 }
 
 .col {
@@ -142,7 +191,7 @@ export default class Home extends Vue {
 
 #home-info,
 #rules {
-  overflow-y: auto;
+  height: fit-content;
 }
 
 #videos-card,
@@ -161,7 +210,7 @@ export default class Home extends Vue {
 .preview {
   width: 200px;
   padding: 0;
-  margin: 0 10px 0 10px;
+  margin: 10px;
   cursor: pointer;
 }
 </style>
