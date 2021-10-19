@@ -76,8 +76,8 @@
                     @click="changePokemonStatus(item)"
                     small
                   >
-                    <v-icon v-if="item.dead" small>fa-heart</v-icon>
-                    <v-icon v-else small>fa-skull</v-icon>
+                    <v-icon v-if="item.dead" small>fa-skull</v-icon>
+                    <v-icon v-else small>fa-heart</v-icon>
                   </v-btn>
                   <v-btn
                     class="delete-button"
@@ -482,10 +482,10 @@ export default class Nuzlocke extends Vue {
   }
 
   statusButtonClass(dead: Boolean) {
-    if (!dead) {
+    if (dead) {
       return "dead-button";
     } else {
-      return "revive-button";
+      return "alive-button";
     }
   }
 
@@ -520,7 +520,7 @@ export default class Nuzlocke extends Vue {
     this.showDeleteButton = false;
     this.headers.pop();
     this.headers.push({
-      text: "Change status",
+      text: "Status",
       value: "change",
       align: "center",
       sortable: false
@@ -635,7 +635,7 @@ tr:hover {
   background-color: rgb(241, 60, 60) !important;
 }
 
-.revive-button {
+.alive-button {
   background-color: rgb(20, 194, 43) !important;
 }
 
