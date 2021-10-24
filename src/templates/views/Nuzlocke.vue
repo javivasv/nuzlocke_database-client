@@ -563,7 +563,7 @@ export default class Nuzlocke extends Vue {
 
 #nuzlocke-status {
   justify-content: space-evenly;
-  margin-bottom: 15px;
+  margin-bottom: 15px !important;
 }
 
 #completed-button {

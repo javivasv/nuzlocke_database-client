@@ -164,7 +164,7 @@ a {
 }
 
 .contact-row {
-  margin: 20px 0 20px 0;
+  margin: 20px 0 20px 0 !important;
   justify-content: center;
 }
 

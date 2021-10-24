@@ -23,6 +23,17 @@
           player's Pokémon. The rules are not an in-game function, but are
           self-imposed on the part of the player, and thus subject to variation.
         </v-card-text>
+        <v-card-text>
+          <router-link
+            v-if="this.$store.state.user.id === ''"
+            :to="{ name: 'login' }"
+          >
+            <v-btn class="action-button">LOGIN TO GET STARTED </v-btn>
+          </router-link>
+          <router-link v-else :to="{ name: 'new-nuzlocke' }">
+            <v-btn class="action-button">CREATE NEW NUZLOCKE</v-btn>
+          </router-link>
+        </v-card-text>
       </v-card>
       <v-card id="videos-card">
         <v-row justify="center">
@@ -199,5 +210,9 @@ export default class Home extends Vue {
   padding: 0;
   margin: 10px;
   cursor: pointer;
+}
+
+a {
+  text-decoration: none;
 }
 </style>

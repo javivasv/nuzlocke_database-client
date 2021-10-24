@@ -120,7 +120,7 @@ export default class Login extends Vue {
 }
 
 #action-row {
-  margin-top: 20px;
+  margin-top: 20px !important;
   justify-content: center;
 }
 
@@ -130,7 +130,7 @@ export default class Login extends Vue {
 }
 
 #links-row {
-  margin-top: 20px;
+  margin-top: 20px !important;
   justify-content: space-between;
 }
 
