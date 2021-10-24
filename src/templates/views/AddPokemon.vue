@@ -220,7 +220,7 @@
               </ul>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-text>
+            <v-card-text class="card-text">
               For simplicity, pokemon with different forms that are purely
               cosmetic or depends on a game dynamic to retain a specific form,
               are presented with a default form

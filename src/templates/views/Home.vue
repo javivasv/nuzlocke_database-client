@@ -5,17 +5,17 @@
         <v-card-title>
           <h2>Welcome to the Pokemon Nuzlocke DataBase!</h2>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="card-text">
           Here you can keep track of all of your pokemon nuzlockes. You will be
           able to register a nuzlocke of a preexisting game, a romhack or a
           completely original game. You will also be able to register every
           pokemon you obtain (or not) during the run, as well as change its
           status (alive or dead), in order to keep it organized and updated.
         </v-card-text>
-        <v-card-subtitle>
+        <v-card-subtitle class="card-text">
           <strong>What is a Nuzlocke?</strong>
         </v-card-subtitle>
-        <v-card-text>
+        <v-card-text class="card-text">
           A Nuzlocke is a set of rules intended to create a higher level of
           difficulty while playing the Pokémon games. Many challengers feel that
           the rules also serve the purpose of encouraging the use of Pokémon the

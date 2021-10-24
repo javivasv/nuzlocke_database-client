@@ -118,7 +118,7 @@
               </ul>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-text
+            <v-card-text class="card-text"
               >In case of not introducing a title and/or a game name, the base
               game will be used</v-card-text
             >

@@ -6,13 +6,13 @@
           <v-card-title>
             <h2>About</h2>
           </v-card-title>
-          <v-card-text>
+          <v-card-text class="card-text">
             My name is Javier Vivas and I am a Computer Engineering student
             (almost graduated) at Universidad Simón Bolívar (USB) in Caracas,
             Venezuela. I currently work as a fullstack web developer and work on
             this app in my free time.
           </v-card-text>
-          <v-card-text>
+          <v-card-text class="card-text">
             As a nuzlocke player myself (since 2020), I found it very
             uncomfortable to keep track of my nuzlockes. I decided to develop an
             app that satisfy my needs as a player and that can be as inclusive
@@ -20,7 +20,7 @@
             That is why it is made with the possibility to register nuzlockes of
             original games and with original pokemon.
           </v-card-text>
-          <v-card-text>
+          <v-card-text class="card-text">
             Pokemon names, sprites and regions locations are taken from
             <a href="https://pokeapi.co/docs/v2" target="_blank">PokeAPI</a>, a
             website dedicated to provide data related to Pokemon games. Nuzlocke

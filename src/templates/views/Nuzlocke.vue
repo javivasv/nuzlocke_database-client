@@ -144,7 +144,9 @@
               >
             </v-row>
             <v-divider v-if="nuzlocke.description !== ''"></v-divider>
-            <v-card-text>{{ nuzlocke.description }}</v-card-text>
+            <v-card-text class="card-text">{{
+              nuzlocke.description
+            }}</v-card-text>
           </v-card>
           <v-card id="filters-card">
             <v-card-subtitle class="card-text">
