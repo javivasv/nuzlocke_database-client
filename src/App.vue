@@ -40,6 +40,11 @@ export default class extends Vue {
   color: #2c3e50;
 }
 
+.row {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
 .content {
   position: absolute;
 }
@@ -94,5 +99,25 @@ export default class extends Vue {
 
 .v-snack__content {
   justify-content: center !important;
+}
+
+.action-button {
+  background-color: $secondaryColor !important;
+}
+
+.v-btn {
+  color: white !important;
+}
+
+.input-row {
+  margin-top: 20px !important;
+}
+
+.card-text {
+  color: #999999 !important;
+}
+
+.v-card__title {
+  justify-content: center;
 }
 </style>

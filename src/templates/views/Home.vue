@@ -164,11 +164,6 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 @import "@/styles/global.scss";
 
-.row {
-  width: 100%;
-  margin: 0;
-}
-
 .content {
   overflow-y: auto;
 }
@@ -185,10 +180,6 @@ export default class Home extends Vue {
   width: 100%;
 }
 
-.v-card__title {
-  justify-content: center;
-}
-
 #home-info,
 #rules {
   height: fit-content;
@@ -197,10 +188,6 @@ export default class Home extends Vue {
 #videos-card,
 #secondary-rules {
   margin-top: 20px;
-}
-
-.card-text {
-  color: #999999;
 }
 
 #previews-row {

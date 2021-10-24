@@ -80,7 +80,7 @@
             </v-fab-transition>
             <v-card-title>
               <router-link :to="{ name: 'new-nuzlocke' }">
-                <v-btn>New nuzlocke</v-btn>
+                <v-btn class="action-button">New nuzlocke</v-btn>
               </router-link>
             </v-card-title>
             <v-divider></v-divider>
@@ -221,11 +221,6 @@ export default class Nuzlockes extends Vue {
 <style lang="scss" scoped>
 @import "@/styles/global.scss";
 
-.row {
-  width: 100%;
-  margin: 0;
-}
-
 .col {
   height: 100%;
 }
@@ -247,15 +242,6 @@ export default class Nuzlockes extends Vue {
 .info::v-deep .v-card__title {
   justify-content: center;
   margin-top: 60px;
-}
-
-.v-btn {
-  background-color: $secondaryColor !important;
-  color: white !important;
-}
-
-.card-text {
-  color: #999999;
 }
 
 a {

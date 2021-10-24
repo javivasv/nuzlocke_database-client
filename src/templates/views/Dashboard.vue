@@ -164,9 +164,7 @@ export default class Dashboard extends Vue {
 @import "@/styles/global.scss";
 
 .row {
-  width: 100%;
   height: 100%;
-  margin: 0;
 }
 
 #sidebar {

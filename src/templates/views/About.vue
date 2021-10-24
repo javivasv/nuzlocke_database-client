@@ -44,7 +44,7 @@
                     label="Suggestion"
                     v-model="suggestion"
                   ></v-textarea>
-                  <v-btn type="submit">Send</v-btn>
+                  <v-btn class="action-button" type="submit">Send</v-btn>
                 </v-col>
               </v-container>
             </v-form>
@@ -134,11 +134,6 @@ export default class About extends Vue {
 <style lang="scss" scoped>
 @import "@/styles/global.scss";
 
-.row {
-  width: 100%;
-  margin: 0;
-}
-
 .content {
   overflow-y: auto;
 }
@@ -162,14 +157,6 @@ export default class About extends Vue {
 
 .v-card {
   margin: 10px 0 10px 0;
-}
-
-.v-card__title {
-  justify-content: center;
-}
-
-.card-text {
-  color: #999999;
 }
 
 a {

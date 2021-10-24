@@ -141,11 +141,6 @@ export default class Register extends Vue {
   width: 30%;
 }
 
-.row {
-  width: 100%;
-  margin: 0;
-}
-
 #action-row {
   margin-top: 20px;
   justify-content: center;
@@ -168,9 +163,5 @@ a {
 
 .v-text-field::v-deep .v-text-field__details {
   display: none;
-}
-
-.input-row {
-  margin-top: 20px;
 }
 </style>

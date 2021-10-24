@@ -2,7 +2,7 @@
   <v-row class="content" v-if="gotNuzlocke">
     <v-col cols="8" id="nuzlocke">
       <v-row class="title-row">
-        <v-btn @click="back()">
+        <v-btn class="action-button" @click="back()">
           <v-icon>fa-arrow-left</v-icon>
         </v-btn>
         <h1 class="inner-view-title">
@@ -116,7 +116,7 @@
                   params: { nuzlocke: nuzlocke }
                 }"
               >
-                <v-btn>Add pokemon</v-btn>
+                <v-btn class="action-button">Add pokemon</v-btn>
               </router-link>
             </v-card-title>
             <v-divider></v-divider>
@@ -125,6 +125,7 @@
             </v-card-subtitle>
             <v-row id="nuzlocke-status">
               <v-btn
+                class="action-button"
                 v-if="nuzlocke.status !== 'started'"
                 @click="changeNuzlockeStatus('started')"
                 >Started</v-btn
@@ -536,11 +537,6 @@ export default class Nuzlocke extends Vue {
 <style lang="scss" scoped>
 @import "@/styles/global.scss";
 
-.row {
-  width: 100%;
-  margin: 0;
-}
-
 .col {
   height: 100%;
 }
@@ -563,15 +559,6 @@ export default class Nuzlocke extends Vue {
 .info::v-deep .v-card__title {
   justify-content: center;
   margin-top: 60px;
-}
-
-.v-btn {
-  background-color: $secondaryColor !important;
-  color: white !important;
-}
-
-.card-text {
-  color: #999999;
 }
 
 #nuzlocke-status {

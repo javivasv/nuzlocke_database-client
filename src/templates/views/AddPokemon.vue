@@ -2,7 +2,7 @@
   <v-row class="content" v-if="gotNuzlocke">
     <v-col cols="8" id="add-pokemon">
       <v-row class="title-row">
-        <v-btn @click="back()">
+        <v-btn class="action-button" @click="back()">
           <v-icon>fa-arrow-left</v-icon>
         </v-btn>
         <h1 class="inner-view-title">
@@ -163,7 +163,9 @@
               ></v-img>
             </v-fab-transition>
             <v-card-title>
-              <v-btn @click="addPokemon()">Add pokemon</v-btn>
+              <v-btn class="action-button" @click="addPokemon()"
+                >Add pokemon</v-btn
+              >
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -582,11 +584,6 @@ export default class AddPokemon extends Vue {
 <style lang="scss" scoped>
 @import "@/styles/global.scss";
 
-.row {
-  width: 100%;
-  margin: 0;
-}
-
 .col {
   height: 100%;
 }
@@ -604,15 +601,6 @@ export default class AddPokemon extends Vue {
 .info::v-deep .v-card__title {
   justify-content: center;
   margin-top: 60px;
-}
-
-.v-btn {
-  background-color: $secondaryColor !important;
-  color: white !important;
-}
-
-.card-text {
-  color: #999999;
 }
 
 a {
@@ -638,9 +626,5 @@ a {
 
 .v-text-field::v-deep .v-text-field__details {
   display: none;
-}
-
-.input-row {
-  margin-top: 20px;
 }
 </style>
