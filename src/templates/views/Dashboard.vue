@@ -126,6 +126,16 @@ export default class Dashboard extends Vue {
     localStorage.setItem("pndb_username", "");
     this.$store.state.user.id = "";
     this.$store.state.user.username = "";
+
+    const routeName = this.$route.name;
+    if (
+      routeName === "nuzlockes" ||
+      routeName === "new-nuzlocke" ||
+      routeName === "nuzlocke" ||
+      routeName === "add-pokemon"
+    ) {
+      this.$router.push({ name: "home" });
+    }
   }
 
   login() {
