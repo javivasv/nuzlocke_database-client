@@ -34,15 +34,15 @@
         </v-card>
         <v-card>
           <v-card-title>
-            <h2>Suggestions</h2>
+            <h2>Suggestion</h2>
           </v-card-title>
           <v-card-text>
             <v-form v-on:submit.prevent="sendSuggestion()">
               <v-container>
                 <v-col>
                   <v-textarea
-                    label="Suggestions"
-                    v-model="suggestions"
+                    label="Suggestion"
+                    v-model="suggestion"
                   ></v-textarea>
                   <v-btn type="submit">Send</v-btn>
                 </v-col>
@@ -97,13 +97,36 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import axios from "axios";
+import * as staticInfo from "../../utils/staticInfo";
 
 @Component({})
 export default class About extends Vue {
-  suggestions = "";
+  suggestion = "";
 
-  sendSuggestion() {
-    console.log("SUGGESTION");
+  async sendSuggestion() {
+    if (!this.validateData()) {
+      return;
+    }
+
+    const data = {
+      suggestion: this.suggestion
+    };
+    try {
+      await axios.post(`${staticInfo.server}/suggestion`, data);
+      this.suggestion = "";
+      this.$root.$emit("notification", "Suggestion sent");
+    } catch (error) {
+      this.$root.$emit("notification", error.response.data.msg);
+    }
+  }
+
+  validateData() {
+    if (this.suggestion === "") {
+      return false;
+    }
+
+    return true;
   }
 }
 </script>
