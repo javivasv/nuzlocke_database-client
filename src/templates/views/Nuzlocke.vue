@@ -236,18 +236,27 @@
               <v-col></v-col>
             </v-row>
           </v-card>
+          <v-btn @click="dialog = true">DIALOG</v-btn>
         </v-col>
       </v-row>
     </v-col>
+    <v-dialog v-model="dialog">
+      <PDF :nuzlocke="nuzlocke" />
+    </v-dialog>
   </v-row>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import PDF from "../components/PDF.vue";
 import axios from "axios";
 import * as staticInfo from "../../utils/staticInfo";
 
-@Component({})
+@Component({
+  components: {
+    PDF
+  }
+})
 export default class Nuzlocke extends Vue {
   search = "";
   headers = [
@@ -277,6 +286,8 @@ export default class Nuzlocke extends Vue {
   showDeleteButton = false;
   statusFilter = "";
   obtainedFilter = "";
+
+  dialog = false;
 
   created() {
     this.getNuzlocke();
