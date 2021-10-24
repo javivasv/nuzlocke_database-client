@@ -83,36 +83,35 @@
                 <v-btn>New nuzlocke</v-btn>
               </router-link>
             </v-card-title>
-            <!--
             <v-divider></v-divider>
-            <v-card-subtitle class="card-text"
-              >Nuzlocke Basic Rules</v-card-subtitle
-            >
+            <v-card-subtitle class="card-text">
+              <strong>Related websites</strong>
+            </v-card-subtitle>
             <v-card-text>
               <ul>
                 <li>
-                  <p class="card-text">
-                    Any Pokémon that faints is considered dead, and must be
-                    released or put in the Pokémon Storage System permanently
-                    (or may be transferred to another game, as long as the
-                    Pokémon is never able to be used again during this run)
-                  </p>
+                  <a
+                    href="https://bulbapedia.bulbagarden.net/wiki/Main_Page"
+                    target="_blank"
+                  >
+                    Bulbapedia
+                  </a>
                 </li>
                 <li>
-                  <p class="card-text">
-                    The player may only catch the first wild Pokémon encountered
-                    in each area, and none else. If the first wild Pokémon
-                    encountered faints or flees, there are no second chances. If
-                    the first encounter in the area is a double battle, the
-                    player is free to choose which of the two wild Pokémon they
-                    would like to catch but may only catch one of them. This
-                    restriction does not apply to Pokémon able to be captured
-                    during static encounters, nor to Shiny Pokémon
-                  </p>
+                  <a href="https://calc.pokemonshowdown.com/" target="_blank">
+                    Pokemon Showdown Damage Calculator
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.serebii.net/index2.shtml"
+                    target="_blank"
+                  >
+                    Serebii
+                  </a>
                 </li>
               </ul>
             </v-card-text>
-            -->
           </v-card>
         </v-col>
       </v-row>

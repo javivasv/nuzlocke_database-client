@@ -83,11 +83,11 @@ export default class Dashboard extends Vue {
   logged = [
     { title: "Home", icon: "fa-home", link: "home" },
     { title: "Nuzlockes", icon: "fa-clipboard-list", link: "nuzlockes" },
-    { title: "Info", icon: "fa-info", link: "info" }
+    { title: "About", icon: "fa-info", link: "about" }
   ];
   notLogged = [
     { title: "Home", icon: "fa-home", link: "home" },
-    { title: "Info", icon: "fa-info", link: "info" }
+    { title: "About", icon: "fa-info", link: "about" }
   ];
 
   mounted() {

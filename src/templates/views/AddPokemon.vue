@@ -72,21 +72,21 @@
                       </template>
                     </v-row>
                   </v-col>
-                  <v-col cols="3" class="checkbox-col">
-                    <v-row justify="center">
-                      <v-checkbox
-                        label="Original species"
-                        v-model="original"
-                        @change="selectOriginal($event)"
-                      ></v-checkbox>
-                    </v-row>
-                  </v-col>
                   <v-col v-if="!original" cols="2" class="checkbox-col">
                     <v-row justify="center">
                       <v-checkbox
                         label="Shiny"
                         v-model="shiny"
                         @change="selectShiny()"
+                      ></v-checkbox>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="3" class="checkbox-col">
+                    <v-row justify="center">
+                      <v-checkbox
+                        label="Original species"
+                        v-model="original"
+                        @change="selectOriginal($event)"
                       ></v-checkbox>
                     </v-row>
                   </v-col>
@@ -420,7 +420,6 @@ export default class AddPokemon extends Vue {
   selectPokemon(event: any) {
     if (event === undefined) {
       this.sprite = "";
-      this.shiny = false;
     } else {
       const pokemonName = event.split(" ")[2];
       this.pokemonSprite(pokemonName);

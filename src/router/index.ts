@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../templates/views/Home.vue";
-import Info from "../templates/views/Info.vue";
+import About from "../templates/views/About.vue";
 import Nuzlockes from "../templates/views/Nuzlockes.vue";
 import NewNuzlocke from "../templates/views/NewNuzlocke.vue";
 import AddPokemon from "../templates/views/AddPokemon.vue";
@@ -57,9 +57,9 @@ const routes = [
         component: AddPokemon
       },
       {
-        path: "/info",
-        name: "info",
-        component: Info
+        path: "/about",
+        name: "about",
+        component: About
       }
     ]
   },

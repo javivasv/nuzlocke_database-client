@@ -121,7 +121,7 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-subtitle class="card-text"
-              >Game status: {{ nuzlocke.status.toUpperCase() }}
+              ><strong>Game status: </strong>{{ nuzlocke.status.toUpperCase() }}
             </v-card-subtitle>
             <v-row id="nuzlocke-status">
               <v-btn
@@ -147,7 +147,7 @@
           </v-card>
           <v-card id="filters-card">
             <v-card-subtitle class="card-text">
-              Status filters
+              <strong>Status filters</strong>
             </v-card-subtitle>
             <v-row>
               <v-col class="filter-col">
@@ -173,7 +173,7 @@
             </v-row>
             <v-divider></v-divider>
             <v-card-subtitle class="card-text">
-              Obtained filters
+              <strong>Obtained filters</strong>
             </v-card-subtitle>
             <v-row>
               <v-col class="filter-col">
