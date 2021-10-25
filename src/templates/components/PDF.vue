@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <div id="pdf" :style="{ backgroundImage: 'url(' + background + ')' }">
+  <v-app :style="{ backgroundImage: 'url(' + background + ')' }">
+    <div id="pdf">
       <v-col id="container">
         <v-row id="logo" justify="center"></v-row>
         <v-row id="title" justify="center">
@@ -14,56 +14,61 @@
         </v-row>
         <v-row id="pokemon" justify="center">
           <v-col>
-            <v-card id="pokemon-card">
-              <v-simple-table>
-                <thead>
-                  <tr>
-                    <th
-                      v-for="header of headers"
-                      :key="header.text"
-                      class="text-center"
-                    >
-                      {{ header.text }}
-                    </th>
+            <div v-for="(chunk, index) of chunks" :key="index">
+              <v-card id="pokemon-card" :class="cardClass(index)">
+                <v-simple-table class="table">
+                  <thead>
+                    <tr>
+                      <th
+                        v-for="header of headers"
+                        :key="header.text"
+                        class="text-center"
+                      >
+                        {{ header.text }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tr
+                    v-for="pokemon of chunk"
+                    :key="pokemon._id"
+                    :class="pokemonRowClass(pokemon.dead, pokemon.obtained)"
+                  >
+                    <td :class="tdClass(pokemon.dead)">
+                      <v-avatar size="80" tile>
+                        <v-img eager :src="pokemon.sprite"></v-img>
+                      </v-avatar>
+                    </td>
+                    <td :class="tdClass(pokemon.dead)">
+                      {{ pokemon.nickname }}
+                    </td>
+                    <td :class="tdClass(pokemon.dead)">{{ pokemon.number }}</td>
+                    <td :class="tdClass(pokemon.dead)">
+                      {{ pokemon.species.toUpperCase() }}
+                    </td>
+                    <td :class="tdClass(pokemon.dead)">
+                      {{ pokemon.location.toUpperCase() }}
+                    </td>
+                    <td :class="tdClass(pokemon.dead)">
+                      <template v-if="pokemon.obtained === 'not'">
+                        -
+                      </template>
+                      <template v-else-if="pokemon.obtained === 'caught'">
+                        <span>
+                          <v-icon
+                            class="iconify"
+                            data-icon="mdi:pokeball"
+                          ></v-icon>
+                        </span>
+                      </template>
+                      <template v-else>
+                        <v-icon>{{ obtainedIcon(pokemon.obtained) }}</v-icon>
+                      </template>
+                    </td>
                   </tr>
-                </thead>
-                <tr
-                  v-for="pokemon of nuzlocke.pokemon"
-                  :key="pokemon._id"
-                  :class="pokemonRowClass(pokemon.dead, pokemon.obtained)"
-                >
-                  <td :class="tdClass(pokemon.dead)">
-                    <v-avatar size="80" tile>
-                      <v-img :src="pokemon.sprite"></v-img>
-                    </v-avatar>
-                  </td>
-                  <td :class="tdClass(pokemon.dead)">{{ pokemon.nickname }}</td>
-                  <td :class="tdClass(pokemon.dead)">{{ pokemon.number }}</td>
-                  <td :class="tdClass(pokemon.dead)">
-                    {{ pokemon.species.toUpperCase() }}
-                  </td>
-                  <td :class="tdClass(pokemon.dead)">
-                    {{ pokemon.location.toUpperCase() }}
-                  </td>
-                  <td :class="tdClass(pokemon.dead)">
-                    <template v-if="pokemon.obtained === 'not'">
-                      -
-                    </template>
-                    <template v-else-if="pokemon.obtained === 'caught'">
-                      <span>
-                        <v-icon
-                          class="iconify"
-                          data-icon="mdi:pokeball"
-                        ></v-icon>
-                      </span>
-                    </template>
-                    <template v-else>
-                      <v-icon>{{ obtainedIcon(pokemon.obtained) }}</v-icon>
-                    </template>
-                  </td>
-                </tr>
-              </v-simple-table>
-            </v-card>
+                </v-simple-table>
+              </v-card>
+              <div class="html2pdf__page-break" />
+            </div>
           </v-col>
         </v-row>
       </v-col>
@@ -73,8 +78,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import axios from "axios";
-import * as staticInfo from "../../utils/staticInfo";
 
 @Component({})
 export default class PDF extends Vue {
@@ -88,6 +91,21 @@ export default class PDF extends Vue {
     { text: "Location" },
     { text: "Obtained" }
   ];
+
+  chunks = [] as any;
+
+  mounted() {
+    this.chunks = this.sliceIntoChunks(this.nuzlocke.pokemon);
+  }
+
+  sliceIntoChunks(pokemon: any) {
+    const chunks = [];
+    for (let i = 0; i < pokemon.length; i += 10) {
+      const chunk = pokemon.slice(i, i + 10);
+      chunks.push(chunk);
+    }
+    return chunks;
+  }
 
   pokemonRowClass(status: Boolean, obtained: string) {
     if (obtained !== "not") {
@@ -114,6 +132,14 @@ export default class PDF extends Vue {
       return "fa-exchange-alt";
     }
   }
+
+  cardClass(index: any) {
+    if (index === 0) {
+      return "first-card";
+    } else {
+      return "not-first-card";
+    }
+  }
 }
 </script>
 
@@ -125,23 +151,38 @@ export default class PDF extends Vue {
   width: 100%;
   position: relative;
   background-repeat: repeat;
-  padding: 30px;
 }
 
 #container {
-  padding: 0 10% 0 10%;
+  padding: 0 3% 0 3%;
 }
 
 .col {
   height: 100%;
 }
 
+#logo {
+  margin-top: 30px !important;
+}
+
 #pokemon-card {
   padding: 10px;
 }
 
+div {
+  padding: 0;
+}
+
 tr {
   background-color: #fff !important;
+}
+
+.first-card {
+  margin-top: 50px;
+}
+
+.not-first-card {
+  margin-top: 120px;
 }
 
 .dead {

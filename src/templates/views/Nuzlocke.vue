@@ -144,7 +144,7 @@
               >
             </v-row>
             <v-divider v-if="nuzlocke.description !== ''"></v-divider>
-            <v-card-text class="card-text">{{
+            <v-card-text class="card-text" v-if="nuzlocke.description !== ''">{{
               nuzlocke.description
             }}</v-card-text>
           </v-card>
@@ -236,13 +236,42 @@
               <v-col></v-col>
             </v-row>
           </v-card>
-          <v-btn @click="dialog = true">DIALOG</v-btn>
+          <v-row id="pdf-row">
+            <v-btn id="pdf-button" class="action-button" @click="downloadPDF()">
+              <v-progress-circular
+                id="pdf-icon"
+                v-if="download"
+                indeterminate
+                :size="24"
+                :width="5"
+                color="white"
+              >
+              </v-progress-circular>
+              <v-icon v-else id="pdf-icon">fa-file-pdf</v-icon>DOWNLOAD</v-btn
+            >
+          </v-row>
         </v-col>
       </v-row>
     </v-col>
-    <v-dialog v-model="dialog">
-      <PDF :nuzlocke="nuzlocke" />
-    </v-dialog>
+    <VueHtml2pdf
+      :show-layout="false"
+      :float-layout="true"
+      :enable-download="true"
+      :preview-modal="false"
+      :paginate-elements-by-height="1400"
+      :pdf-quality="2"
+      :manual-pagination="true"
+      pdf-format="a4"
+      pdf-orientation="portrait"
+      pdf-content-width="800px"
+      :filename="nuzlocke.title"
+      ref="pdf"
+      @hasDownloaded="download = false"
+    >
+      <section slot="pdf-content">
+        <PDF :nuzlocke="nuzlocke" />
+      </section>
+    </VueHtml2pdf>
   </v-row>
 </template>
 
@@ -251,10 +280,12 @@ import { Component, Vue } from "vue-property-decorator";
 import PDF from "../components/PDF.vue";
 import axios from "axios";
 import * as staticInfo from "../../utils/staticInfo";
+import VueHtml2pdf from "vue-html2pdf";
 
 @Component({
   components: {
-    PDF
+    PDF,
+    VueHtml2pdf
   }
 })
 export default class Nuzlocke extends Vue {
@@ -286,8 +317,7 @@ export default class Nuzlocke extends Vue {
   showDeleteButton = false;
   statusFilter = "";
   obtainedFilter = "";
-
-  dialog = false;
+  download = false;
 
   created() {
     this.getNuzlocke();
@@ -541,6 +571,11 @@ export default class Nuzlocke extends Vue {
     });
   }
 
+  downloadPDF() {
+    this.download = true;
+    (this.$refs.pdf as any).generatePdf();
+  }
+
   back() {
     this.$router.push({ name: "nuzlockes" });
   }
@@ -644,5 +679,17 @@ tr:hover {
   margin: 0;
   padding: 0;
   align-items: center;
+}
+
+#pdf-row {
+  margin-top: 20px !important;
+}
+
+#pdf-button {
+  width: 100%;
+}
+
+#pdf-icon {
+  margin-right: 20px;
 }
 </style>
