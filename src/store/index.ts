@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import * as staticInfo from "../utils/staticInfo";
+import SETTINGS from "../settings";
 
 Vue.use(Vuex);
 
@@ -23,7 +23,7 @@ export default new Vuex.Store({
           return false;
         } else {
           try {
-            await axios.get(`${staticInfo.server}/user`, {
+            await axios.get(`${SETTINGS.API_BASE_PATH_DEV}/user`, {
               headers: {
                 authorization: localStorage.getItem("pndb_jwt")
               }

@@ -668,4 +668,9 @@ tr:hover {
 #pdf-icon {
   margin-right: 20px;
 }
+
+.v-data-table::v-deep .fa-chevron-left,
+.v-data-table::v-deep .fa-chevron-right {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
 </style>

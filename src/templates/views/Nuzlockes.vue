@@ -249,4 +249,9 @@ a {
 #cancel-button {
   background-color: #999999 !important;
 }
+
+.v-data-table::v-deep .fa-chevron-left,
+.v-data-table::v-deep .fa-chevron-right {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
 </style>
