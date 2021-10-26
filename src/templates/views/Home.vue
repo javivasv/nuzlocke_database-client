@@ -36,6 +36,9 @@
         </v-card-text>
       </v-card>
       <v-card id="videos-card">
+        <v-card-title>
+          <h2>Relevant Nuzlocke Videos</h2>
+        </v-card-title>
         <v-row justify="center">
           <youtube
             :video-id="videoId"

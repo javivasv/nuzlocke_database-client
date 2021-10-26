@@ -85,7 +85,7 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-subtitle class="card-text">
-              <strong>Related websites</strong>
+              <strong>Relevant websites</strong>
             </v-card-subtitle>
             <v-card-text>
               <ul>
