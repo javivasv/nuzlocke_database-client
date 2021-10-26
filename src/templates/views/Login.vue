@@ -48,8 +48,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import axios from "axios";
-import * as staticInfo from "../../utils/staticInfo";
+import * as service from "../../services/requests.service";
 
 @Component
 export default class Login extends Vue {
@@ -60,7 +59,7 @@ export default class Login extends Vue {
   passwordError = false;
   requiredErrorMsg = "This field is required";
 
-  async login() {
+  login() {
     if (!this.validateData()) {
       return;
     }
@@ -70,17 +69,19 @@ export default class Login extends Vue {
       password: this.password
     };
 
-    try {
-      const res = await axios.post(`${staticInfo.server}/login`, data);
-      localStorage.setItem("pndb_jwt", res.data.token);
-      localStorage.setItem("pndb_user_id", res.data.id);
-      localStorage.setItem("pndb_username", this.username);
-      this.$store.state.user.id = res.data.id;
-      this.$store.state.user.username = this.username;
-      this.$router.push({ name: "home" });
-    } catch (error) {
-      this.$root.$emit("notification", error.response.data.msg);
-    }
+    service
+      .login(data)
+      .then(res => {
+        localStorage.setItem("pndb_jwt", res.data.token);
+        localStorage.setItem("pndb_user_id", res.data.id);
+        localStorage.setItem("pndb_username", this.username);
+        this.$store.state.user.id = res.data.id;
+        this.$store.state.user.username = this.username;
+        this.$router.push({ name: "home" });
+      })
+      .catch(error => {
+        this.$root.$emit("notification", error.response.data.msg);
+      });
   }
 
   validateData() {

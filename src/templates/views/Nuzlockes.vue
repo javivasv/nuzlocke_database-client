@@ -121,8 +121,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import axios from "axios";
-import * as staticInfo from "../../utils/staticInfo";
+import * as service from "../../services/requests.service";
 
 @Component({})
 export default class Nuzlockes extends Vue {
@@ -141,60 +140,48 @@ export default class Nuzlockes extends Vue {
     this.getNuzlockes();
   }
 
-  async getNuzlockes() {
-    try {
-      const userId = this.$store.state.user.id;
-      const res = await axios.get(
-        `${staticInfo.server}/user/${userId}/nuzlockes`,
-        {
-          headers: {
-            authorization: localStorage.getItem("pndb_jwt")
-          }
+  getNuzlockes() {
+    const userId = this.$store.state.user.id;
+    service
+      .getNuzlockes(userId)
+      .then(res => {
+        this.nuzlockes = res.data.nuzlockes;
+        this.gotNuzlockes = true;
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
         }
-      );
-
-      this.nuzlockes = res.data.nuzlockes;
-      this.gotNuzlockes = true;
-    } catch (error) {
-      if (error.response.status === 400) {
-        this.$root.$emit("logout");
-      } else {
-        this.$root.$emit("notification", error.response.data.msg);
-      }
-    }
+      });
   }
 
-  async deleteNuzlocke(nuzlocke: any, event: any) {
+  deleteNuzlocke(nuzlocke: any, event: any) {
     event.stopPropagation();
 
-    try {
-      const userId = this.$store.state.user.id;
-      const nuzlockeId = nuzlocke._id;
-      await axios.delete(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`,
-        {
-          headers: {
-            authorization: localStorage.getItem("pndb_jwt")
+    const userId = this.$store.state.user.id;
+    const nuzlockeId = nuzlocke._id;
+    service
+      .deleteNuzlocke(userId, nuzlockeId)
+      .then(res => {
+        let index: any;
+        for (const nuzlockeObject of this.nuzlockes) {
+          if (nuzlocke._id.toString() === nuzlockeObject._id.toString()) {
+            index = this.nuzlockes.indexOf(nuzlockeObject);
+            break;
           }
         }
-      );
 
-      let index: any;
-      for (const nuzlockeObject of this.nuzlockes) {
-        if (nuzlocke._id.toString() === nuzlockeObject._id.toString()) {
-          index = this.nuzlockes.indexOf(nuzlockeObject);
-          break;
+        this.nuzlockes.splice(index, 1);
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
         }
-      }
-
-      this.nuzlockes.splice(index, 1);
-    } catch (error) {
-      if (error.response.status === 400) {
-        this.$root.$emit("logout");
-      } else {
-        this.$root.$emit("notification", error.response.data.msg);
-      }
-    }
+      });
   }
 
   checkNuzlocke(event: any) {

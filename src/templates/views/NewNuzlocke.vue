@@ -131,7 +131,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import axios from "axios";
+import * as service from "../../services/requests.service";
 import * as staticInfo from "../../utils/staticInfo";
 
 @Component({})
@@ -146,7 +146,7 @@ export default class NewNuzlocke extends Vue {
   baseGameError = false;
   requiredErrorMsg = "This field is required";
 
-  async createNuzlocke() {
+  createNuzlocke() {
     if (!this.validateData()) {
       return;
     }
@@ -159,22 +159,20 @@ export default class NewNuzlocke extends Vue {
       title: this.title
     };
 
-    try {
-      const userId = this.$store.state.user.id;
-      await axios.post(`${staticInfo.server}/user/${userId}/nuzlocke`, data, {
-        headers: {
-          authorization: localStorage.getItem("pndb_jwt")
+    const userId = this.$store.state.user.id;
+    service
+      .createNuzlocke(userId, data)
+      .then(res => {
+        this.$root.$emit("notification", this.title + " nuzlocke created");
+        this.$router.push({ name: "nuzlockes" });
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
         }
       });
-      this.$root.$emit("notification", this.title + " nuzlocke created");
-      this.$router.push({ name: "nuzlockes" });
-    } catch (error) {
-      if (error.response.status === 400) {
-        this.$root.$emit("logout");
-      } else {
-        this.$root.$emit("notification", error.response.data.msg);
-      }
-    }
   }
 
   validateData() {

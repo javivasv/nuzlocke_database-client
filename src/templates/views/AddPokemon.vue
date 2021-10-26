@@ -234,7 +234,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import axios from "axios";
+import * as service from "../../services/requests.service";
 import * as staticInfo from "../../utils/staticInfo";
 
 @Component({})
@@ -263,106 +263,108 @@ export default class AddPokemon extends Vue {
   requiredErrorMsg = "This field is required";
   numberErrorMsg = "";
 
-  async created() {
+  created() {
     if (!this.$route.params.nuzlocke) {
-      await this.getNuzlocke();
+      this.getNuzlocke();
     } else {
       this.nuzlocke = this.$route.params.nuzlocke;
       this.gotNuzlocke = true;
-    }
 
-    if (!this.nuzlocke.original) {
-      this.getLocations();
+      if (!this.nuzlocke.original) {
+        this.getLocations();
+      }
     }
 
     this.getPokemon();
   }
 
-  async getNuzlocke() {
-    try {
-      const userId = this.$store.state.user.id;
-      const nuzlockeId = this.$route.params.nuzlocke_id;
-      const res = await axios.get(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`,
-        {
-          headers: {
-            authorization: localStorage.getItem("pndb_jwt")
-          }
+  getNuzlocke() {
+    const userId = this.$store.state.user.id;
+    const nuzlockeId = this.$route.params.nuzlocke_id;
+    service
+      .getNuzlocke(userId, nuzlockeId)
+      .then(res => {
+        this.nuzlocke = res.data.nuzlocke;
+        this.gotNuzlocke = true;
+      })
+      .then(() => {
+        if (!this.nuzlocke.original) {
+          this.getLocations();
         }
-      );
-      this.nuzlocke = res.data.nuzlocke;
-      this.gotNuzlocke = true;
-    } catch (error) {
-      if (error.response.status === 400) {
-        this.$root.$emit("logout");
-      } else {
-        this.$root.$emit("notification", error.response.data.msg);
-      }
-    }
-  }
-
-  async getPokemon() {
-    try {
-      const res = await axios.get(
-        "https://pokeapi.co/api/v2/pokemon/?limit=898"
-      );
-
-      this.pokemons = [];
-      let number = 0;
-      res.data.results.map((pokemon: any) => {
-        number++;
-        let pokemonNumber = number.toString();
-
-        if (pokemonNumber.length === 1) {
-          pokemonNumber = "#00" + pokemonNumber;
-        } else if (pokemonNumber.length === 2) {
-          pokemonNumber = "#0" + pokemonNumber;
-        } else if (pokemonNumber.length === 3) {
-          pokemonNumber = "#" + pokemonNumber;
-        }
-
-        this.pokemons.push(`${pokemonNumber} - ${pokemon.name}`);
-
-        if (staticInfo.alolanVariants.includes(pokemon.name)) {
-          this.pokemons.push(`${pokemonNumber} - ${pokemon.name}-alola`);
-        }
-
-        if (staticInfo.galarianVariants.includes(pokemon.name)) {
-          this.pokemons.push(`${pokemonNumber} - ${pokemon.name}-galar`);
-        }
-
-        if (pokemon.name.includes("deoxys")) {
-          this.pokemons.push(`${pokemonNumber} - deoxys-attack`);
-          this.pokemons.push(`${pokemonNumber} - deoxys-defense`);
-          this.pokemons.push(`${pokemonNumber} - deoxys-speed`);
-        }
-
-        if (pokemon.name.includes("wormadam")) {
-          this.pokemons.push(`${pokemonNumber} - wormadam-sandy`);
-          this.pokemons.push(`${pokemonNumber} - wormadam-trash`);
-        }
-
-        if (pokemon.name.includes("lycanroc")) {
-          this.pokemons.push(`${pokemonNumber} - lycanroc-midnight`);
-          this.pokemons.push(`${pokemonNumber} - lycanroc-dusk`);
-        }
-
-        if (pokemon.name.includes("urshifu")) {
-          this.pokemons.push(`${pokemonNumber} - urshifu-rapid-strike`);
-        }
-
-        if (pokemon.name.includes("toxtricity")) {
-          this.pokemons.push(`${pokemonNumber} - toxtricity-low-key`);
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
         }
       });
-
-      this.gotPokemons = true;
-    } catch (error) {
-      this.$root.$emit("notification", "An error occurred getting the pokemon");
-    }
   }
 
-  async getLocations() {
+  getPokemon() {
+    service
+      .getPokemon()
+      .then(res => {
+        this.pokemons = [];
+        let number = 0;
+        res.data.results.map((pokemon: any) => {
+          number++;
+          let pokemonNumber = number.toString();
+
+          if (pokemonNumber.length === 1) {
+            pokemonNumber = "#00" + pokemonNumber;
+          } else if (pokemonNumber.length === 2) {
+            pokemonNumber = "#0" + pokemonNumber;
+          } else if (pokemonNumber.length === 3) {
+            pokemonNumber = "#" + pokemonNumber;
+          }
+
+          this.pokemons.push(`${pokemonNumber} - ${pokemon.name}`);
+
+          if (staticInfo.alolanVariants.includes(pokemon.name)) {
+            this.pokemons.push(`${pokemonNumber} - ${pokemon.name}-alola`);
+          }
+
+          if (staticInfo.galarianVariants.includes(pokemon.name)) {
+            this.pokemons.push(`${pokemonNumber} - ${pokemon.name}-galar`);
+          }
+
+          if (pokemon.name.includes("deoxys")) {
+            this.pokemons.push(`${pokemonNumber} - deoxys-attack`);
+            this.pokemons.push(`${pokemonNumber} - deoxys-defense`);
+            this.pokemons.push(`${pokemonNumber} - deoxys-speed`);
+          }
+
+          if (pokemon.name.includes("wormadam")) {
+            this.pokemons.push(`${pokemonNumber} - wormadam-sandy`);
+            this.pokemons.push(`${pokemonNumber} - wormadam-trash`);
+          }
+
+          if (pokemon.name.includes("lycanroc")) {
+            this.pokemons.push(`${pokemonNumber} - lycanroc-midnight`);
+            this.pokemons.push(`${pokemonNumber} - lycanroc-dusk`);
+          }
+
+          if (pokemon.name.includes("urshifu")) {
+            this.pokemons.push(`${pokemonNumber} - urshifu-rapid-strike`);
+          }
+
+          if (pokemon.name.includes("toxtricity")) {
+            this.pokemons.push(`${pokemonNumber} - toxtricity-low-key`);
+          }
+        });
+
+        this.gotPokemons = true;
+      })
+      .catch(error => {
+        this.$root.$emit(
+          "notification",
+          "An error occurred getting the pokemon"
+        );
+      });
+  }
+
+  getLocations() {
     let regions = [] as any;
     for (const region of this.gamesRegions) {
       if (Object.values(region)[0].includes(this.nuzlocke.baseGame)) {
@@ -375,47 +377,47 @@ export default class AddPokemon extends Vue {
       regions.push("kanto");
     }
 
-    try {
-      for (const region of regions) {
-        const res = await axios.get(
-          "https://pokeapi.co/api/v2/region/" + region
-        );
+    for (const region of regions) {
+      service
+        .getLocations(region)
+        .then(res => {
+          const locationsNames = res.data.locations.map((location: any) => {
+            let locationName = location.name.replaceAll("-", " ");
 
-        const locationsNames = res.data.locations.map((location: any) => {
-          let locationName = location.name.replaceAll("-", " ");
+            if (regions[0] === "kanto") {
+              locationName = locationName.replace("kanto ", "");
+            } else if (regions[0] === "johto") {
+              locationName = locationName
+                .replace("kanto ", "")
+                .replace("johto ", "");
+            } else if (regions[0] === "hoenn") {
+              locationName = locationName.replace("hoenn ", "");
+            } else if (regions[0] === "sinnoh") {
+              locationName = locationName.replace("sinnoh ", "");
+            } else if (regions[0] === "unova") {
+              locationName = locationName.replace("unova ", "");
+            } else if (regions[0] === "kalos") {
+              locationName = locationName.replace("kalos ", "");
+            } else if (regions[0] === "alola") {
+              locationName = locationName.replace("alola ", "");
+            } else if (regions[0] === "galar") {
+              locationName = locationName.replace("galar ", "");
+            }
 
-          if (regions[0] === "kanto") {
-            locationName = locationName.replace("kanto ", "");
-          } else if (regions[0] === "johto") {
-            locationName = locationName
-              .replace("kanto ", "")
-              .replace("johto ", "");
-          } else if (regions[0] === "hoenn") {
-            locationName = locationName.replace("hoenn ", "");
-          } else if (regions[0] === "sinnoh") {
-            locationName = locationName.replace("sinnoh ", "");
-          } else if (regions[0] === "unova") {
-            locationName = locationName.replace("unova ", "");
-          } else if (regions[0] === "kalos") {
-            locationName = locationName.replace("kalos ", "");
-          } else if (regions[0] === "alola") {
-            locationName = locationName.replace("alola ", "");
-          } else if (regions[0] === "galar") {
-            locationName = locationName.replace("galar ", "");
-          }
+            return locationName;
+          });
 
-          return locationName;
+          this.locations = this.locations.concat(locationsNames);
+        })
+        .then(() => {
+          this.gotLocations = true;
+        })
+        .catch(error => {
+          this.$root.$emit(
+            "notification",
+            "An error occurred getting the locations"
+          );
         });
-
-        this.locations = this.locations.concat(locationsNames);
-      }
-
-      this.gotLocations = true;
-    } catch (error) {
-      this.$root.$emit(
-        "notification",
-        "An error occurred getting the locations"
-      );
     }
   }
 
@@ -424,30 +426,29 @@ export default class AddPokemon extends Vue {
       this.sprite = "";
     } else {
       const pokemonName = event.split(" ")[2];
-      this.pokemonSprite(pokemonName);
+      this.getPokemonSprite(pokemonName);
     }
   }
 
-  async pokemonSprite(pokemonName: any) {
-    try {
-      const res = await axios.get(
-        "https://pokeapi.co/api/v2/pokemon/" + pokemonName
-      );
-
-      if (this.shiny) {
-        this.sprite = res.data.sprites.front_shiny;
-      } else {
-        this.sprite = res.data.sprites.front_default;
-      }
-    } catch (error) {
-      this.$root.$emit(
-        "notification",
-        "An error occurred getting the pokemon sprite"
-      );
-    }
+  getPokemonSprite(pokemonName: any) {
+    service
+      .getPokemonSprite(pokemonName)
+      .then(res => {
+        if (this.shiny) {
+          this.sprite = res.data.sprites.front_shiny;
+        } else {
+          this.sprite = res.data.sprites.front_default;
+        }
+      })
+      .catch(error => {
+        this.$root.$emit(
+          "notification",
+          "An error occurred getting the pokemon sprite"
+        );
+      });
   }
 
-  async addPokemon() {
+  addPokemon() {
     if (!this.validateData()) {
       return;
     }
@@ -476,39 +477,32 @@ export default class AddPokemon extends Vue {
       };
     }
 
-    try {
-      const userId = this.$store.state.user.id;
-      const nuzlockeId = this.nuzlocke._id;
-      await axios.post(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon`,
-        data,
-        {
-          headers: {
-            authorization: localStorage.getItem("pndb_jwt")
-          }
+    const userId = this.$store.state.user.id;
+    const nuzlockeId = this.nuzlocke._id;
+    service
+      .addPokemon(userId, nuzlockeId, data)
+      .then(res => {
+        if (this.nickname === "") {
+          const pokemon = this.species.split(" ");
+          this.$root.$emit(
+            "notification",
+            pokemon[2].toUpperCase() + " was added to " + this.nuzlocke.title
+          );
+        } else {
+          this.$root.$emit(
+            "notification",
+            this.nickname + " was added to " + this.nuzlocke.title
+          );
         }
-      );
-
-      if (this.nickname === "") {
-        const pokemon = this.species.split(" ");
-        this.$root.$emit(
-          "notification",
-          pokemon[2].toUpperCase() + " was added to " + this.nuzlocke.title
-        );
-      } else {
-        this.$root.$emit(
-          "notification",
-          this.nickname + " was added to " + this.nuzlocke.title
-        );
-      }
-      this.$router.push({ name: "nuzlocke" });
-    } catch (error) {
-      if (error.response.status === 400) {
-        this.$root.$emit("logout");
-      } else {
-        this.$root.$emit("notification", error.response.data.msg);
-      }
-    }
+        this.$router.push({ name: "nuzlocke" });
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
+        }
+      });
   }
 
   validateData() {
@@ -571,7 +565,7 @@ export default class AddPokemon extends Vue {
   selectShiny() {
     if (this.species !== "" && this.species !== undefined) {
       const pokemonName = this.species.split(" ")[2];
-      this.pokemonSprite(pokemonName);
+      this.getPokemonSprite(pokemonName);
     }
   }
 

@@ -97,14 +97,13 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import axios from "axios";
-import * as staticInfo from "../../utils/staticInfo";
+import * as service from "../../services/requests.service";
 
 @Component({})
 export default class About extends Vue {
   suggestion = "";
 
-  async sendSuggestion() {
+  sendSuggestion() {
     if (!this.validateData()) {
       return;
     }
@@ -112,13 +111,16 @@ export default class About extends Vue {
     const data = {
       suggestion: this.suggestion
     };
-    try {
-      await axios.post(`${staticInfo.server}/suggestion`, data);
-      this.suggestion = "";
-      this.$root.$emit("notification", "Suggestion sent");
-    } catch (error) {
-      this.$root.$emit("notification", error.response.data.msg);
-    }
+
+    service
+      .sendSuggestion(data)
+      .then(res => {
+        this.suggestion = "";
+        this.$root.$emit("notification", "Suggestion sent");
+      })
+      .catch(error => {
+        this.$root.$emit("notification", error.response.data.msg);
+      });
   }
 
   validateData() {

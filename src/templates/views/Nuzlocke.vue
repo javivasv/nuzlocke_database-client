@@ -278,8 +278,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import PDF from "../components/PDF.vue";
-import axios from "axios";
-import * as staticInfo from "../../utils/staticInfo";
+import * as service from "../../services/requests.service";
 import VueHtml2pdf from "vue-html2pdf";
 
 @Component({
@@ -323,113 +322,90 @@ export default class Nuzlocke extends Vue {
     this.getNuzlocke();
   }
 
-  async getNuzlocke() {
-    try {
-      const userId = this.$store.state.user.id;
-      const nuzlockeId = this.$route.params.nuzlocke_id;
-      const res = await axios.get(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`,
-        {
-          headers: {
-            authorization: localStorage.getItem("pndb_jwt")
-          }
+  getNuzlocke() {
+    const userId = this.$store.state.user.id;
+    const nuzlockeId = this.$route.params.nuzlocke_id;
+    service
+      .getNuzlocke(userId, nuzlockeId)
+      .then(res => {
+        this.nuzlocke = res.data.nuzlocke;
+        this.pokemon = res.data.nuzlocke.pokemon;
+        this.gotNuzlocke = true;
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
         }
-      );
-      this.nuzlocke = res.data.nuzlocke;
-      this.pokemon = res.data.nuzlocke.pokemon;
-      this.gotNuzlocke = true;
-    } catch (error) {
-      if (error.response.status === 400) {
-        this.$root.$emit("logout");
-      } else {
-        this.$root.$emit("notification", error.response.data.msg);
-      }
-    }
+      });
   }
 
-  async changeNuzlockeStatus(status: String) {
+  changeNuzlockeStatus(status: String) {
     const data = {
       nuzlocke: this.nuzlocke
     };
 
     data.nuzlocke.status = status;
-    try {
-      const userId = this.$store.state.user.id;
-      const nuzlockeId = this.$route.params.nuzlocke_id;
-      await axios.put(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}`,
-        data,
-        {
-          headers: {
-            authorization: localStorage.getItem("pndb_jwt")
-          }
+    const userId = this.$store.state.user.id;
+    const nuzlockeId = this.$route.params.nuzlocke_id;
+    service
+      .changeNuzlockeStatus(userId, nuzlockeId, data)
+      .then(res => {
+        this.nuzlocke.status = status;
+        this.$forceUpdate();
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
         }
-      );
-
-      this.nuzlocke.status = status;
-      this.$forceUpdate();
-    } catch (error) {
-      if (error.response.status === 400) {
-        this.$root.$emit("logout");
-      } else {
-        this.$root.$emit("notification", error.response.data.msg);
-      }
-    }
+      });
   }
 
-  async changePokemonStatus(pokemon: any) {
-    try {
-      const userId = this.$store.state.user.id;
-      const nuzlockeId = this.$route.params.nuzlocke_id;
-      await axios.put(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${pokemon._id}`,
-        null,
-        {
-          headers: {
-            authorization: localStorage.getItem("pndb_jwt")
-          }
+  changePokemonStatus(pokemon: any) {
+    const userId = this.$store.state.user.id;
+    const nuzlockeId = this.$route.params.nuzlocke_id;
+    const pokemonId = pokemon._id;
+    service
+      .changePokemonStatus(userId, nuzlockeId, pokemonId)
+      .then(res => {
+        pokemon.dead = !pokemon.dead;
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
         }
-      );
-
-      pokemon.dead = !pokemon.dead;
-    } catch (error) {
-      if (error.response.status === 400) {
-        this.$root.$emit("logout");
-      } else {
-        this.$root.$emit("notification", error.response.data.msg);
-      }
-    }
+      });
   }
 
-  async deletePokemon(pokemon: any) {
-    try {
-      const userId = this.$store.state.user.id;
-      const nuzlockeId = this.$route.params.nuzlocke_id;
-      await axios.delete(
-        `${staticInfo.server}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${pokemon._id}`,
-        {
-          headers: {
-            authorization: localStorage.getItem("pndb_jwt")
+  deletePokemon(pokemon: any) {
+    const userId = this.$store.state.user.id;
+    const nuzlockeId = this.$route.params.nuzlocke_id;
+    const pokemonId = pokemon._id;
+    service
+      .deletePokemon(userId, nuzlockeId, pokemonId)
+      .then(res => {
+        let index: any;
+        for (const pokemonObject of this.nuzlocke.pokemon) {
+          if (pokemon._id.toString() === pokemonObject._id.toString()) {
+            index = this.nuzlocke.pokemon.indexOf(pokemonObject);
+            break;
           }
         }
-      );
 
-      let index: any;
-      for (const pokemonObject of this.nuzlocke.pokemon) {
-        if (pokemon._id.toString() === pokemonObject._id.toString()) {
-          index = this.nuzlocke.pokemon.indexOf(pokemonObject);
-          break;
+        this.nuzlocke.pokemon.splice(index, 1);
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
         }
-      }
-
-      this.nuzlocke.pokemon.splice(index, 1);
-    } catch (error) {
-      if (error.response.status === 400) {
-        this.$root.$emit("logout");
-      } else {
-        this.$root.$emit("notification", error.response.data.msg);
-      }
-    }
+      });
   }
 
   filterPokemon() {

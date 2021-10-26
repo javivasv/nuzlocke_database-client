@@ -60,8 +60,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import axios from "axios";
-import * as staticInfo from "../../utils/staticInfo";
+import * as service from "../../services/requests.service";
 
 @Component({})
 export default class Register extends Vue {
@@ -75,7 +74,7 @@ export default class Register extends Vue {
   requiredErrorMsg = "This field is required";
   passwordConfirmationErrorMsg = "";
 
-  async register() {
+  register() {
     if (!this.validateData()) {
       return;
     }
@@ -85,12 +84,14 @@ export default class Register extends Vue {
       password: this.password
     };
 
-    try {
-      await axios.post(`${staticInfo.server}/user`, data);
-      this.$router.push({ name: "login" });
-    } catch (error) {
-      this.$root.$emit("notification", error.response.data.msg);
-    }
+    service
+      .register(data)
+      .then(res => {
+        this.$router.push({ name: "login" });
+      })
+      .catch(error => {
+        this.$root.$emit("notification", error.response.data.msg);
+      });
   }
 
   validateData() {
