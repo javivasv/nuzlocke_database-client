@@ -94,7 +94,7 @@ export default class extends Vue {
 
 .error-msg {
   font-size: small;
-  color: red;
+  color: #ee1515;
 }
 
 .v-snack__content {
@@ -113,11 +113,25 @@ export default class extends Vue {
   margin-top: 20px !important;
 }
 
-.card-text {
+.card-text,
+ul {
   color: #999999 !important;
 }
 
 .v-card__title {
   justify-content: center;
+}
+
+.dark-card {
+  background-color: #555 !important;
+}
+
+.dark-title {
+  color: #eee;
+}
+
+.dark-card-text,
+ul {
+  color: #ccc !important;
 }
 </style>

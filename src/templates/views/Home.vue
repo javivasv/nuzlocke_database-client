@@ -1,21 +1,23 @@
 <template>
   <v-row class="content">
     <v-col cols="8" id="home-info">
-      <v-card id="welcome-card">
+      <v-card id="welcome-card" :class="cardMode()">
         <v-card-title>
-          <h2>Welcome to the Pokemon Nuzlocke DataBase!</h2>
+          <h2 :class="titleMode()">
+            Welcome to the Pokemon Nuzlocke DataBase!
+          </h2>
         </v-card-title>
-        <v-card-text class="card-text">
+        <v-card-text :class="textMode()">
           Here you can keep track of all of your pokemon nuzlockes. You will be
           able to register a nuzlocke of a preexisting game, a romhack or a
           completely original game. You will also be able to register every
           pokemon you obtain (or not) during the run, as well as change its
           status (alive or dead), in order to keep it organized and updated.
         </v-card-text>
-        <v-card-subtitle class="card-text">
+        <v-card-subtitle :class="textMode()">
           <strong>What is a Nuzlocke?</strong>
         </v-card-subtitle>
-        <v-card-text class="card-text">
+        <v-card-text :class="textMode()">
           A Nuzlocke is a set of rules intended to create a higher level of
           difficulty while playing the Pokémon games. Many challengers feel that
           the rules also serve the purpose of encouraging the use of Pokémon the
@@ -35,9 +37,9 @@
           </router-link>
         </v-card-text>
       </v-card>
-      <v-card id="videos-card">
+      <v-card id="videos-card" :class="cardMode()">
         <v-card-title>
-          <h2>Relevant Nuzlocke Videos</h2>
+          <h2 :class="titleMode()">Relevant Nuzlocke Videos</h2>
         </v-card-title>
         <v-row justify="center">
           <youtube
@@ -54,16 +56,16 @@
               v-slot:default="{ toggle }"
               @change="selectVideo(video.id)"
             >
-              <v-card class="preview" @click="toggle">
+              <v-card class="preview" :class="previewMode()" @click="toggle">
                 <v-img
                   max-height="120"
                   max-width="200"
                   :src="thumbnailPath(video.id)"
                 ></v-img>
-                <v-card-subtitle>
+                <v-card-subtitle :class="textMode()">
                   <strong>{{ video.title }}</strong>
                 </v-card-subtitle>
-                <v-card-text>
+                <v-card-text :class="textMode()">
                   {{ video.channel }}
                 </v-card-text>
               </v-card>
@@ -73,8 +75,8 @@
       </v-card>
     </v-col>
     <v-col cols="4" id="rules">
-      <v-card class="info-card">
-        <v-card-subtitle class="card-text">
+      <v-card class="info-card" :class="cardMode()">
+        <v-card-subtitle :class="textMode()">
           <strong>
             Nuzlocke Basic Rules
           </strong>
@@ -82,7 +84,7 @@
         <v-card-text>
           <ul>
             <li>
-              <p class="card-text">
+              <p :class="textMode()">
                 Any Pokémon that faints is considered dead, and must be released
                 or put in the Pokémon Storage System permanently (or may be
                 transferred to another game, as long as the Pokémon is never
@@ -90,7 +92,7 @@
               </p>
             </li>
             <li>
-              <p class="card-text">
+              <p :class="textMode()">
                 The player may only catch the first wild Pokémon encountered in
                 each area, and none else. If the first wild Pokémon encountered
                 faints or flees, there are no second chances. If the first
@@ -104,40 +106,40 @@
           </ul>
         </v-card-text>
       </v-card>
-      <v-card class="info-card" id="secondary-rules">
-        <v-card-subtitle class="card-text">
+      <v-card class="info-card" id="secondary-rules" :class="cardMode()">
+        <v-card-subtitle :class="textMode()">
           <strong>Commonly accepted extra rules</strong>
         </v-card-subtitle>
         <v-card-text>
           <ul>
             <li>
-              <p class="card-text">
+              <p :class="textMode()">
                 The two basic rules are not in effect until the player has
                 gained their first Poké Balls and thus the ability to catch
                 Pokémon
               </p>
             </li>
             <li>
-              <p class="card-text">
+              <p :class="textMode()">
                 The player must nickname all of their Pokémon, for the sake of
                 forming stronger emotional bonds
               </p>
             </li>
             <li>
-              <p class="card-text">
+              <p :class="textMode()">
                 Species/Dupes Clause: The "first wild Pokémon in each area" rule
                 does not apply in an area until a species or evolution line is
                 encountered that has not been caught yet
               </p>
             </li>
             <li>
-              <p class="card-text">
+              <p :class="textMode()">
                 Shiny Clause: Shiny Pokémon do not need to be released if they
                 faint
               </p>
             </li>
             <li>
-              <p class="card-text">
+              <p :class="textMode()">
                 If the player has no Pokémon that can use a field move that is
                 required to continue the game, they may catch another Pokémon
                 that can learn the required field move. However, this Pokémon
@@ -171,6 +173,32 @@ export default class Home extends Vue {
 
   thumbnailPath(videoId: string) {
     return require("../../../public/video-thumbnails/" + videoId + ".png");
+  }
+
+  cardMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-card";
+    }
+  }
+
+  titleMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-title";
+    }
+  }
+
+  textMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-card-text";
+    } else {
+      return "card-text";
+    }
+  }
+
+  previewMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-preview";
+    }
   }
 }
 </script>
@@ -213,6 +241,10 @@ export default class Home extends Vue {
   padding: 0;
   margin: 10px;
   cursor: pointer;
+}
+
+.dark-preview {
+  background-color: #666 !important;
 }
 
 a {

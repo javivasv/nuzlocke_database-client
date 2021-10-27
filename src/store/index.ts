@@ -10,7 +10,8 @@ export default new Vuex.Store({
     user: {
       id: "",
       username: ""
-    }
+    },
+    mode: "light"
   },
   mutations: {},
   actions: {

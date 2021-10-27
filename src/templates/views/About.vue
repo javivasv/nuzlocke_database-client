@@ -2,17 +2,17 @@
   <v-row class="content">
     <v-row id="about">
       <v-col cols="8">
-        <v-card>
+        <v-card :class="cardMode()">
           <v-card-title>
-            <h2>About</h2>
+            <h2 :class="titleMode()">About</h2>
           </v-card-title>
-          <v-card-text class="card-text">
+          <v-card-text :class="textMode()">
             My name is Javier Vivas and I am a Computer Engineering student
             (almost graduated) at Universidad Simón Bolívar (USB) in Caracas,
             Venezuela. I currently work as a fullstack web developer and work on
             this app in my free time.
           </v-card-text>
-          <v-card-text class="card-text">
+          <v-card-text :class="textMode()">
             As a nuzlocke player myself (since 2020), I found it very
             uncomfortable to keep track of my nuzlockes. I decided to develop an
             app that satisfy my needs as a player and that can be as inclusive
@@ -20,7 +20,7 @@
             That is why it is made with the possibility to register nuzlockes of
             original games and with original pokemon.
           </v-card-text>
-          <v-card-text class="card-text">
+          <v-card-text :class="textMode()">
             Pokemon names, sprites and regions locations are taken from
             <a href="https://pokeapi.co/docs/v2" target="_blank">PokeAPI</a>, a
             website dedicated to provide data related to Pokemon games. Nuzlocke
@@ -32,15 +32,16 @@
             >.
           </v-card-text>
         </v-card>
-        <v-card>
+        <v-card :class="cardMode()">
           <v-card-title>
-            <h2>Suggestion</h2>
+            <h2 :class="titleMode()">Suggestion</h2>
           </v-card-title>
           <v-card-text>
             <v-form v-on:submit.prevent="sendSuggestion()">
               <v-container>
                 <v-col>
                   <v-textarea
+                    :dark="inputMode()"
                     label="Suggestion"
                     v-model="suggestion"
                   ></v-textarea>
@@ -52,8 +53,8 @@
         </v-card>
       </v-col>
       <v-col cols="4">
-        <v-card class="info-card">
-          <v-card-subtitle class="card-text">
+        <v-card class="info-card" :class="cardMode()">
+          <v-card-subtitle :class="textMode()">
             <strong>
               Contact
             </strong>
@@ -83,8 +84,8 @@
     </v-row>
     <v-row id="disclaimer">
       <v-col>
-        <v-card>
-          <v-card-text>
+        <v-card :class="cardMode()">
+          <v-card-text :class="textMode()">
             Pokémon © 2002-2021 Pokémon. © 1995-2021 Nintendo/Creatures
             Inc./GAME FREAK inc. TM, ® and Pokémon character names are
             trademarks of Nintendo.
@@ -98,6 +99,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import * as service from "../../services/requests.service";
+import * as global from "../../utils/globalFunctions";
 
 @Component({})
 export default class About extends Vue {
@@ -129,6 +131,32 @@ export default class About extends Vue {
     }
 
     return true;
+  }
+
+  cardMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-card";
+    }
+  }
+
+  titleMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-title";
+    }
+  }
+
+  textMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-card-text";
+    } else {
+      return "card-text";
+    }
+  }
+
+  inputMode() {
+    if (this.$store.state.mode === "dark") {
+      return true;
+    }
   }
 }
 </script>

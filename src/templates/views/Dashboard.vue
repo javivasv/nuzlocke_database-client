@@ -34,6 +34,13 @@
                 </v-list-item>
               </v-list>
 
+              <v-switch
+                v-model="darkMode"
+                label="Dark mode"
+                @change="changeMode($event)"
+                color="#ee1515"
+              ></v-switch>
+
               <template v-slot:append>
                 <v-list-item
                   v-if="isAuthenticated()"
@@ -65,7 +72,7 @@
       </div>
       <div
         id="content"
-        :style="{ backgroundImage: 'url(' + contentBackground + ')' }"
+        :style="{ backgroundImage: 'url(' + background() + ')' }"
       >
         <router-view></router-view>
       </div>
@@ -80,6 +87,7 @@ import { Component, Vue } from "vue-property-decorator";
 export default class Dashboard extends Vue {
   sidebarBackground = require("../../../public/img/ecruteak_city_landscape_opaque.png");
   contentBackground = require("../../../public/img/pokeball_pattern_opaque.png");
+  contentBackgroundDark = require("../../../public/img/pokeball_pattern_dark_opaque.png");
   logged = [
     { title: "Home", icon: "fa-home", link: "home" },
     { title: "Nuzlockes", icon: "fa-clipboard-list", link: "nuzlockes" },
@@ -89,6 +97,8 @@ export default class Dashboard extends Vue {
     { title: "Home", icon: "fa-home", link: "home" },
     { title: "About", icon: "fa-info", link: "about" }
   ];
+
+  darkMode = false;
 
   mounted() {
     this.$root.$on("logout", () => {
@@ -155,6 +165,24 @@ export default class Dashboard extends Vue {
       return this.notLogged;
     } else {
       return this.logged;
+    }
+  }
+
+  background() {
+    if (this.$store.state.mode === "light") {
+      return this.contentBackground;
+    } else {
+      return this.contentBackgroundDark;
+    }
+  }
+
+  changeMode(event: any) {
+    if (event) {
+      this.$store.state.mode = "dark";
+      localStorage.setItem("pndb_mode", "dark");
+    } else {
+      this.$store.state.mode = "light";
+      localStorage.setItem("pndb_mode", "light");
     }
   }
 }
