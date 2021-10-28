@@ -5,11 +5,12 @@
         <h1>NUZLOCKES</h1>
       </v-row>
       <v-row class="content-row">
-        <v-card id="nuzlockes-card">
+        <v-card id="nuzlockes-card" :dark="darkMode()">
           <v-card-title>
             <v-row id="card-title-row">
               <v-col class="card-title-col" cols="8">
                 <v-text-field
+                  :dark="darkMode()"
                   v-model="search"
                   append-icon="mdi-magnify"
                   label="Search"
@@ -31,6 +32,7 @@
             </v-row>
           </v-card-title>
           <v-data-table
+            :dark="darkMode()"
             v-if="gotNuzlockes"
             :headers="headers"
             :items="nuzlockes"
@@ -67,7 +69,7 @@
       <v-row class="title-row"></v-row>
       <v-row class="content-row">
         <v-col class="side-content-col">
-          <v-card class="info-card">
+          <v-card class="info-card" :dark="darkMode()">
             <v-fab-transition>
               <v-img
                 class="pokeball"
@@ -84,7 +86,7 @@
               </router-link>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-subtitle class="card-text">
+            <v-card-subtitle>
               <strong>Relevant websites</strong>
             </v-card-subtitle>
             <v-card-text>
@@ -202,6 +204,12 @@ export default class Nuzlockes extends Vue {
     this.showDeleteButton = false;
     this.headers.pop();
   }
+
+  darkMode() {
+    if (this.$store.state.mode === "dark") {
+      return true;
+    }
+  }
 }
 </script>
 
@@ -250,8 +258,10 @@ a {
   background-color: #999999 !important;
 }
 
+/*
 .v-data-table::v-deep .fa-chevron-left,
 .v-data-table::v-deep .fa-chevron-right {
   color: rgba(0, 0, 0, 0.54) !important;
 }
+*/
 </style>

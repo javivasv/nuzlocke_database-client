@@ -113,25 +113,16 @@ export default class extends Vue {
   margin-top: 20px !important;
 }
 
-.card-text,
-ul {
+/*
+.v-card__subtitle,
+.v-card__text,
+ul,
+p {
   color: #999999 !important;
 }
+*/
 
 .v-card__title {
   justify-content: center;
-}
-
-.dark-card {
-  background-color: #555 !important;
-}
-
-.dark-title {
-  color: #eee;
-}
-
-.dark-card-text,
-ul {
-  color: #ccc !important;
 }
 </style>

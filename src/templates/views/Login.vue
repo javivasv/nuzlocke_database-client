@@ -4,7 +4,7 @@
       id="login-view"
       :style="{ backgroundImage: 'url(' + background + ')' }"
     >
-      <v-card>
+      <v-card :dark="darkMode()">
         <v-form v-on:submit.prevent="login()">
           <v-container>
             <v-col>
@@ -99,6 +99,12 @@ export default class Login extends Vue {
     }
 
     return valid;
+  }
+
+  darkMode() {
+    if (this.$store.state.mode === "dark") {
+      return true;
+    }
   }
 }
 </script>

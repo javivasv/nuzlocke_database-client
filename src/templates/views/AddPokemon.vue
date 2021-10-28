@@ -10,7 +10,7 @@
         </h1>
       </v-row>
       <v-row class="content-row">
-        <v-card id="add-pokemon-card">
+        <v-card id="add-pokemon-card" :dark="darkMode()">
           <v-form v-on:submit.prevent="addPokemon()">
             <v-container>
               <v-col>
@@ -151,7 +151,7 @@
       <v-row class="title-row"></v-row>
       <v-row class="content-row">
         <v-col class="side-content-col">
-          <v-card class="info-card">
+          <v-card class="info-card" :dark="darkMode()">
             <v-fab-transition>
               <v-img
                 class="pokeball"
@@ -171,14 +171,12 @@
             <v-card-text>
               <ul>
                 <li>
-                  <p class="card-text">
-                    <strong>Species:</strong> The species of the pokemon
-                  </p>
+                  <p><strong>Species:</strong> The species of the pokemon</p>
                 </li>
               </ul>
               <ul>
                 <li>
-                  <p class="card-text">
+                  <p>
                     <strong>Original species:</strong> In case of being a
                     pokemon species not already existing in any previous game or
                     region. If an original species, the pokedex number must be
@@ -188,7 +186,7 @@
               </ul>
               <ul>
                 <li>
-                  <p class="card-text">
+                  <p>
                     <strong>Shiny:</strong> The pokemon sprite is shown with the
                     shiny coloration
                   </p>
@@ -196,7 +194,7 @@
               </ul>
               <ul>
                 <li>
-                  <p class="card-text">
+                  <p>
                     <strong>Nickname:</strong> The nickname given to the
                     pokemon, if given one
                   </p>
@@ -204,7 +202,7 @@
               </ul>
               <ul>
                 <li>
-                  <p class="card-text">
+                  <p>
                     <strong>Location:</strong> The location in which the pokemon
                     was obtained or encountered
                   </p>
@@ -212,7 +210,7 @@
               </ul>
               <ul>
                 <li>
-                  <p class="card-text">
+                  <p>
                     <strong>Obtained:</strong> The way in which the pokemon was
                     obtained, if it was obtained
                   </p>
@@ -220,7 +218,7 @@
               </ul>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-text class="card-text">
+            <v-card-text>
               For simplicity, pokemon with different forms that are purely
               cosmetic or depends on a game dynamic to retain a specific form,
               are presented with a default form
@@ -571,6 +569,12 @@ export default class AddPokemon extends Vue {
 
   back() {
     this.$router.go(-1);
+  }
+
+  darkMode() {
+    if (this.$store.state.mode === "dark") {
+      return true;
+    }
   }
 }
 </script>

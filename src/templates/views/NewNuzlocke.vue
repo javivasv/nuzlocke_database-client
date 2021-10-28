@@ -8,7 +8,7 @@
         <h1 class="inner-view-title">NEW NUZLOCKE</h1>
       </v-row>
       <v-row class="content-row">
-        <v-card id="new-nuzlocke-card">
+        <v-card id="new-nuzlocke-card" :dark="darkMode()">
           <v-form v-on:submit.prevent="createNuzlocke()">
             <v-container>
               <v-col>
@@ -58,7 +58,7 @@
       <v-row class="title-row"></v-row>
       <v-row class="content-row">
         <v-col class="side-content-col">
-          <v-card class="info-card">
+          <v-card class="info-card" :dark="darkMode()">
             <v-fab-transition>
               <v-img
                 class="pokeball"
@@ -78,14 +78,12 @@
             <v-card-text>
               <ul>
                 <li>
-                  <p class="card-text">
-                    <strong>Title:</strong> The title of the nuzlocke
-                  </p>
+                  <p><strong>Title:</strong> The title of the nuzlocke</p>
                 </li>
               </ul>
               <ul>
                 <li>
-                  <p class="card-text">
+                  <p>
                     <strong>Base game:</strong>
                     The name of the game used as the core of the game, in case
                     of being a romhack
@@ -94,7 +92,7 @@
               </ul>
               <ul>
                 <li>
-                  <p class="card-text">
+                  <p>
                     <strong>Original game:</strong>
                     In case of being an original game not based in any previous
                     game or region
@@ -103,14 +101,12 @@
               </ul>
               <ul>
                 <li>
-                  <p class="card-text">
-                    <strong>Game:</strong> The name of the game
-                  </p>
+                  <p><strong>Game:</strong> The name of the game</p>
                 </li>
               </ul>
               <ul>
                 <li>
-                  <p class="card-text">
+                  <p>
                     <strong>Description:</strong>
                     Relevant information of the nuzlocke, such as extra rules
                   </p>
@@ -118,7 +114,7 @@
               </ul>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-text class="card-text"
+            <v-card-text
               >In case of not introducing a title and/or a game name, the base
               game will be used</v-card-text
             >
@@ -214,6 +210,12 @@ export default class NewNuzlocke extends Vue {
 
   back() {
     this.$router.push({ name: "nuzlockes" });
+  }
+
+  darkMode() {
+    if (this.$store.state.mode === "dark") {
+      return true;
+    }
   }
 }
 </script>

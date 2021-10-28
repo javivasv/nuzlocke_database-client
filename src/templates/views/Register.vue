@@ -4,7 +4,7 @@
       id="register-view"
       :style="{ backgroundImage: 'url(' + background + ')' }"
     >
-      <v-card>
+      <v-card :dark="darkMode()">
         <v-form v-on:submit.prevent="register()">
           <v-container>
             <v-col>
@@ -121,6 +121,12 @@ export default class Register extends Vue {
     }
 
     return valid;
+  }
+
+  darkMode() {
+    if (this.$store.state.mode === "dark") {
+      return true;
+    }
   }
 }
 </script>

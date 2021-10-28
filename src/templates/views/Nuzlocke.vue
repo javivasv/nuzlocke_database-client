@@ -10,7 +10,7 @@
         </h1>
       </v-row>
       <v-row class="content-row">
-        <v-card id="nuzlocke-card">
+        <v-card id="nuzlocke-card" :dark="darkMode()">
           <v-card-title>
             <v-row id="card-title-row">
               <v-col class="card-title-col" cols="8">
@@ -62,7 +62,10 @@
                   </template>
                   <template v-else-if="item.obtained === 'caught'">
                     <span>
-                      <v-icon class="iconify" data-icon="mdi:pokeball"></v-icon>
+                      <v-icon
+                        :class="iconMode()"
+                        data-icon="mdi:pokeball"
+                      ></v-icon>
                     </span>
                   </template>
                   <template v-else>
@@ -98,7 +101,7 @@
       <v-row class="title-row"></v-row>
       <v-row class="content-row">
         <v-col class="side-content-col">
-          <v-card class="info-card">
+          <v-card class="info-card" :dark="darkMode()">
             <v-fab-transition>
               <v-img
                 class="pokeball"
@@ -120,7 +123,7 @@
               </router-link>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-subtitle class="card-text"
+            <v-card-subtitle
               ><strong>Game status: </strong>{{ nuzlocke.status.toUpperCase() }}
             </v-card-subtitle>
             <v-row id="nuzlocke-status">
@@ -144,12 +147,12 @@
               >
             </v-row>
             <v-divider v-if="nuzlocke.description !== ''"></v-divider>
-            <v-card-text class="card-text" v-if="nuzlocke.description !== ''">{{
+            <v-card-text v-if="nuzlocke.description !== ''">{{
               nuzlocke.description
             }}</v-card-text>
           </v-card>
-          <v-card id="filters-card">
-            <v-card-subtitle class="card-text">
+          <v-card id="filters-card" :dark="darkMode()">
+            <v-card-subtitle>
               <strong>Status filters</strong>
             </v-card-subtitle>
             <v-row>
@@ -175,7 +178,7 @@
               </v-col>
             </v-row>
             <v-divider></v-divider>
-            <v-card-subtitle class="card-text">
+            <v-card-subtitle>
               <strong>Obtained filters</strong>
             </v-card-subtitle>
             <v-row>
@@ -492,12 +495,24 @@ export default class Nuzlocke extends Vue {
   }
 
   pokemonRowClass(status: Boolean, obtained: string) {
-    if (obtained !== "not") {
-      if (status) {
-        return "dead";
+    if (this.$store.state.mode === "dark") {
+      if (obtained !== "not") {
+        if (status) {
+          return "dead";
+        } else {
+          return "dark-row";
+        }
+      } else if (obtained === "not") {
+        return "not";
       }
-    } else if (obtained === "not") {
-      return "not";
+    } else {
+      if (obtained !== "not") {
+        if (status) {
+          return "dead";
+        }
+      } else if (obtained === "not") {
+        return "not";
+      }
     }
   }
 
@@ -554,6 +569,20 @@ export default class Nuzlocke extends Vue {
 
   back() {
     this.$router.push({ name: "nuzlockes" });
+  }
+
+  darkMode() {
+    if (this.$store.state.mode === "dark") {
+      return true;
+    }
+  }
+
+  iconMode() {
+    if (this.$store.state.mode === "dark") {
+      return "iconify dark-icon";
+    } else {
+      return "iconify";
+    }
   }
 }
 </script>
@@ -669,8 +698,18 @@ tr:hover {
   margin-right: 20px;
 }
 
+/*
 .v-data-table::v-deep .fa-chevron-left,
 .v-data-table::v-deep .fa-chevron-right {
   color: rgba(0, 0, 0, 0.54) !important;
+}
+*/
+
+.dark-row {
+  background-color: #424242 !important;
+}
+
+.dark-icon {
+  color: white;
 }
 </style>
