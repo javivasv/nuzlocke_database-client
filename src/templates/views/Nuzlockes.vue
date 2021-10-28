@@ -20,12 +20,19 @@
               </v-col>
               <v-col class="card-title-col" cols="4">
                 <v-btn
+                  color="white"
+                  text
                   class="delete-button"
                   v-if="!showDeleteButton"
                   @click="showDelete()"
                   >DELETE NUZLOCKE</v-btn
                 >
-                <v-btn id="cancel-button" v-else @click="cancelDelete()"
+                <v-btn
+                  color="white"
+                  text
+                  id="cancel-button"
+                  v-else
+                  @click="cancelDelete()"
                   >CANCEL DELETE</v-btn
                 >
               </v-col>
@@ -53,6 +60,8 @@
             <!-- eslint-disable-next-line -->
             <template #item.delete="{ item }">
               <v-btn
+                color="white"
+                text
                 class="delete-button"
                 v-if="showDeleteButton"
                 small
@@ -82,7 +91,9 @@
             </v-fab-transition>
             <v-card-title>
               <router-link :to="{ name: 'new-nuzlocke' }">
-                <v-btn class="action-button">New nuzlocke</v-btn>
+                <v-btn color="white" text class="action-button"
+                  >New nuzlocke</v-btn
+                >
               </router-link>
             </v-card-title>
             <v-divider></v-divider>
@@ -257,11 +268,4 @@ a {
 #cancel-button {
   background-color: #999999 !important;
 }
-
-/*
-.v-data-table::v-deep .fa-chevron-left,
-.v-data-table::v-deep .fa-chevron-right {
-  color: rgba(0, 0, 0, 0.54) !important;
-}
-*/
 </style>

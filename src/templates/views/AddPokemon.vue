@@ -2,7 +2,7 @@
   <v-row class="content" v-if="gotNuzlocke">
     <v-col cols="8" id="add-pokemon">
       <v-row class="title-row">
-        <v-btn class="action-button" @click="back()">
+        <v-btn color="white" text class="action-button" @click="back()">
           <v-icon>fa-arrow-left</v-icon>
         </v-btn>
         <h1 class="inner-view-title">
@@ -163,7 +163,11 @@
               ></v-img>
             </v-fab-transition>
             <v-card-title>
-              <v-btn class="action-button" @click="addPokemon()"
+              <v-btn
+                color="white"
+                text
+                class="action-button"
+                @click="addPokemon()"
                 >Add pokemon</v-btn
               >
             </v-card-title>

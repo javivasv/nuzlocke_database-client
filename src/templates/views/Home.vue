@@ -30,10 +30,14 @@
             v-if="this.$store.state.user.id === ''"
             :to="{ name: 'login' }"
           >
-            <v-btn class="action-button">LOGIN TO GET STARTED </v-btn>
+            <v-btn color="white" text class="action-button"
+              >LOGIN TO GET STARTED
+            </v-btn>
           </router-link>
           <router-link v-else :to="{ name: 'new-nuzlocke' }">
-            <v-btn class="action-button">CREATE NEW NUZLOCKE</v-btn>
+            <v-btn color="white" text class="action-button"
+              >CREATE NEW NUZLOCKE</v-btn
+            >
           </router-link>
         </v-card-text>
       </v-card>

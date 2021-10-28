@@ -45,7 +45,9 @@
                     label="Suggestion"
                     v-model="suggestion"
                   ></v-textarea>
-                  <v-btn class="action-button" type="submit">Send</v-btn>
+                  <v-btn color="white" text class="action-button" type="submit"
+                    >Send</v-btn
+                  >
                 </v-col>
               </v-container>
             </v-form>
@@ -62,6 +64,8 @@
           <v-card-text>
             <v-row class="contact-row">
               <v-btn
+                color="white"
+                text
                 class="twitter-button"
                 href="https://twitter.com/Javivasv"
                 target="_blank"
@@ -69,12 +73,12 @@
               >
             </v-row>
             <v-row class="contact-row">
-              <v-btn class="twitter-button"
+              <v-btn color="white" text class="twitter-button"
                 ><v-icon>fab fa-twitter</v-icon> @PNDB</v-btn
               >
             </v-row>
             <v-row class="contact-row">
-              <v-btn class="github-button"
+              <v-btn color="white" text class="github-button"
                 ><v-icon>fab fa-github</v-icon> Javivasv</v-btn
               >
             </v-row>

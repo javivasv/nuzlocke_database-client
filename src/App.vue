@@ -105,22 +105,9 @@ export default class extends Vue {
   background-color: $secondaryColor !important;
 }
 
-.v-btn {
-  color: white !important;
-}
-
 .input-row {
   margin-top: 20px !important;
 }
-
-/*
-.v-card__subtitle,
-.v-card__text,
-ul,
-p {
-  color: #999999 !important;
-}
-*/
 
 .v-card__title {
   justify-content: center;

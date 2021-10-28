@@ -2,7 +2,7 @@
   <v-row class="content">
     <v-col cols="8" id="new-nuzlocke">
       <v-row class="title-row">
-        <v-btn class="action-button" @click="back()">
+        <v-btn color="white" text class="action-button" @click="back()">
           <v-icon>fa-arrow-left</v-icon>
         </v-btn>
         <h1 class="inner-view-title">NEW NUZLOCKE</h1>
@@ -70,7 +70,11 @@
               ></v-img>
             </v-fab-transition>
             <v-card-title>
-              <v-btn class="action-button" @click="createNuzlocke()"
+              <v-btn
+                color="white"
+                text
+                class="action-button"
+                @click="createNuzlocke()"
                 >Create new nuzlocke</v-btn
               >
             </v-card-title>
@@ -240,11 +244,6 @@ export default class NewNuzlocke extends Vue {
 .info::v-deep .v-card__title {
   justify-content: center;
   margin-top: 60px;
-}
-
-.v-btn {
-  background-color: $secondaryColor !important;
-  color: white !important;
 }
 
 a {

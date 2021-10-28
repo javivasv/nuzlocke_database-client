@@ -2,7 +2,7 @@
   <v-row class="content" v-if="gotNuzlocke">
     <v-col cols="8" id="nuzlocke">
       <v-row class="title-row">
-        <v-btn class="action-button" @click="back()">
+        <v-btn color="white" text class="action-button" @click="back()">
           <v-icon>fa-arrow-left</v-icon>
         </v-btn>
         <h1 class="inner-view-title">
@@ -24,12 +24,19 @@
               </v-col>
               <v-col class="card-title-col" cols="4">
                 <v-btn
+                  color="white"
+                  text
                   class="delete-button"
                   v-if="!showDeleteButton"
                   @click="showDelete()"
                   >DELETE POKEMON</v-btn
                 >
-                <v-btn id="cancel-button" v-else @click="cancelDelete()"
+                <v-btn
+                  color="white"
+                  text
+                  id="cancel-button"
+                  v-else
+                  @click="cancelDelete()"
                   >CANCEL DELETE</v-btn
                 >
               </v-col>
@@ -74,6 +81,8 @@
                 </td>
                 <td>
                   <v-btn
+                    color="white"
+                    text
                     :class="statusButtonClass(item.dead)"
                     v-if="item.obtained !== 'not' && !showDeleteButton"
                     @click="changePokemonStatus(item)"
@@ -83,6 +92,8 @@
                     <v-icon v-else small>fa-heart</v-icon>
                   </v-btn>
                   <v-btn
+                    color="white"
+                    text
                     class="delete-button"
                     v-if="showDeleteButton"
                     small
@@ -119,7 +130,9 @@
                   params: { nuzlocke: nuzlocke }
                 }"
               >
-                <v-btn class="action-button">Add pokemon</v-btn>
+                <v-btn color="white" text class="action-button"
+                  >Add pokemon</v-btn
+                >
               </router-link>
             </v-card-title>
             <v-divider></v-divider>
@@ -128,18 +141,24 @@
             </v-card-subtitle>
             <v-row id="nuzlocke-status">
               <v-btn
+                color="white"
+                text
                 class="action-button"
                 v-if="nuzlocke.status !== 'started'"
                 @click="changeNuzlockeStatus('started')"
                 >Started</v-btn
               >
               <v-btn
+                color="white"
+                text
                 v-if="nuzlocke.status !== 'completed'"
                 id="completed-button"
                 @click="changeNuzlockeStatus('completed')"
                 >Completed</v-btn
               >
               <v-btn
+                color="white"
+                text
                 v-if="nuzlocke.status !== 'lost'"
                 id="lost-button"
                 @click="changeNuzlockeStatus('lost')"
@@ -240,7 +259,13 @@
             </v-row>
           </v-card>
           <v-row id="pdf-row">
-            <v-btn id="pdf-button" class="action-button" @click="downloadPDF()">
+            <v-btn
+              color="white"
+              text
+              id="pdf-button"
+              class="action-button"
+              @click="downloadPDF()"
+            >
               <v-progress-circular
                 id="pdf-icon"
                 v-if="download"
@@ -698,14 +723,8 @@ tr:hover {
   margin-right: 20px;
 }
 
-/*
-.v-data-table::v-deep .fa-chevron-left,
-.v-data-table::v-deep .fa-chevron-right {
-  color: rgba(0, 0, 0, 0.54) !important;
-}
-*/
-
-.dark-row {
+.dark-row,
+.dark-row:hover {
   background-color: #424242 !important;
 }
 
