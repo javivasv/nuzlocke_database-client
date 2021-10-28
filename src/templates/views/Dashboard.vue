@@ -35,7 +35,7 @@
               </v-list>
 
               <v-switch
-                v-model="darkMode"
+                :input-value="darkMode()"
                 label="Dark mode"
                 @change="changeMode($event)"
                 color="#ee1515"
@@ -97,8 +97,6 @@ export default class Dashboard extends Vue {
     { title: "Home", icon: "fa-home", link: "home" },
     { title: "About", icon: "fa-info", link: "about" }
   ];
-
-  darkMode = false;
 
   mounted() {
     this.$root.$on("logout", () => {
@@ -176,6 +174,14 @@ export default class Dashboard extends Vue {
     }
   }
 
+  darkMode() {
+    if (this.$store.state.mode === "light") {
+      false;
+    } else if (this.$store.state.mode === "dark") {
+      return true;
+    }
+  }
+
   changeMode(event: any) {
     if (event) {
       this.$store.state.mode = "dark";
@@ -227,5 +233,9 @@ export default class Dashboard extends Vue {
   height: 100%;
   position: relative;
   background-repeat: repeat;
+}
+
+.v-input::v-deep .v-label {
+  color: white;
 }
 </style>

@@ -45,6 +45,17 @@ export default new Vuex.Store({
       } else {
         return true;
       }
+    },
+    async CHECK_MODE() {
+      if (
+        localStorage.getItem("pndb_mode") === "" ||
+        localStorage.getItem("pndb_mode") === null
+      ) {
+        localStorage.setItem("pndb_mode", "light");
+        this.state.mode = "light";
+      } else {
+        this.state.mode = localStorage.getItem("pndb_mode");
+      }
     }
   },
   modules: {}

@@ -1,5 +1,5 @@
 <template>
-  <v-app :style="{ backgroundImage: 'url(' + background + ')' }">
+  <v-app :style="{ backgroundImage: 'url(' + background() + ')' }">
     <div id="pdf">
       <v-col id="container">
         <v-row id="logo" justify="center"></v-row>
@@ -15,10 +15,14 @@
         <v-row id="pokemon" justify="center">
           <v-col>
             <div v-for="(chunk, index) of chunks" :key="index">
-              <v-card id="pokemon-card" :class="cardClass(index)">
+              <v-card
+                id="pokemon-card"
+                :class="cardClass(index)"
+                :dark="darkMode()"
+              >
                 <v-simple-table class="table">
                   <thead>
-                    <tr>
+                    <tr :class="headerMode()">
                       <th
                         v-for="header of headers"
                         :key="header.text"
@@ -82,7 +86,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component({})
 export default class PDF extends Vue {
   @Prop() private nuzlocke!: any;
-  background = require("../../../public/img/pokeball_pattern_opaque.png");
+  contentBackground = require("../../../public/img/pokeball_pattern_opaque.png");
+  contentBackgroundDark = require("../../../public/img/pokeball_pattern_dark_opaque.png");
   headers = [
     { text: "" },
     { text: "Nickname" },
@@ -108,12 +113,24 @@ export default class PDF extends Vue {
   }
 
   pokemonRowClass(status: Boolean, obtained: string) {
-    if (obtained !== "not") {
-      if (status) {
-        return "dead";
+    if (this.$store.state.mode === "dark") {
+      if (obtained !== "not") {
+        if (status) {
+          return "dead";
+        } else {
+          return "dark-row";
+        }
+      } else if (obtained === "not") {
+        return "not";
       }
-    } else if (obtained === "not") {
-      return "not";
+    } else {
+      if (obtained !== "not") {
+        if (status) {
+          return "dead";
+        }
+      } else if (obtained === "not") {
+        return "not";
+      }
     }
   }
 
@@ -138,6 +155,26 @@ export default class PDF extends Vue {
       return "first-card";
     } else {
       return "not-first-card";
+    }
+  }
+
+  background() {
+    if (this.$store.state.mode === "light") {
+      return this.contentBackground;
+    } else {
+      return this.contentBackgroundDark;
+    }
+  }
+
+  darkMode() {
+    if (this.$store.state.mode === "dark") {
+      return true;
+    }
+  }
+
+  headerMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-row";
     }
   }
 }
@@ -195,5 +232,9 @@ tr {
 
 .not {
   background-color: #d3d3d3 !important;
+}
+
+.dark-row {
+  background-color: #424242 !important;
 }
 </style>

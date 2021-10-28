@@ -70,6 +70,7 @@ const routes = [
 ];
 
 async function checkAuth(to: any, from: any, next: any) {
+  await store.dispatch("CHECK_MODE");
   const isAuthenticated = await store.dispatch("GET_AUTH");
 
   if (isAuthenticated) {
