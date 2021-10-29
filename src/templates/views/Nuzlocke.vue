@@ -70,7 +70,7 @@
                   <template v-else-if="item.obtained === 'caught'">
                     <span>
                       <svg
-                        v-if="iconMode()"
+                        v-if="darkMode()"
                         xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink"
                         aria-hidden="true"
@@ -626,15 +626,7 @@ export default class Nuzlocke extends Vue {
   }
 
   darkMode() {
-    if (this.$store.state.mode === "dark") {
-      return true;
-    }
-  }
-
-  iconMode() {
-    if (this.$store.state.mode === "dark") {
-      return true;
-    }
+    return this.$store.state.mode === "dark";
   }
 }
 </script>

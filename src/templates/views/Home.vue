@@ -180,9 +180,7 @@ export default class Home extends Vue {
   }
 
   darkMode() {
-    if (this.$store.state.mode === "dark") {
-      return true;
-    }
+    return this.$store.state.mode === "dark";
   }
 
   previewMode() {

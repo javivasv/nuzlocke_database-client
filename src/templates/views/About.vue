@@ -109,9 +109,7 @@ export default class About extends Vue {
   suggestion = "";
 
   darkMode() {
-    if (this.$store.state.mode === "dark") {
-      return true;
-    }
+    return this.$store.state.mode === "dark";
   }
 
   sendSuggestion() {

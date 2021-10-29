@@ -38,7 +38,7 @@ export default new Vuex.Store({
 
       return true;
     },
-    async CHECK_MODE() {
+    CHECK_MODE() {
       if (getMode()) {
         localStorage.setItem("pndb_mode", "light");
         this.state.mode = "light";
