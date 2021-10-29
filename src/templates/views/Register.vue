@@ -115,7 +115,7 @@ export default class Register extends Vue {
     }
 
     if (this.password !== this.passwordConfirmation) {
-      this.passwordConfirmationErrorMsg = "The passwords does not match";
+      this.passwordConfirmationErrorMsg = "The passwords do not match";
       this.passwordConfirmationError = true;
       valid = false;
     }

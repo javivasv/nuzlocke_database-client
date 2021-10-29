@@ -375,7 +375,8 @@ export default class AddPokemon extends Vue {
       }
     }
 
-    if (regions[0] === "johto") {
+    const regionZero = regions[0];
+    if (regionZero === "johto") {
       regions.push("kanto");
     }
 
@@ -386,23 +387,23 @@ export default class AddPokemon extends Vue {
           const locationsNames = res.data.locations.map((location: any) => {
             let locationName = location.name.replaceAll("-", " ");
 
-            if (regions[0] === "kanto") {
+            if (regionZero === "kanto") {
               locationName = locationName.replace("kanto ", "");
-            } else if (regions[0] === "johto") {
+            } else if (regionZero === "johto") {
               locationName = locationName
                 .replace("kanto ", "")
                 .replace("johto ", "");
-            } else if (regions[0] === "hoenn") {
+            } else if (regionZero === "hoenn") {
               locationName = locationName.replace("hoenn ", "");
-            } else if (regions[0] === "sinnoh") {
+            } else if (regionZero === "sinnoh") {
               locationName = locationName.replace("sinnoh ", "");
-            } else if (regions[0] === "unova") {
+            } else if (regionZero === "unova") {
               locationName = locationName.replace("unova ", "");
-            } else if (regions[0] === "kalos") {
+            } else if (regionZero === "kalos") {
               locationName = locationName.replace("kalos ", "");
-            } else if (regions[0] === "alola") {
+            } else if (regionZero === "alola") {
               locationName = locationName.replace("alola ", "");
-            } else if (regions[0] === "galar") {
+            } else if (regionZero === "galar") {
               locationName = locationName.replace("galar ", "");
             }
 

@@ -427,7 +427,7 @@ export default class Nuzlocke extends Vue {
     const pokemonId = pokemon._id;
     service
       .changePokemonStatus(userId, nuzlockeId, pokemonId)
-      .then(res => {
+      .then(() => {
         pokemon.dead = !pokemon.dead;
       })
       .catch(error => {
@@ -482,15 +482,10 @@ export default class Nuzlocke extends Vue {
       });
     } else if (this.statusFilter !== "" && this.obtainedFilter !== "") {
       this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        if (this.statusFilter === "alive") {
-          return (
-            pokemon.dead === false && pokemon.obtained === this.obtainedFilter
-          );
-        } else {
-          return (
-            pokemon.dead === true && pokemon.obtained === this.obtainedFilter
-          );
-        }
+        return (
+          pokemon.dead === (this.statusFilter !== "alive") &&
+          pokemon.obtained === this.obtainedFilter
+        );
       });
     }
   }
@@ -515,32 +510,11 @@ export default class Nuzlocke extends Vue {
     this.obtainedFilter = obtained;
 
     if (event) {
-      if (obtained === "caught") {
-        this.giftedCheckbox = false;
-        this.hatchedCheckbox = false;
-        this.tradedCheckbox = false;
-        this.notCheckbox = false;
-      } else if (obtained === "gifted") {
-        this.caughtCheckbox = false;
-        this.hatchedCheckbox = false;
-        this.tradedCheckbox = false;
-        this.notCheckbox = false;
-      } else if (obtained === "hatched") {
-        this.caughtCheckbox = false;
-        this.giftedCheckbox = false;
-        this.tradedCheckbox = false;
-        this.notCheckbox = false;
-      } else if (obtained === "traded") {
-        this.caughtCheckbox = false;
-        this.giftedCheckbox = false;
-        this.hatchedCheckbox = false;
-        this.notCheckbox = false;
-      } else if (obtained === "not") {
-        this.caughtCheckbox = false;
-        this.giftedCheckbox = false;
-        this.hatchedCheckbox = false;
-        this.tradedCheckbox = false;
-      }
+      this.caughtCheckbox = obtained === "caught";
+      this.giftedCheckbox = obtained === "gifted";
+      this.hatchedCheckbox = obtained === "hatched";
+      this.tradedCheckbox = obtained === "traded";
+      this.notCheckbox = obtained === "not";
     } else {
       this.obtainedFilter = "";
     }
