@@ -1,3 +1,5 @@
+export const pokeApiBaseUrl = "https://pokeapi.co/api/v2";
+
 export const games = [
   "Pokemon Blue",
   "Pokemon Red",

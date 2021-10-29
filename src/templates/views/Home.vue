@@ -162,13 +162,13 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import * as staticInfo from "../../utils/staticInfo";
+import * as constants from "../../utils/constants";
 import VueYouTubeEmbed from "vue-youtube-embed";
 Vue.use(VueYouTubeEmbed);
 
 @Component({})
 export default class Home extends Vue {
-  videos = staticInfo.videos.sort(() => Math.random() - 0.5);
+  videos = constants.videos.sort(() => Math.random() - 0.5);
   videoId = this.videos[0].id;
 
   selectVideo(videoId: string) {

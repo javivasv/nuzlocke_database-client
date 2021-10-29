@@ -1,4 +1,5 @@
 import SETTINGS from "../settings";
+import { pokeApiBaseUrl } from "../utils/constants";
 import axios from "axios";
 
 // LOGIN
@@ -133,21 +134,17 @@ export async function deletePokemon(
 
 // ADD POKEMON
 export async function getPokemon() {
-  let axiosRes = await axios.get(
-    "https://pokeapi.co/api/v2/pokemon/?limit=898"
-  );
+  let axiosRes = await axios.get(`${pokeApiBaseUrl}/pokemon/?limit=898`);
   return axiosRes;
 }
 
 export async function getLocations(region: string) {
-  let axiosRes = await axios.get("https://pokeapi.co/api/v2/region/" + region);
+  let axiosRes = await axios.get(`${pokeApiBaseUrl}/region/` + region);
   return axiosRes;
 }
 
 export async function getPokemonSprite(pokemonName: string) {
-  let axiosRes = await axios.get(
-    "https://pokeapi.co/api/v2/pokemon/" + pokemonName
-  );
+  let axiosRes = await axios.get(`${pokeApiBaseUrl}/pokemon/` + pokemonName);
   return axiosRes;
 }
 

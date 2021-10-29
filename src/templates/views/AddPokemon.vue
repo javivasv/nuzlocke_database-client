@@ -237,7 +237,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import * as service from "../../services/requests.service";
-import * as staticInfo from "../../utils/staticInfo";
+import * as constants from "../../utils/constants";
 
 @Component({})
 export default class AddPokemon extends Vue {
@@ -247,12 +247,12 @@ export default class AddPokemon extends Vue {
   gotPokemons = false;
   locations = [] as any;
   gotLocations = false;
-  obtainedOptions = staticInfo.obtainedOptions;
+  obtainedOptions = constants.obtainedOptions;
   species = "";
   nickname = "";
   location = "";
   obtained = "";
-  gamesRegions = staticInfo.regionsGames;
+  gamesRegions = constants.regionsGames;
   sprite = "";
   original = false;
   shiny = false;
@@ -323,11 +323,11 @@ export default class AddPokemon extends Vue {
 
           this.pokemons.push(`${pokemonNumber} - ${pokemon.name}`);
 
-          if (staticInfo.alolanVariants.includes(pokemon.name)) {
+          if (constants.alolanVariants.includes(pokemon.name)) {
             this.pokemons.push(`${pokemonNumber} - ${pokemon.name}-alola`);
           }
 
-          if (staticInfo.galarianVariants.includes(pokemon.name)) {
+          if (constants.galarianVariants.includes(pokemon.name)) {
             this.pokemons.push(`${pokemonNumber} - ${pokemon.name}-galar`);
           }
 

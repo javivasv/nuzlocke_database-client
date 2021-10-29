@@ -132,7 +132,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import * as service from "../../services/requests.service";
-import * as staticInfo from "../../utils/staticInfo";
+import * as constants from "../../utils/constants";
 
 @Component({})
 export default class NewNuzlocke extends Vue {
@@ -140,7 +140,7 @@ export default class NewNuzlocke extends Vue {
   baseGame = "";
   game = "";
   description = "";
-  games = staticInfo.games;
+  games = constants.games;
   original = false;
   gameError = false;
   baseGameError = false;
