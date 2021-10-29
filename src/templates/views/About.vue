@@ -73,14 +73,20 @@
               >
             </v-row>
             <v-row class="contact-row">
-              <v-btn color="white" text class="twitter-button"
-                ><v-icon>fab fa-twitter</v-icon> @PNDB</v-btn
-              >
+              <v-btn color="white" text class="twitter-button">
+                <v-icon>fab fa-twitter</v-icon> @PNDB
+              </v-btn>
             </v-row>
             <v-row class="contact-row">
-              <v-btn color="white" text class="github-button"
-                ><v-icon>fab fa-github</v-icon> Javivasv</v-btn
+              <v-btn
+                color="white"
+                text
+                class="github-button"
+                href="https://github.com/javivasv/nuzlocke_database-client"
+                target="_blank"
               >
+                <v-icon>fab fa-github</v-icon> Javivasv
+              </v-btn>
             </v-row>
           </v-card-text>
         </v-card>
