@@ -74,9 +74,7 @@ async function checkAuth(to: any, from: any, next: any) {
   const isAuthenticated = await store.dispatch("GET_AUTH");
 
   if (isAuthenticated) {
-    if (to.name === "login" || to.name === "register") {
-      next({ name: "home" });
-    } else if (to.path === "/") {
+    if (to.name === "login" || to.name === "register" || to.path === "/") {
       next({ name: "home" });
     } else {
       next();
@@ -86,10 +84,9 @@ async function checkAuth(to: any, from: any, next: any) {
       to.name === "nuzlockes" ||
       to.name === "new-nuzlocke" ||
       to.name === "nuzlocke" ||
-      to.name === "add-pokemon"
+      to.name === "add-pokemon" ||
+      to.path === "/"
     ) {
-      next({ name: "home" });
-    } else if (to.path === "/") {
       next({ name: "home" });
     } else {
       next();
@@ -101,10 +98,6 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
-});
-
-router.beforeEach((to, from, next) => {
-  next();
 });
 
 export default router;

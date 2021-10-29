@@ -17,10 +17,7 @@ export default new Vuex.Store({
   actions: {
     async GET_AUTH() {
       if (this.state.user.id === "") {
-        if (
-          localStorage.getItem("pndb_user_id") === "" ||
-          localStorage.getItem("pndb_user_id") === null
-        ) {
+        if (getId()) {
           return false;
         } else {
           try {
@@ -30,27 +27,19 @@ export default new Vuex.Store({
               }
             });
 
-            this.state.user.id = localStorage.getItem("pndb_user_id") as any;
-            this.state.user.username = localStorage.getItem(
-              "pndb_username"
-            ) as any;
+            setState();
             return true;
           } catch (error) {
-            localStorage.setItem("pndb_jwt", "");
-            localStorage.setItem("pndb_user_id", "");
-            localStorage.setItem("pndb_username", "");
+            emptyStorage();
             return false;
           }
         }
-      } else {
-        return true;
       }
+
+      return true;
     },
     async CHECK_MODE() {
-      if (
-        localStorage.getItem("pndb_mode") === "" ||
-        localStorage.getItem("pndb_mode") === null
-      ) {
+      if (getMode()) {
         localStorage.setItem("pndb_mode", "light");
         this.state.mode = "light";
       } else {
@@ -60,3 +49,28 @@ export default new Vuex.Store({
   },
   modules: {}
 });
+
+function getId() {
+  return (
+    localStorage.getItem("pndb_user_id") === "" ||
+    localStorage.getItem("pndb_user_id") === null
+  );
+}
+
+function getMode() {
+  return (
+    localStorage.getItem("pndb_mode") === "" ||
+    localStorage.getItem("pndb_mode") === null
+  );
+}
+
+function setState() {
+  this.state.user.id = localStorage.getItem("pndb_user_id") as any;
+  this.state.user.username = localStorage.getItem("pndb_username") as any;
+}
+
+function emptyStorage() {
+  localStorage.setItem("pndb_jwt", "");
+  localStorage.setItem("pndb_user_id", "");
+  localStorage.setItem("pndb_username", "");
+}
