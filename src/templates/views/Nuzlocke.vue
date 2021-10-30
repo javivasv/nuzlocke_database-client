@@ -5,7 +5,7 @@
         <v-btn color="white" text class="action-button" @click="back()">
           <v-icon>fa-arrow-left</v-icon>
         </v-btn>
-        <h1 class="inner-view-title">
+        <h1 class="inner-view-title" :class="titleMode()">
           NUZLOCKE - {{ nuzlocke.title.toUpperCase() }}
         </h1>
       </v-row>
@@ -602,6 +602,12 @@ export default class Nuzlocke extends Vue {
   darkMode() {
     return this.$store.state.mode === "dark";
   }
+
+  titleMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-title";
+    }
+  }
 }
 </script>
 
@@ -637,7 +643,8 @@ export default class Nuzlocke extends Vue {
   margin-bottom: 15px !important;
 }
 
-#completed-button {
+#completed-button,
+.alive-button {
   background-color: rgb(20, 194, 43) !important;
 }
 
@@ -690,11 +697,7 @@ tr:hover {
 
 .dead-button,
 .delete-button {
-  background-color: rgb(241, 60, 60) !important;
-}
-
-.alive-button {
-  background-color: rgb(20, 194, 43) !important;
+  background-color: $primaryColor !important;
 }
 
 #card-title-row,

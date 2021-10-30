@@ -178,6 +178,7 @@ export default class About extends Vue {
 
 a {
   text-decoration: none;
+  color: $primaryColor;
 }
 
 .contact-row {

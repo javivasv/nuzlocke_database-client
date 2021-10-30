@@ -2,7 +2,7 @@
   <v-row class="content">
     <v-col cols="8" id="nuzlockes">
       <v-row class="title-row">
-        <h1>NUZLOCKES</h1>
+        <h1 :class="titleMode()">NUZLOCKES</h1>
       </v-row>
       <v-row class="content-row">
         <v-card id="nuzlockes-card" :dark="darkMode()">
@@ -219,6 +219,12 @@ export default class Nuzlockes extends Vue {
   darkMode() {
     return this.$store.state.mode === "dark";
   }
+
+  titleMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-title";
+    }
+  }
 }
 </script>
 
@@ -250,6 +256,7 @@ export default class Nuzlockes extends Vue {
 
 a {
   text-decoration: none;
+  color: $primaryColor;
 }
 
 #card-title-row,
@@ -260,7 +267,7 @@ a {
 }
 
 .delete-button {
-  background-color: rgb(241, 60, 60) !important;
+  background-color: $primaryColor !important;
 }
 
 #cancel-button {

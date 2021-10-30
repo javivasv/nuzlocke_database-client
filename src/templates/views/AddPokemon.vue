@@ -5,7 +5,7 @@
         <v-btn color="white" text class="action-button" @click="back()">
           <v-icon>fa-arrow-left</v-icon>
         </v-btn>
-        <h1 class="inner-view-title">
+        <h1 class="inner-view-title" :class="titleMode()">
           ADD POKEMON TO: {{ nuzlocke.title.toUpperCase() }}
         </h1>
       </v-row>
@@ -578,6 +578,12 @@ export default class AddPokemon extends Vue {
 
   darkMode() {
     return this.$store.state.mode === "dark";
+  }
+
+  titleMode() {
+    if (this.$store.state.mode === "dark") {
+      return "dark-title";
+    }
   }
 }
 </script>

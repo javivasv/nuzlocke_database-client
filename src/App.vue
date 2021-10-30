@@ -112,4 +112,8 @@ export default class extends Vue {
 .v-card__title {
   justify-content: center;
 }
+
+.dark-title {
+  color: #424242;
+}
 </style>
