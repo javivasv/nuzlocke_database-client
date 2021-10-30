@@ -51,12 +51,18 @@
             <template #item="{ item }">
               <tr :class="pokemonRowClass(item.dead, item.obtained)">
                 <td :class="tdClass(item.dead)">
-                  <v-avatar size="80" tile>
+                  <v-avatar size="78" tile>
                     <v-img :src="item.sprite"></v-img>
                   </v-avatar>
                 </td>
                 <td :class="tdClass(item.dead)">{{ item.nickname }}</td>
                 <td :class="tdClass(item.dead)">{{ item.number }}</td>
+                <td :class="tdClass(item.dead)">
+                  {{ item.species.toUpperCase() }}
+                </td>
+                <td :class="tdClass(item.dead)">
+                  {{ item.species.toUpperCase() }}
+                </td>
                 <td :class="tdClass(item.dead)">
                   {{ item.species.toUpperCase() }}
                 </td>
@@ -351,6 +357,8 @@ export default class Nuzlocke extends Vue {
     { text: "Nickname", value: "nickname", align: "center", sortable: true },
     { text: "Number", value: "number", align: "center", sortable: true },
     { text: "Species", value: "species", align: "center", sortable: true },
+    { text: "Original", value: "original", align: "center", sortable: true },
+    { text: "Types", value: "types", align: "center", sortable: false },
     { text: "Location", value: "location", align: "center", sortable: true },
     { text: "Obtained", value: "obtained", align: "center", sortable: false },
     {
@@ -722,5 +730,14 @@ tr:hover {
 .dark-row,
 .dark-row:hover {
   background-color: #424242 !important;
+}
+
+.v-data-table::v-deep th,
+td {
+  padding: 0 !important;
+}
+
+td {
+  font-size: 0.75rem !important;
 }
 </style>
