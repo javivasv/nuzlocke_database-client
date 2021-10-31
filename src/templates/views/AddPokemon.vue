@@ -706,6 +706,14 @@ export default class AddPokemon extends Vue {
       return;
     }
 
+    let obtainedAs: string;
+    if (this.obtained === "not") {
+      obtainedAs = "";
+      this.nickname = "";
+    } else {
+      obtainedAs = this.species.toUpperCase();
+    }
+
     let data: any;
     if (this.original) {
       data = {
@@ -713,7 +721,7 @@ export default class AddPokemon extends Vue {
         location: this.location.toLowerCase(),
         obtained: this.obtained,
         number: this.number,
-        obtainedAs: this.species.toLowerCase(),
+        obtainedAs,
         original: this.original,
         species: this.species.toLowerCase(),
         sprite: this.sprite,
@@ -726,7 +734,7 @@ export default class AddPokemon extends Vue {
         location: this.location,
         obtained: this.obtained,
         number: pokemon[0],
-        obtainedAs: pokemon[2],
+        obtainedAs,
         original: this.original,
         species: pokemon[2],
         sprite: this.sprite,
@@ -812,10 +820,6 @@ export default class AddPokemon extends Vue {
     if (this.obtained === "" || this.obtained === undefined) {
       this.obtainedError = true;
       valid = false;
-    }
-
-    if (this.obtained === "not") {
-      this.nickname = "";
     }
 
     return valid;

@@ -124,6 +124,7 @@ export default class extends Vue {
   margin: 0 10px;
   display: inline-flex !important;
   align-items: center;
+  justify-content: center;
 }
 
 .normal {

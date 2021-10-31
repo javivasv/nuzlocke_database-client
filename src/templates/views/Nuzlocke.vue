@@ -61,7 +61,11 @@
                   {{ item.species.toUpperCase() }}
                 </td>
                 <td :class="tdClass(item.dead)">
-                  {{ item.obtainedAs.toUpperCase() }}
+                  {{
+                    item.obtained === "not"
+                      ? "-"
+                      : item.obtainedAs.toUpperCase()
+                  }}
                 </td>
                 <td :class="tdClass(item.dead)">
                   <v-row
