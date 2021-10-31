@@ -63,7 +63,8 @@ export default class extends Vue {
 }
 
 .side-content-col {
-  padding: 0 !important;
+  height: fit-content !important;
+  padding: 0 0 10px 0 !important;
 }
 
 .info {
