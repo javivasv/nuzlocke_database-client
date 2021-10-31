@@ -223,31 +223,45 @@
             <v-card-text v-if="nuzlocke.description !== ''">{{
               nuzlocke.description
             }}</v-card-text>
+            <v-divider></v-divider>
+            <v-row id="pdf-row" justify="center">
+              <v-btn
+                color="white"
+                text
+                class="action-button"
+                @click="downloadPDF()"
+              >
+                <v-progress-circular
+                  id="pdf-icon"
+                  v-if="download"
+                  indeterminate
+                  :size="24"
+                  :width="5"
+                  color="white"
+                >
+                </v-progress-circular>
+                <v-icon v-else id="pdf-icon">fa-file-pdf</v-icon>DOWNLOAD</v-btn
+              >
+            </v-row>
           </v-card>
           <v-card id="filters-card" :dark="darkMode()">
             <v-card-subtitle>
               <strong>Status filters</strong>
             </v-card-subtitle>
             <v-row>
-              <v-col class="filter-col">
+              <v-col
+                cols="6"
+                class="filter-col"
+                v-for="(n, index) in statusOptions.length"
+                :key="index"
+              >
                 <v-row>
                   <v-checkbox
                     dense
                     class="filter-checkbox"
-                    label="Alive"
-                    v-model="aliveCheckbox"
-                    @change="filterByStatus($event, 'alive')"
-                  ></v-checkbox>
-                </v-row>
-              </v-col>
-              <v-col class="filter-col">
-                <v-row>
-                  <v-checkbox
-                    dense
-                    class="filter-checkbox"
-                    label="Dead"
-                    v-model="deadCheckbox"
-                    @change="filterByStatus($event, 'dead')"
+                    :label="checkboxLabel(statusOptions[index])"
+                    :value="statusCheckboxValue(statusOptions[index])"
+                    @change="filterByStatus($event, statusOptions[index])"
                   ></v-checkbox>
                 </v-row>
               </v-col>
@@ -257,88 +271,57 @@
               <strong>Obtained filters</strong>
             </v-card-subtitle>
             <v-row>
-              <v-col class="filter-col">
+              <v-col
+                cols="6"
+                class="filter-col"
+                v-for="(n, index) in obtainedOptions.length - 1"
+                :key="index"
+              >
                 <v-row>
                   <v-checkbox
                     dense
                     class="filter-checkbox"
-                    label="Caught"
-                    v-model="caughtCheckbox"
-                    @change="filterByObtained($event, 'caught')"
+                    :label="checkboxLabel(obtainedOptions[index])"
+                    :value="obtainedCheckboxValue(obtainedOptions[index])"
+                    @change="filterByObtained($event, obtainedOptions[index])"
                   ></v-checkbox>
                 </v-row>
               </v-col>
-              <v-col class="filter-col">
-                <v-row>
-                  <v-checkbox
-                    dense
-                    class="filter-checkbox"
-                    label="Gifted"
-                    v-model="giftedCheckbox"
-                    @change="filterByObtained($event, 'gifted')"
-                  ></v-checkbox>
-                </v-row>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col class="filter-col">
-                <v-row>
-                  <v-checkbox
-                    dense
-                    class="filter-checkbox"
-                    label="Hatched"
-                    v-model="hatchedCheckbox"
-                    @change="filterByObtained($event, 'hatched')"
-                  ></v-checkbox>
-                </v-row>
-              </v-col>
-              <v-col class="filter-col">
-                <v-row>
-                  <v-checkbox
-                    dense
-                    class="filter-checkbox"
-                    label="Traded"
-                    v-model="tradedCheckbox"
-                    @change="filterByObtained($event, 'traded')"
-                  ></v-checkbox>
-                </v-row>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col class="filter-col">
+              <v-col cols="6" class="filter-col">
                 <v-row>
                   <v-checkbox
                     dense
                     class="filter-checkbox"
                     label="Not caught"
-                    v-model="notCheckbox"
                     @change="filterByObtained($event, 'not')"
                   ></v-checkbox>
                 </v-row>
               </v-col>
-              <v-col></v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-card-subtitle>
+              <strong>Type filters</strong>
+            </v-card-subtitle>
+            <v-row>
+              <v-col
+                cols="4"
+                class="filter-col"
+                v-for="(n, index) in typeOptions.length"
+                :key="index"
+              >
+                <v-row>
+                  <v-checkbox
+                    dense
+                    :color="typeCheckboxColor(typeOptions[index])"
+                    class="filter-checkbox"
+                    :label="checkboxLabel(typeOptions[index])"
+                    :value="typeCheckboxValue(typeOptions[index])"
+                    @change="filterByType($event, typeOptions[index])"
+                  ></v-checkbox>
+                </v-row>
+              </v-col>
             </v-row>
           </v-card>
-          <v-row id="pdf-row">
-            <v-btn
-              color="white"
-              text
-              id="pdf-button"
-              class="action-button"
-              @click="downloadPDF()"
-            >
-              <v-progress-circular
-                id="pdf-icon"
-                v-if="download"
-                indeterminate
-                :size="24"
-                :width="5"
-                color="white"
-              >
-              </v-progress-circular>
-              <v-icon v-else id="pdf-icon">fa-file-pdf</v-icon>DOWNLOAD</v-btn
-            >
-          </v-row>
         </v-col>
       </v-row>
     </v-col>
@@ -369,6 +352,7 @@ import { Component, Vue } from "vue-property-decorator";
 import PDF from "../components/PDF.vue";
 import * as service from "../../services/requests.service";
 import VueHtml2pdf from "vue-html2pdf";
+import * as constants from "../../utils/constants";
 
 @Component({
   components: {
@@ -402,16 +386,13 @@ export default class Nuzlocke extends Vue {
   gotNuzlocke = false;
   nuzlocke: any;
   pokemon = [] as any;
-  aliveCheckbox = false;
-  deadCheckbox = false;
-  caughtCheckbox = false;
-  giftedCheckbox = false;
-  hatchedCheckbox = false;
-  tradedCheckbox = false;
-  notCheckbox = false;
   showDeleteButton = false;
+  statusOptions = ["alive", "dead"];
   statusFilter = "";
+  obtainedOptions = constants.obtainedOptions;
   obtainedFilter = "";
+  typeOptions = constants.types;
+  typeFilter = "";
   download = false;
 
   created() {
@@ -504,27 +485,35 @@ export default class Nuzlocke extends Vue {
       });
   }
 
+  checkboxLabel(filter: string) {
+    const filterArray = Array.from(filter);
+    filterArray[0] = filterArray[0].toUpperCase();
+    filter = filterArray.join("");
+    return filter;
+  }
+
   filterPokemon() {
     this.pokemon = this.nuzlocke.pokemon;
 
-    if (this.statusFilter !== "" && this.obtainedFilter === "") {
-      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        if (this.statusFilter === "alive") {
+    if (this.statusFilter !== "") {
+      this.pokemon = this.pokemon.filter((pokemon: any) => {
+        if (this.statusFilter === "alive" && pokemon.obtained !== "not") {
           return pokemon.dead === false;
         } else {
           return pokemon.dead === true;
         }
       });
-    } else if (this.statusFilter === "" && this.obtainedFilter !== "") {
-      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
+    }
+
+    if (this.obtainedFilter !== "") {
+      this.pokemon = this.pokemon.filter((pokemon: any) => {
         return pokemon.obtained === this.obtainedFilter;
       });
-    } else if (this.statusFilter !== "" && this.obtainedFilter !== "") {
-      this.pokemon = this.nuzlocke.pokemon.filter((pokemon: any) => {
-        return (
-          pokemon.dead === (this.statusFilter !== "alive") &&
-          pokemon.obtained === this.obtainedFilter
-        );
+    }
+
+    if (this.typeFilter !== "") {
+      this.pokemon = this.pokemon.filter((pokemon: any) => {
+        return pokemon.types.includes(this.typeFilter);
       });
     }
   }
@@ -532,33 +521,83 @@ export default class Nuzlocke extends Vue {
   filterByStatus(event: any, status: string) {
     this.statusFilter = status;
 
-    if (event) {
-      if (status === "alive") {
-        this.deadCheckbox = false;
-      } else if (status === "dead") {
-        this.aliveCheckbox = false;
-      }
-    } else {
+    if (!event) {
       this.statusFilter = "";
     }
 
     this.filterPokemon();
   }
 
+  statusCheckboxValue(status: string) {
+    return this.statusFilter === status;
+  }
+
   filterByObtained(event: any, obtained: string) {
     this.obtainedFilter = obtained;
 
-    if (event) {
-      this.caughtCheckbox = obtained === "caught";
-      this.giftedCheckbox = obtained === "gifted";
-      this.hatchedCheckbox = obtained === "hatched";
-      this.tradedCheckbox = obtained === "traded";
-      this.notCheckbox = obtained === "not";
-    } else {
+    if (!event) {
       this.obtainedFilter = "";
     }
 
     this.filterPokemon();
+  }
+
+  obtainedCheckboxValue(obtained: string) {
+    return this.obtainedFilter === obtained;
+  }
+
+  filterByType(event: any, type: string) {
+    this.typeFilter = type;
+
+    if (!event) {
+      this.typeFilter = "";
+    }
+
+    this.filterPokemon();
+  }
+
+  typeCheckboxValue(type: string) {
+    return this.typeFilter === type;
+  }
+
+  typeCheckboxColor(type: string) {
+    if (type === "normal") {
+      return "#a8a878";
+    } else if (type === "fighting") {
+      return "#c03028";
+    } else if (type === "flying") {
+      return "#a890f0";
+    } else if (type === "poison") {
+      return "#a040a0";
+    } else if (type === "ground") {
+      return "#e0c068";
+    } else if (type === "rock") {
+      return "#b8a038";
+    } else if (type === "bug") {
+      return "#a8b820";
+    } else if (type === "ghost") {
+      return "#705898";
+    } else if (type === "steel") {
+      return "#b8b8d0";
+    } else if (type === "fire") {
+      return "#f08030";
+    } else if (type === "water") {
+      return "#6890f0";
+    } else if (type === "grass") {
+      return "#78c850";
+    } else if (type === "electric") {
+      return "#f8d030";
+    } else if (type === "psychic") {
+      return "#f85888";
+    } else if (type === "ice") {
+      return "#98d8d8";
+    } else if (type === "dragon") {
+      return "#7038f8";
+    } else if (type === "dark") {
+      return "#705848";
+    } else if (type === "fairy") {
+      return "#ee99ac";
+    }
   }
 
   pokemonRowClass(status: Boolean, obtained: string) {
@@ -747,11 +786,8 @@ tr:hover {
 }
 
 #pdf-row {
-  margin-top: 20px !important;
-}
-
-#pdf-button {
-  width: 100%;
+  margin-top: 15px !important;
+  margin-bottom: 5px !important;
 }
 
 #pdf-icon {
