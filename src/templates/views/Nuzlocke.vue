@@ -712,7 +712,7 @@ tr:hover {
 
 .not,
 .not:hover {
-  background-color: #d3d3d3 !important;
+  background-color: #c3c3c3 !important;
 }
 
 #filters-card {

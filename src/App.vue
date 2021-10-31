@@ -119,6 +119,7 @@ export default class extends Vue {
 }
 
 .type {
+  color: white !important;
   height: 36px;
   min-width: 64px;
   padding: 0 16px;

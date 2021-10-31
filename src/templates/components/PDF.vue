@@ -38,16 +38,40 @@
                     :class="pokemonRowClass(pokemon.dead, pokemon.obtained)"
                   >
                     <td :class="tdClass(pokemon.dead)">
-                      <v-avatar size="80" tile>
-                        <v-img eager :src="pokemon.sprite"></v-img>
-                      </v-avatar>
+                      <template v-if="pokemon.sprite === ''">
+                        -
+                      </template>
+                      <template v-else>
+                        <v-avatar size="80" tile>
+                          <v-img eager :src="pokemon.sprite"></v-img>
+                        </v-avatar>
+                      </template>
                     </td>
                     <td :class="tdClass(pokemon.dead)">
-                      {{ pokemon.nickname }}
+                      {{ pokemon.nickname === "" ? "-" : pokemon.nickname }}
                     </td>
                     <td :class="tdClass(pokemon.dead)">{{ pokemon.number }}</td>
                     <td :class="tdClass(pokemon.dead)">
                       {{ pokemon.species.toUpperCase() }}
+                    </td>
+                    <td :class="tdClass(pokemon.dead)">
+                      {{
+                        pokemon.obtained === "not"
+                          ? "-"
+                          : pokemon.obtainedAs.toUpperCase()
+                      }}
+                    </td>
+                    <td :class="tdClass(pokemon.dead)">
+                      <v-row
+                        class="type-row"
+                        v-for="type of pokemon.types"
+                        :key="type"
+                        justify="center"
+                      >
+                        <v-card :class="`type ${type}`">{{
+                          type.toUpperCase()
+                        }}</v-card>
+                      </v-row>
                     </td>
                     <td :class="tdClass(pokemon.dead)">
                       {{ pokemon.location.toUpperCase() }}
@@ -121,6 +145,8 @@ export default class PDF extends Vue {
     { text: "Nickname" },
     { text: "Number" },
     { text: "Species" },
+    { text: "Obtained as" },
+    { text: "Types" },
     { text: "Location" },
     { text: "Obtained" }
   ];
@@ -263,10 +289,23 @@ tr {
 }
 
 .not {
-  background-color: #d3d3d3 !important;
+  background-color: #c3c3c3 !important;
 }
 
 .dark-row {
   background-color: #424242 !important;
+}
+
+.v-data-table::v-deep th,
+td {
+  padding: 0 !important;
+}
+
+td {
+  font-size: 0.75rem !important;
+}
+
+.type-row {
+  margin: 5px 0 !important;
 }
 </style>
