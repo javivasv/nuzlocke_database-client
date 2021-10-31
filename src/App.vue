@@ -116,4 +116,103 @@ export default class extends Vue {
 .dark-title {
   color: #424242;
 }
+
+.type {
+  height: 36px;
+  min-width: 64px;
+  padding: 0 16px;
+  margin: 0 10px;
+  display: inline-flex !important;
+  align-items: center;
+}
+
+.normal {
+  background-color: #a8a878 !important;
+  border: 1px solid #c6c6a7;
+}
+
+.fighting {
+  background-color: #c03028 !important;
+  border: 1px solid #7d1f1a;
+}
+
+.flying {
+  background-color: #a890f0 !important;
+  border: 1px solid #6d5e9c;
+}
+
+.poison {
+  background-color: #a040a0 !important;
+  border: 1px solid #682a68;
+}
+
+.ground {
+  background-color: #e0c068 !important;
+  border: 1px solid #927d44;
+}
+
+.rock {
+  background-color: #b8a038 !important;
+  border: 1px solid #786824;
+}
+
+.bug {
+  background-color: #a8b820 !important;
+  border: 1px solid #6d7815;
+}
+
+.ghost {
+  background-color: #705898 !important;
+  border: 1px solid #493963;
+}
+
+.steel {
+  background-color: #b8b8d0 !important;
+  border: 1px solid #787887;
+}
+
+.fire {
+  background-color: #f08030 !important;
+  border: 1px solid #9c531f;
+}
+
+.water {
+  background-color: #6890f0 !important;
+  border: 1px solid #445e9c;
+}
+
+.grass {
+  background-color: #78c850 !important;
+  border: 1px solid #4e8234;
+}
+
+.electric {
+  background-color: #f8d030 !important;
+  border: 1px solid #a1871f;
+}
+
+.psychic {
+  background-color: #f85888 !important;
+  border: 1px solid #a13959;
+}
+
+.ice {
+  background-color: #98d8d8 !important;
+  border: 1px solid #638d8d;
+}
+
+.dragon {
+  background-color: #7038f8 !important;
+  border: 1px solid #4924a1;
+}
+
+.dark {
+  background-color: #705848 !important;
+  border: 1px solid #49392f;
+}
+
+.fairy {
+  background-color: #ee99ac !important;
+  border: 1px solid #9b6470;
+}
 </style>

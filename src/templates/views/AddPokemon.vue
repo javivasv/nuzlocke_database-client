@@ -19,7 +19,20 @@
                     <v-img :src="sprite"> </v-img>
                   </v-avatar>
                 </v-row>
-                <v-row>
+                <v-row
+                  class="input-row"
+                  id="types"
+                  v-if="types.length > 0"
+                  justify="center"
+                >
+                  <v-card
+                    :class="`type ${type}`"
+                    v-for="type of types"
+                    :key="type"
+                    >{{ type.toUpperCase() }}</v-card
+                  >
+                </v-row>
+                <v-row class="input-row">
                   <v-col :cols="original ? '9' : '7'" id="species-col">
                     <v-row>
                       <template v-if="!original">
@@ -254,6 +267,7 @@ export default class AddPokemon extends Vue {
   obtained = "";
   gamesRegions = constants.regionsGames;
   sprite = "";
+  types = [];
   original = false;
   shiny = false;
   number = "";
@@ -264,7 +278,6 @@ export default class AddPokemon extends Vue {
   originalSpeciesError = false;
   requiredErrorMsg = "This field is required";
   numberErrorMsg = "";
-
   evolutionChain = {} as any;
   evolves = false;
   evolvesTo = [] as any;
@@ -435,6 +448,7 @@ export default class AddPokemon extends Vue {
   }
 
   selectPokemon(event: any) {
+    this.types = [];
     this.evolutionChain = {};
     this.evolves = false;
     this.evolvesTo = [];
@@ -446,16 +460,16 @@ export default class AddPokemon extends Vue {
       const pokemonNumber = +event.split(" ")[0].split("#")[1];
 
       if (pokemonName.includes("alola")) {
-        this.getPokemonSprite(pokemonName);
+        this.getPokemonData(pokemonName);
         this.checkAlolanEvolutions(pokemonName);
       } else if (pokemonName.includes("galar")) {
-        this.getPokemonSprite(pokemonName);
+        this.getPokemonData(pokemonName);
         this.checkGalarianEvolutions(pokemonName);
       } else if (constants.specialPokemonForms.includes(pokemonName)) {
-        this.getPokemonSprite(pokemonName);
+        this.getPokemonData(pokemonName);
         this.checkOriginalEvolutions(pokemonName, pokemonNumber.toString());
       } else {
-        this.getPokemonSprite(pokemonNumber.toString());
+        this.getPokemonData(pokemonNumber.toString());
         this.checkOriginalEvolutions(pokemonName, pokemonNumber.toString());
       }
     }
@@ -558,19 +572,27 @@ export default class AddPokemon extends Vue {
     }
   }
 
-  getPokemonSprite(pokemon: string) {
+  getPokemonData(pokemon: string) {
+    this.types = [];
+
     if (pokemon === "darmanitan-galar") {
       pokemon = "darmanitan-standard-galar";
     }
 
     service
-      .getPokemonSprite(pokemon)
+      .getPokemonData(pokemon)
       .then(res => {
+        for (const type of res.data.types) {
+          this.types.push(type.type.name);
+        }
+
         if (this.shiny) {
           this.sprite = res.data.sprites.front_shiny;
         } else {
           this.sprite = res.data.sprites.front_default;
         }
+
+        console.log(this.types);
       })
       .catch(error => {
         this.$root.$emit(
@@ -752,13 +774,13 @@ export default class AddPokemon extends Vue {
       const pokemonNumber = +this.species.split(" ")[0].split("#")[1];
 
       if (pokemonName.includes("alola")) {
-        this.getPokemonSprite(pokemonName);
+        this.getPokemonData(pokemonName);
       } else if (pokemonName.includes("galar")) {
-        this.getPokemonSprite(pokemonName);
+        this.getPokemonData(pokemonName);
       } else if (constants.specialPokemonForms.includes(pokemonName)) {
-        this.getPokemonSprite(pokemonName);
+        this.getPokemonData(pokemonName);
       } else {
-        this.getPokemonSprite(pokemonNumber.toString());
+        this.getPokemonData(pokemonNumber.toString());
       }
     }
   }
