@@ -51,14 +51,12 @@
             <template #item="{ item }">
               <tr :class="pokemonRowClass(item.dead, item.obtained)">
                 <td :class="tdClass(item.dead)">
-                  <template v-if="item.sprite === ''">
-                    -
-                  </template>
-                  <template v-else>
-                    <v-avatar size="78" tile>
-                      <v-img :src="item.sprite"></v-img>
-                    </v-avatar>
-                  </template>
+                  <v-avatar size="78" tile>
+                    <template v-if="item.sprite === ''">
+                      -
+                    </template>
+                    <v-img v-else :src="item.sprite"></v-img>
+                  </v-avatar>
                 </td>
                 <td :class="tdClass(item.dead)">
                   {{ item.nickname === "" ? "-" : item.nickname }}
