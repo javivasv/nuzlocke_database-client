@@ -64,18 +64,16 @@
                   {{ item.obtainedAs.toUpperCase() }}
                 </td>
                 <td :class="tdClass(item.dead)">
-                  <v-col class="type-col">
-                    <v-row
-                      class="type-row"
-                      v-for="type of item.types"
-                      :key="type"
-                      justify="center"
-                    >
-                      <v-card :class="`type ${type}`">{{
-                        type.toUpperCase()
-                      }}</v-card>
-                    </v-row>
-                  </v-col>
+                  <v-row
+                    class="type-row"
+                    v-for="type of item.types"
+                    :key="type"
+                    justify="center"
+                  >
+                    <v-card :class="`type ${type}`">{{
+                      type.toUpperCase()
+                    }}</v-card>
+                  </v-row>
                 </td>
                 <td :class="tdClass(item.dead)">
                   {{ item.location.toUpperCase() }}
@@ -754,10 +752,6 @@ td {
 
 td {
   font-size: 0.75rem !important;
-}
-
-.type-col {
-  padding: 10px 0;
 }
 
 .type-row {

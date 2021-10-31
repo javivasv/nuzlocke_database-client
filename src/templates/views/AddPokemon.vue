@@ -27,8 +27,8 @@
                 >
                   <v-card
                     :class="`type ${type}`"
-                    v-for="type of types"
-                    :key="type"
+                    v-for="(type, index) of types"
+                    :key="index"
                     >{{ type.toUpperCase() }}</v-card
                   >
                 </v-row>
@@ -103,6 +103,45 @@
                       ></v-checkbox>
                     </v-row>
                   </v-col>
+                </v-row>
+                <v-row class="input-row" v-if="original">
+                  <v-col id="type-col-left">
+                    <v-row>
+                      <v-autocomplete
+                        label="Type"
+                        :items="pokemonTypes"
+                        @change="checkType($event, 0)"
+                        v-model="firstType"
+                      >
+                        <template v-slot:selection="pokemonTypes">
+                          {{ pokemonTypes.item.toUpperCase() }}
+                        </template>
+                        <template v-slot:item="pokemonTypes">
+                          {{ pokemonTypes.item.toUpperCase() }}
+                        </template>
+                      </v-autocomplete>
+                    </v-row>
+                  </v-col>
+                  <v-col id="type-col-right">
+                    <v-row>
+                      <v-autocomplete
+                        label="Type"
+                        :items="pokemonTypes"
+                        @change="checkType($event, 1)"
+                        v-model="secondType"
+                      >
+                        <template v-slot:selection="pokemonTypes">
+                          {{ pokemonTypes.item.toUpperCase() }}
+                        </template>
+                        <template v-slot:item="pokemonTypes">
+                          {{ pokemonTypes.item.toUpperCase() }}
+                        </template>
+                      </v-autocomplete>
+                    </v-row>
+                  </v-col>
+                </v-row>
+                <v-row v-if="original && typesError">
+                  <span class="error-msg">{{ typesErrorMsg }}</span>
                 </v-row>
                 <v-row class="input-row">
                   <v-text-field
@@ -211,6 +250,11 @@
               </ul>
               <ul>
                 <li>
+                  <p><strong>Type:</strong> The type(s) of the pokemon</p>
+                </li>
+              </ul>
+              <ul>
+                <li>
                   <p>
                     <strong>Nickname:</strong> The nickname given to the
                     pokemon, if given one
@@ -261,6 +305,7 @@ export default class AddPokemon extends Vue {
   locations = [] as any;
   gotLocations = false;
   obtainedOptions = constants.obtainedOptions;
+  pokemonTypes = constants.types;
   species = "";
   nickname = "";
   location = "";
@@ -272,15 +317,19 @@ export default class AddPokemon extends Vue {
   shiny = false;
   number = "";
   speciesError = false;
+  typesError = false;
   locationError = false;
   obtainedError = false;
   numberError = false;
   originalSpeciesError = false;
   requiredErrorMsg = "This field is required";
+  typesErrorMsg = "";
   numberErrorMsg = "";
   evolutionChain = {} as any;
   evolves = false;
   evolvesTo = [] as any;
+  firstType = "";
+  secondType = "";
 
   created() {
     if (!this.$route.params.nuzlocke) {
@@ -591,8 +640,6 @@ export default class AddPokemon extends Vue {
         } else {
           this.sprite = res.data.sprites.front_default;
         }
-
-        console.log(this.types);
       })
       .catch(error => {
         this.$root.$emit(
@@ -669,7 +716,8 @@ export default class AddPokemon extends Vue {
         obtainedAs: this.species.toLowerCase(),
         original: this.original,
         species: this.species.toLowerCase(),
-        sprite: this.sprite
+        sprite: this.sprite,
+        types: this.types
       };
     } else {
       const pokemon = this.species.split(" ");
@@ -716,26 +764,14 @@ export default class AddPokemon extends Vue {
 
   validateData() {
     let valid = true;
-    this.speciesError = this.locationError = this.obtainedError = this.numberError = this.originalSpeciesError = false;
+    this.speciesError = this.locationError = this.obtainedError = this.numberError = this.originalSpeciesError = this.typesError = false;
 
     if (!this.original) {
       if (this.species === "" || this.species === undefined) {
         this.speciesError = true;
         valid = false;
       }
-    }
-
-    if (this.location === "" || this.location === undefined) {
-      this.locationError = true;
-      valid = false;
-    }
-
-    if (this.obtained === "" || this.obtained === undefined) {
-      this.obtainedError = true;
-      valid = false;
-    }
-
-    if (this.original) {
+    } else {
       if (this.number === "") {
         this.numberErrorMsg = this.requiredErrorMsg;
         this.numberError = true;
@@ -753,6 +789,29 @@ export default class AddPokemon extends Vue {
         this.originalSpeciesError = true;
         valid = false;
       }
+
+      if (this.types.length === 0) {
+        this.typesErrorMsg = "At least one type is required";
+        this.typesError = true;
+        valid = false;
+      } else if (
+        this.types.length === 2 &&
+        this.firstType === this.secondType
+      ) {
+        this.typesErrorMsg = "Types must be different";
+        this.typesError = true;
+        valid = false;
+      }
+    }
+
+    if (this.location === "" || this.location === undefined) {
+      this.locationError = true;
+      valid = false;
+    }
+
+    if (this.obtained === "" || this.obtained === undefined) {
+      this.obtainedError = true;
+      valid = false;
     }
 
     if (this.obtained === "not") {
@@ -763,6 +822,8 @@ export default class AddPokemon extends Vue {
   }
 
   selectOriginal(event: any) {
+    this.types = [];
+
     if (event) {
       this.number = "";
       this.species = "";
@@ -784,6 +845,42 @@ export default class AddPokemon extends Vue {
         this.getPokemonData(pokemonName);
       } else {
         this.getPokemonData(pokemonNumber.toString());
+      }
+    }
+  }
+
+  checkType(type: string, position: number) {
+    if (!type) {
+      if (this.types.length === 1) {
+        this.types = [];
+      } else {
+        this.types.splice(position, 1);
+      }
+    } else {
+      if (position === 0) {
+        if (
+          this.types.length === 0 ||
+          (this.types.length === 1 && this.secondType !== "")
+        ) {
+          this.types.unshift(type);
+        } else if (
+          (this.types.length === 1 && this.secondType === "") ||
+          this.types.length === 2
+        ) {
+          this.types[0] = type;
+        }
+      } else if (position === 1) {
+        if (
+          this.types.length === 0 ||
+          (this.types.length === 1 && this.firstType !== "")
+        ) {
+          this.types.push(type);
+        } else if (
+          (this.types.length === 1 && this.firstType === "") ||
+          this.types.length === 2
+        ) {
+          this.types[0] = type;
+        }
       }
     }
   }
@@ -849,5 +946,13 @@ a {
 
 .v-text-field::v-deep .v-text-field__details {
   display: none;
+}
+
+#type-col-left {
+  padding: 0 12px 0 0;
+}
+
+#type-col-right {
+  padding: 0 0 0 12px;
 }
 </style>

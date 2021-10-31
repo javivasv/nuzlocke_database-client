@@ -1,5 +1,26 @@
 export const pokeApiBaseUrl = "https://pokeapi.co/api/v2";
 
+export const types = [
+  "normal",
+  "fighting",
+  "flying",
+  "poison",
+  "ground",
+  "rock",
+  "bug",
+  "ghost",
+  "steel",
+  "fire",
+  "water",
+  "grass",
+  "electric",
+  "psychic",
+  "ice",
+  "dragon",
+  "dark",
+  "fairy"
+];
+
 export const games = [
   "Pokemon Blue",
   "Pokemon Red",
