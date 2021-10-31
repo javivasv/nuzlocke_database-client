@@ -666,6 +666,7 @@ export default class AddPokemon extends Vue {
         location: this.location.toLowerCase(),
         obtained: this.obtained,
         number: this.number,
+        obtainedAs: this.species.toLowerCase(),
         original: this.original,
         species: this.species.toLowerCase(),
         sprite: this.sprite
@@ -677,9 +678,11 @@ export default class AddPokemon extends Vue {
         location: this.location,
         obtained: this.obtained,
         number: pokemon[0],
+        obtainedAs: pokemon[2],
         original: this.original,
         species: pokemon[2],
-        sprite: this.sprite
+        sprite: this.sprite,
+        types: this.types
       };
     }
 

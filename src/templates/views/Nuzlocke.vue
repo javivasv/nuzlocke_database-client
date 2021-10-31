@@ -61,10 +61,21 @@
                   {{ item.species.toUpperCase() }}
                 </td>
                 <td :class="tdClass(item.dead)">
-                  -
+                  {{ item.obtainedAs.toUpperCase() }}
                 </td>
                 <td :class="tdClass(item.dead)">
-                  -
+                  <v-col class="type-col">
+                    <v-row
+                      class="type-row"
+                      v-for="type of item.types"
+                      :key="type"
+                      justify="center"
+                    >
+                      <v-card :class="`type ${type}`">{{
+                        type.toUpperCase()
+                      }}</v-card>
+                    </v-row>
+                  </v-col>
                 </td>
                 <td :class="tdClass(item.dead)">
                   {{ item.location.toUpperCase() }}
@@ -356,7 +367,12 @@ export default class Nuzlocke extends Vue {
     { text: "Nickname", value: "nickname", align: "center", sortable: true },
     { text: "Number", value: "number", align: "center", sortable: true },
     { text: "Species", value: "species", align: "center", sortable: true },
-    { text: "Original", value: "original", align: "center", sortable: true },
+    {
+      text: "Obtained as",
+      value: "obtainedAs",
+      align: "center",
+      sortable: true
+    },
     { text: "Types", value: "types", align: "center", sortable: false },
     { text: "Location", value: "location", align: "center", sortable: true },
     { text: "Obtained", value: "obtained", align: "center", sortable: false },
@@ -738,5 +754,13 @@ td {
 
 td {
   font-size: 0.75rem !important;
+}
+
+.type-col {
+  padding: 10px 0;
+}
+
+.type-row {
+  margin: 5px 0 !important;
 }
 </style>
