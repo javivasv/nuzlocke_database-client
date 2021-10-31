@@ -143,8 +143,20 @@ export async function getLocations(region: string) {
   return axiosRes;
 }
 
-export async function getPokemonSprite(pokemonName: string) {
-  let axiosRes = await axios.get(`${pokeApiBaseUrl}/pokemon/` + pokemonName);
+export async function getPokemonSprite(pokemon: string) {
+  let axiosRes = await axios.get(`${pokeApiBaseUrl}/pokemon/` + pokemon);
+  return axiosRes;
+}
+
+export async function getPokemonSpecies(pokemonNumber: string) {
+  let axiosRes = await axios.get(
+    `${pokeApiBaseUrl}/pokemon-species/` + pokemonNumber
+  );
+  return axiosRes;
+}
+
+export async function getEvolutionChain(url: string) {
+  let axiosRes = await axios.get(url);
   return axiosRes;
 }
 

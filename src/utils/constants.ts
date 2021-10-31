@@ -88,6 +88,47 @@ export const regionsGames = [
 
 export const obtainedOptions = ["caught", "gifted", "hatched", "traded", "not"];
 
+export const specialPokemonNames = [
+  "giratina-altered",
+  "shaymin-land",
+  "basculin-red-striped",
+  "darmanitan-standard",
+  "tornadus-incarnate",
+  "thundurus-incarnate",
+  "landorus-incarnate",
+  "keldeo-ordinary",
+  "meloetta-aria",
+  "meowstic-male",
+  "aegislash-shield",
+  "pumpkaboo-average",
+  "gourgeist-average",
+  "oricorio-baile",
+  "wishiwashi-solo",
+  "minior-red-meteor",
+  "mimikyu-disguised",
+  "eiscue-ice",
+  "indeedee-male",
+  "zacian-hero",
+  "zamazenta-hero"
+];
+
+export const specialPokemonForms = [
+  "deoxys-normal",
+  "deoxys-attack",
+  "deoxys-defense",
+  "deoxys-speed",
+  "wormadam-plant",
+  "wormadam-sandy",
+  "wormadam-trash",
+  "lycanroc-midday",
+  "lycanroc-midnight",
+  "lycanroc-dusk",
+  "toxtricity-amped",
+  "toxtricity-low-key",
+  "urshifu-single-strike",
+  "urshifu-rapid-strike"
+];
+
 export const alolanVariants = [
   "rattata",
   "raticate",
@@ -126,7 +167,7 @@ export const galarianVariants = [
   "zigzagoon",
   "linoone",
   "darumaka",
-  "darmanitan-standard",
+  "darmanitan",
   "yamask",
   "stunfisk"
 ];
@@ -184,3 +225,49 @@ export const videos = [
     id: "cieGDzts-gg"
   }
 ];
+
+/*
+[
+  "nidoran-f",
+  "nidoran-m",
+  "mr-mime",
+  "ho-oh",
+  "deoxys-normal",
+  "wormadam-plant",
+  "mime-jr",
+  "porygon-z",
+  "giratina-altered",
+  "shaymin-land",
+  "basculin-red-striped",
+  "darmanitan-standard",
+  "tornadus-incarnate",
+  "thundurus-incarnate",
+  "landorus-incarnate",
+  "keldeo-ordinary",
+  "meloetta-aria",
+  "meowstic-male",
+  "aegislash-shield",
+  "pumpkaboo-average",
+  "gourgeist-average",
+  "oricorio-baile",
+  "lycanroc-midday",
+  "wishiwashi-solo",
+  "type-null",
+  "minior-red-meteor",
+  "mimikyu-disguised",
+  "jangmo-o",
+  "hakamo-o",
+  "kommo-o",
+  "tapu-koko",
+  "tapu-lele",
+  "tapu-bulu",
+  "tapu-fini",
+  "toxtricity-amped",
+  "mr-rime",
+  "eiscue-ice",
+  "indeedee-male",
+  "zacian-hero",
+  "zamazenta-hero",
+  "urshifu-single-strike"
+]
+*/

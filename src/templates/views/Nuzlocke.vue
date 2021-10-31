@@ -61,10 +61,10 @@
                   {{ item.species.toUpperCase() }}
                 </td>
                 <td :class="tdClass(item.dead)">
-                  {{ item.species.toUpperCase() }}
+                  -
                 </td>
                 <td :class="tdClass(item.dead)">
-                  {{ item.species.toUpperCase() }}
+                  -
                 </td>
                 <td :class="tdClass(item.dead)">
                   {{ item.location.toUpperCase() }}
@@ -342,7 +342,6 @@ import { Component, Vue } from "vue-property-decorator";
 import PDF from "../components/PDF.vue";
 import * as service from "../../services/requests.service";
 import VueHtml2pdf from "vue-html2pdf";
-//import { Icon } from "@iconify/vue";
 
 @Component({
   components: {

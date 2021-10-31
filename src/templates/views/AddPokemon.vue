@@ -265,6 +265,10 @@ export default class AddPokemon extends Vue {
   requiredErrorMsg = "This field is required";
   numberErrorMsg = "";
 
+  evolutionChain = {} as any;
+  evolves = false;
+  evolvesTo = [] as any;
+
   created() {
     if (!this.$route.params.nuzlocke) {
       this.getNuzlocke();
@@ -321,38 +325,44 @@ export default class AddPokemon extends Vue {
             pokemonNumber = "#" + pokemonNumber;
           }
 
-          this.pokemons.push(`${pokemonNumber} - ${pokemon.name}`);
+          let pokemonName = pokemon.name;
 
-          if (constants.alolanVariants.includes(pokemon.name)) {
-            this.pokemons.push(`${pokemonNumber} - ${pokemon.name}-alola`);
+          if (constants.specialPokemonNames.includes(pokemon.name)) {
+            pokemonName = pokemon.name.split("-")[0];
           }
 
-          if (constants.galarianVariants.includes(pokemon.name)) {
-            this.pokemons.push(`${pokemonNumber} - ${pokemon.name}-galar`);
+          this.pokemons.push(`${pokemonNumber} - ${pokemonName}`);
+
+          if (constants.alolanVariants.includes(pokemonName)) {
+            this.pokemons.push(`${pokemonNumber} - ${pokemonName}-alola`);
           }
 
-          if (pokemon.name.includes("deoxys")) {
+          if (constants.galarianVariants.includes(pokemonName)) {
+            this.pokemons.push(`${pokemonNumber} - ${pokemonName}-galar`);
+          }
+
+          if (pokemonName.includes("deoxys")) {
             this.pokemons.push(`${pokemonNumber} - deoxys-attack`);
             this.pokemons.push(`${pokemonNumber} - deoxys-defense`);
             this.pokemons.push(`${pokemonNumber} - deoxys-speed`);
           }
 
-          if (pokemon.name.includes("wormadam")) {
+          if (pokemonName.includes("wormadam")) {
             this.pokemons.push(`${pokemonNumber} - wormadam-sandy`);
             this.pokemons.push(`${pokemonNumber} - wormadam-trash`);
           }
 
-          if (pokemon.name.includes("lycanroc")) {
+          if (pokemonName.includes("lycanroc")) {
             this.pokemons.push(`${pokemonNumber} - lycanroc-midnight`);
             this.pokemons.push(`${pokemonNumber} - lycanroc-dusk`);
           }
 
-          if (pokemon.name.includes("urshifu")) {
-            this.pokemons.push(`${pokemonNumber} - urshifu-rapid-strike`);
+          if (pokemonName.includes("toxtricity")) {
+            this.pokemons.push(`${pokemonNumber} - toxtricity-low-key`);
           }
 
-          if (pokemon.name.includes("toxtricity")) {
-            this.pokemons.push(`${pokemonNumber} - toxtricity-low-key`);
+          if (pokemonName.includes("urshifu")) {
+            this.pokemons.push(`${pokemonNumber} - urshifu-rapid-strike`);
           }
         });
 
@@ -425,17 +435,136 @@ export default class AddPokemon extends Vue {
   }
 
   selectPokemon(event: any) {
+    this.evolutionChain = {};
+    this.evolves = false;
+    this.evolvesTo = [];
+
     if (event === undefined) {
       this.sprite = "";
     } else {
       const pokemonName = event.split(" ")[2];
-      this.getPokemonSprite(pokemonName);
+      const pokemonNumber = +event.split(" ")[0].split("#")[1];
+
+      if (pokemonName.includes("alola")) {
+        this.getPokemonSprite(pokemonName);
+        this.checkAlolanEvolutions(pokemonName);
+      } else if (pokemonName.includes("galar")) {
+        this.getPokemonSprite(pokemonName);
+        this.checkGalarianEvolutions(pokemonName);
+      } else if (constants.specialPokemonForms.includes(pokemonName)) {
+        this.getPokemonSprite(pokemonName);
+        this.checkOriginalEvolutions(pokemonName, pokemonNumber.toString());
+      } else {
+        this.getPokemonSprite(pokemonNumber.toString());
+        this.checkOriginalEvolutions(pokemonName, pokemonNumber.toString());
+      }
     }
   }
 
-  getPokemonSprite(pokemonName: any) {
+  checkOriginalEvolutions(pokemonName: string, pokemonNumber: string) {
+    if (pokemonName === "meowth") {
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push("persian");
+    } else if (pokemonName === "yamask") {
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push("cofagrigus");
+    } else if (pokemonName === "farfetchd") {
+      this.evolutionChain = {};
+      this.evolves = false;
+      this.evolvesTo = [];
+    } else if (pokemonName === "mr-mime") {
+      this.evolutionChain = {};
+      this.evolves = false;
+      this.evolvesTo = [];
+    } else if (pokemonName === "farfetchd") {
+      this.evolutionChain = {};
+      this.evolves = false;
+      this.evolvesTo = [];
+    } else if (pokemonName === "corsola") {
+      this.evolutionChain = {};
+      this.evolves = false;
+      this.evolvesTo = [];
+    } else if (pokemonName === "linoone") {
+      this.evolutionChain = {};
+      this.evolves = false;
+      this.evolvesTo = [];
+    } else {
+      this.getPokemonSpecies(pokemonName, pokemonNumber);
+    }
+  }
+
+  checkAlolanEvolutions(pokemonName: string) {
+    const speciesName = pokemonName.split("-")[0];
+    if (
+      speciesName === "rattata" ||
+      speciesName === "sandshrew" ||
+      speciesName === "vulpix" ||
+      speciesName === "diglett" ||
+      speciesName === "meowth" ||
+      speciesName === "geodude" ||
+      speciesName === "graveler" ||
+      speciesName === "grimer"
+    ) {
+      const index = constants.alolanVariants.indexOf(speciesName);
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push(constants.alolanVariants[index + 1] + "-alola");
+    }
+  }
+
+  checkGalarianEvolutions(pokemonName: string) {
+    const speciesName = pokemonName.split("-")[0];
+
+    if (speciesName === "meowth") {
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push("perrserker");
+    } else if (speciesName === "slowpoke") {
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push("slowbro");
+      this.evolvesTo.push("slowking");
+    } else if (speciesName === "farfetchd") {
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push("sirfetchd");
+    } else if (speciesName === "mr") {
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push("mr-rime");
+    } else if (speciesName === "corsola") {
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push("cursola");
+    } else if (speciesName === "linoone") {
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push("obstagoon");
+    } else if (speciesName === "yamask") {
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push("runerigus");
+    } else if (
+      speciesName === "ponyta" ||
+      speciesName === "zigzagoon" ||
+      speciesName === "darumaka"
+    ) {
+      const index = constants.galarianVariants.indexOf(speciesName);
+      this.evolutionChain = {};
+      this.evolves = true;
+      this.evolvesTo.push(constants.galarianVariants[index + 1] + "-galar");
+    }
+  }
+
+  getPokemonSprite(pokemon: string) {
+    if (pokemon === "darmanitan-galar") {
+      pokemon = "darmanitan-standard-galar";
+    }
+
     service
-      .getPokemonSprite(pokemonName)
+      .getPokemonSprite(pokemon)
       .then(res => {
         if (this.shiny) {
           this.sprite = res.data.sprites.front_shiny;
@@ -446,9 +575,61 @@ export default class AddPokemon extends Vue {
       .catch(error => {
         this.$root.$emit(
           "notification",
-          "An error occurred getting the pokemon sprite"
+          "An error occurred getting the pokemon data"
         );
       });
+  }
+
+  getPokemonSpecies(pokemonName: string, pokemonNumber: string) {
+    service
+      .getPokemonSpecies(pokemonNumber)
+      .then(res => {
+        service
+          .getEvolutionChain(res.data.evolution_chain.url)
+          .then(res => {
+            this.evolutionChain = res.data.chain;
+            this.checkChain(pokemonName, res.data.chain);
+          })
+          .catch(error => {
+            this.$root.$emit(
+              "notification",
+              "An error occurred getting the pokemon evolution chain"
+            );
+          });
+      })
+      .catch(error => {
+        this.$root.$emit(
+          "notification",
+          "An error occurred getting the pokemon species"
+        );
+      });
+  }
+
+  checkChain(pokemonName: string, chain: any) {
+    if (chain.species.name === pokemonName) {
+      if (chain.evolves_to.length > 0) {
+        this.evolves = true;
+
+        this.evolvesTo = chain.evolves_to.map((evolution: any) => {
+          return evolution.species.name;
+        });
+      } else {
+        this.evolves = false;
+        this.evolvesTo = [];
+      }
+    } else {
+      for (const evolution of chain.evolves_to) {
+        this.checkChain(pokemonName, evolution);
+      }
+    }
+  }
+
+  evolve(evolvesTo: string) {
+    this.species = this.pokemons.find((pokemon: string) => {
+      return pokemon.includes(evolvesTo);
+    });
+
+    this.selectPokemon(this.species);
   }
 
   addPokemon() {
@@ -568,7 +749,17 @@ export default class AddPokemon extends Vue {
   selectShiny() {
     if (this.species !== "" && this.species !== undefined) {
       const pokemonName = this.species.split(" ")[2];
-      this.getPokemonSprite(pokemonName);
+      const pokemonNumber = +this.species.split(" ")[0].split("#")[1];
+
+      if (pokemonName.includes("alola")) {
+        this.getPokemonSprite(pokemonName);
+      } else if (pokemonName.includes("galar")) {
+        this.getPokemonSprite(pokemonName);
+      } else if (constants.specialPokemonForms.includes(pokemonName)) {
+        this.getPokemonSprite(pokemonName);
+      } else {
+        this.getPokemonSprite(pokemonNumber.toString());
+      }
     }
   }
 
