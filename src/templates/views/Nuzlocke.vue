@@ -51,11 +51,18 @@
             <template #item="{ item }">
               <tr :class="pokemonRowClass(item.dead, item.obtained)">
                 <td :class="tdClass(item.dead)">
-                  <v-avatar size="78" tile>
-                    <v-img :src="item.sprite"></v-img>
-                  </v-avatar>
+                  <template v-if="item.sprite === ''">
+                    -
+                  </template>
+                  <template v-else>
+                    <v-avatar size="78" tile>
+                      <v-img :src="item.sprite"></v-img>
+                    </v-avatar>
+                  </template>
                 </td>
-                <td :class="tdClass(item.dead)">{{ item.nickname }}</td>
+                <td :class="tdClass(item.dead)">
+                  {{ item.nickname === "" ? "-" : item.nickname }}
+                </td>
                 <td :class="tdClass(item.dead)">{{ item.number }}</td>
                 <td :class="tdClass(item.dead)">
                   {{ item.species.toUpperCase() }}
@@ -225,6 +232,7 @@
               <v-col class="filter-col">
                 <v-row>
                   <v-checkbox
+                    dense
                     class="filter-checkbox"
                     label="Alive"
                     v-model="aliveCheckbox"
@@ -235,6 +243,7 @@
               <v-col class="filter-col">
                 <v-row>
                   <v-checkbox
+                    dense
                     class="filter-checkbox"
                     label="Dead"
                     v-model="deadCheckbox"
@@ -251,6 +260,7 @@
               <v-col class="filter-col">
                 <v-row>
                   <v-checkbox
+                    dense
                     class="filter-checkbox"
                     label="Caught"
                     v-model="caughtCheckbox"
@@ -261,6 +271,7 @@
               <v-col class="filter-col">
                 <v-row>
                   <v-checkbox
+                    dense
                     class="filter-checkbox"
                     label="Gifted"
                     v-model="giftedCheckbox"
@@ -273,6 +284,7 @@
               <v-col class="filter-col">
                 <v-row>
                   <v-checkbox
+                    dense
                     class="filter-checkbox"
                     label="Hatched"
                     v-model="hatchedCheckbox"
@@ -283,6 +295,7 @@
               <v-col class="filter-col">
                 <v-row>
                   <v-checkbox
+                    dense
                     class="filter-checkbox"
                     label="Traded"
                     v-model="tradedCheckbox"
@@ -295,6 +308,7 @@
               <v-col class="filter-col">
                 <v-row>
                   <v-checkbox
+                    dense
                     class="filter-checkbox"
                     label="Not caught"
                     v-model="notCheckbox"
