@@ -97,14 +97,15 @@ export async function changeNuzlockeStatus(
   return axiosRes;
 }
 
-export async function changePokemonStatus(
+export async function updatePokemon(
   userId: string,
   nuzlockeId: string,
-  pokemonId: string
+  pokemonId: string,
+  data: any
 ) {
   let axiosRes = await axios.put(
     `${SETTINGS.API_BASE_PATH_DEV}/user/${userId}/nuzlocke/${nuzlockeId}/pokemon/${pokemonId}`,
-    null,
+    data,
     {
       headers: {
         authorization: localStorage.getItem("pndb_jwt")

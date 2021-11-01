@@ -448,8 +448,12 @@ export default class Nuzlocke extends Vue {
     const userId = this.$store.state.user.id;
     const nuzlockeId = this.$route.params.nuzlocke_id;
     const pokemonId = pokemon._id;
+    const data = {
+      dead: !pokemon.dead
+    };
+
     service
-      .changePokemonStatus(userId, nuzlockeId, pokemonId)
+      .updatePokemon(userId, nuzlockeId, pokemonId, data)
       .then(() => {
         pokemon.dead = !pokemon.dead;
       })

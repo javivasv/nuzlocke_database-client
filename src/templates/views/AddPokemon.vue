@@ -252,7 +252,12 @@
                 @click="addPokemon()"
                 >Add pokemon</v-btn
               >
-              <v-btn v-else color="white" text class="action-button"
+              <v-btn
+                v-else
+                color="white"
+                text
+                class="action-button"
+                @click="updatePokemon()"
                 >Update pokemon</v-btn
               >
             </v-card-title>
@@ -364,6 +369,54 @@ export default class AddPokemon extends Vue {
   evolvesTo = [] as any;
   firstType = "";
   secondType = "";
+
+  updatePokemon() {
+    if (!this.validateData()) {
+      return;
+    }
+
+    const data = {
+      nickname: this.nickname,
+      number: "",
+      species: "",
+      sprite: ""
+    };
+
+    if (this.original) {
+      data.number = this.number;
+      data.species = this.species;
+    } else {
+      const pokemon = this.species.split(" ");
+      data.number = pokemon[0];
+      data.species = pokemon[2];
+      data.sprite = this.sprite;
+    }
+
+    const userId = this.$store.state.user.id;
+    const nuzlockeId = this.$route.params.nuzlocke_id;
+    const pokemonId = this.$route.params.pokemon_id;
+
+    service
+      .updatePokemon(userId, nuzlockeId, pokemonId, data)
+      .then(() => {
+        let message: any;
+        if (this.nickname === "") {
+          message = data.species.toUpperCase() + " was updated";
+        } else {
+          message = this.nickname;
+        }
+
+        this.$root.$emit("notification", message + " was updated");
+        this.$router.push({ name: "nuzlocke" });
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
+        }
+      });
+  }
 
   created() {
     if (!this.$route.params.nuzlocke) {
@@ -821,18 +874,17 @@ export default class AddPokemon extends Vue {
     service
       .addPokemon(userId, nuzlockeId, data)
       .then(res => {
+        let message: any;
         if (this.nickname === "") {
-          const pokemon = this.species.split(" ");
-          this.$root.$emit(
-            "notification",
-            pokemon[2].toUpperCase() + " was added to " + this.nuzlocke.title
-          );
+          message = data.species.toUpperCase();
         } else {
-          this.$root.$emit(
-            "notification",
-            this.nickname + " was added to " + this.nuzlocke.title
-          );
+          message = this.nickname;
         }
+
+        this.$root.$emit(
+          "notification",
+          message + " was added to " + this.nuzlocke.title
+        );
         this.$router.push({ name: "nuzlocke" });
       })
       .catch(error => {
