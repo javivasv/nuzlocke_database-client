@@ -133,7 +133,7 @@ export async function deletePokemon(
   return axiosRes;
 }
 
-// ADD POKEMON
+// POKEMON
 export async function getPokemon() {
   let axiosRes = await axios.get(`${pokeApiBaseUrl}/pokemon/?limit=898`);
   return axiosRes;

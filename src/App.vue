@@ -131,91 +131,91 @@ export default class extends Vue {
 
 .normal {
   background-color: $normal !important;
-  border: 1px solid #c6c6a7;
+  border: 1px solid #c6c6a7 !important;
 }
 
 .fighting {
   background-color: $fighting !important;
-  border: 1px solid #7d1f1a;
+  border: 1px solid #7d1f1a !important;
 }
 
 .flying {
   background-color: $flying !important;
-  border: 1px solid #6d5e9c;
+  border: 1px solid #6d5e9c !important;
 }
 
 .poison {
   background-color: $poison !important;
-  border: 1px solid #682a68;
+  border: 1px solid #682a68 !important;
 }
 
 .ground {
   background-color: $ground !important;
-  border: 1px solid #927d44;
+  border: 1px solid #927d44 !important;
 }
 
 .rock {
   background-color: $rock !important;
-  border: 1px solid #786824;
+  border: 1px solid #786824 !important;
 }
 
 .bug {
   background-color: $bug !important;
-  border: 1px solid #6d7815;
+  border: 1px solid #6d7815 !important;
 }
 
 .ghost {
   background-color: $ghost !important;
-  border: 1px solid #493963;
+  border: 1px solid #493963 !important;
 }
 
 .steel {
   background-color: $steel !important;
-  border: 1px solid #787887;
+  border: 1px solid #787887 !important;
 }
 
 .fire {
   background-color: $fire !important;
-  border: 1px solid #9c531f;
+  border: 1px solid #9c531f !important;
 }
 
 .water {
   background-color: $water !important;
-  border: 1px solid #445e9c;
+  border: 1px solid #445e9c !important;
 }
 
 .grass {
   background-color: $grass !important;
-  border: 1px solid #4e8234;
+  border: 1px solid #4e8234 !important;
 }
 
 .electric {
   background-color: $electric !important;
-  border: 1px solid #a1871f;
+  border: 1px solid #a1871f !important;
 }
 
 .psychic {
   background-color: $psychic !important;
-  border: 1px solid #a13959;
+  border: 1px solid #a13959 !important;
 }
 
 .ice {
   background-color: $ice !important;
-  border: 1px solid #638d8d;
+  border: 1px solid #638d8d !important;
 }
 
 .dragon {
   background-color: $dragon !important;
-  border: 1px solid #4924a1;
+  border: 1px solid #4924a1 !important;
 }
 
 .dark {
   background-color: $dark !important;
-  border: 1px solid #49392f;
+  border: 1px solid #49392f !important;
 }
 
 .fairy {
   background-color: $fairy !important;
-  border: 1px solid #9b6470;
+  border: 1px solid #9b6470 !important;
 }
 </style>

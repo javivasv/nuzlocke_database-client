@@ -251,7 +251,7 @@
             </v-card-subtitle>
             <v-row>
               <v-col
-                cols="6"
+                cols="4"
                 class="filter-col"
                 v-for="(n, index) in statusOptions.length"
                 :key="index"
@@ -273,7 +273,7 @@
             </v-card-subtitle>
             <v-row>
               <v-col
-                cols="6"
+                cols="4"
                 class="filter-col"
                 v-for="(n, index) in obtainedOptions.length - 1"
                 :key="index"
@@ -456,6 +456,11 @@ export default class Nuzlocke extends Vue {
       .updatePokemon(userId, nuzlockeId, pokemonId, data)
       .then(() => {
         pokemon.dead = !pokemon.dead;
+
+        if (this.statusFilter !== "") {
+          const index = this.pokemon.indexOf(pokemon);
+          this.pokemon.splice(index, 1);
+        }
       })
       .catch(error => {
         if (error.response.status === 400) {
@@ -613,8 +618,6 @@ export default class Nuzlocke extends Vue {
       if (obtained !== "not") {
         if (status) {
           return "dead";
-        } else {
-          return "dark-row";
         }
       } else if (obtained === "not") {
         return "not";
@@ -754,23 +757,24 @@ tr {
   cursor: pointer;
 }
 
-tr,
-tr:hover {
-  background-color: #fff !important;
-}
-
-.dead,
-.dead:hover {
-  background-color: rgb(241, 60, 60, 0.6) !important;
-}
-
 .opacity-dead {
   opacity: 0.6;
 }
 
-.not,
-.not:hover {
+.dead {
+  background-color: #f13c3c99 !important;
+}
+
+.dead:hover {
+  background-color: #ec3737cc !important;
+}
+
+.not {
   background-color: #c3c3c3 !important;
+}
+
+.not:hover {
+  background-color: #aeaeae !important;
 }
 
 #filters-card {
@@ -780,7 +784,7 @@ tr:hover {
 }
 
 .filter-col {
-  padding: 0 0 0 25px;
+  padding: 0;
 }
 
 .filter-checkbox {
@@ -813,11 +817,6 @@ tr:hover {
   margin-right: 20px;
 }
 
-.dark-row,
-.dark-row:hover {
-  background-color: #424242 !important;
-}
-
 .v-data-table::v-deep th,
 td {
   padding: 0 !important;
@@ -829,5 +828,10 @@ td {
 
 .type-row {
   margin: 5px 0 !important;
+}
+
+.type {
+  height: 24px !important;
+  padding: 0 12px !important;
 }
 </style>
