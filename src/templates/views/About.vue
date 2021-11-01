@@ -10,7 +10,7 @@
             My name is Javier Vivas and I am a Computer Engineering student
             (almost graduated) at Universidad Simón Bolívar (USB) in Caracas,
             Venezuela. I currently work as a fullstack web developer and work on
-            this app in my free time.
+            this app on my free time.
           </v-card-text>
           <v-card-text>
             As a nuzlocke player myself (since 2020), I found it very
