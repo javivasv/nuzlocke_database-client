@@ -4,7 +4,7 @@ import Home from "../templates/views/Home.vue";
 import About from "../templates/views/About.vue";
 import Nuzlockes from "../templates/views/Nuzlockes.vue";
 import NewNuzlocke from "../templates/views/NewNuzlocke.vue";
-import AddPokemon from "../templates/views/AddPokemon.vue";
+import Pokemon from "../templates/views/Pokemon.vue";
 import Nuzlocke from "../templates/views/Nuzlocke.vue";
 import Dashboard from "../templates/views/Dashboard.vue";
 import Login from "../templates/views/Login.vue";
@@ -54,12 +54,12 @@ const routes = [
       {
         path: "/nuzlocke/:nuzlocke_id/add-pokemon",
         name: "add-pokemon",
-        component: AddPokemon
+        component: Pokemon
       },
       {
         path: "/nuzlocke/:nuzlocke_id/edit-pokemon/:pokemon_id",
         name: "edit-pokemon",
-        component: AddPokemon
+        component: Pokemon
       },
       {
         path: "/about",

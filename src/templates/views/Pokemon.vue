@@ -335,7 +335,7 @@ import * as service from "../../services/requests.service";
 import * as constants from "../../utils/constants";
 
 @Component({})
-export default class AddPokemon extends Vue {
+export default class Pokemon extends Vue {
   edit = false;
   nuzlocke: any;
   gotNuzlocke = false;
