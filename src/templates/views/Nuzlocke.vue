@@ -430,7 +430,7 @@ export default class Nuzlocke extends Vue {
     const nuzlockeId = this.$route.params.nuzlocke_id;
     service
       .changeNuzlockeStatus(userId, nuzlockeId, data)
-      .then(res => {
+      .then(() => {
         this.nuzlocke.status = status;
         this.$forceUpdate();
       })
@@ -478,7 +478,7 @@ export default class Nuzlocke extends Vue {
     const pokemonId = pokemon._id;
     service
       .deletePokemon(userId, nuzlockeId, pokemonId)
-      .then(res => {
+      .then(() => {
         let index: any;
         for (const pokemonObject of this.nuzlocke.pokemon) {
           if (pokemon._id.toString() === pokemonObject._id.toString()) {

@@ -86,7 +86,8 @@ export default class Register extends Vue {
 
     service
       .register(data)
-      .then(res => {
+      .then(() => {
+        this.$root.$emit("notification", "User created");
         this.$router.push({ name: "login" });
       })
       .catch(error => {

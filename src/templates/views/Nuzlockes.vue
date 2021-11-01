@@ -177,7 +177,7 @@ export default class Nuzlockes extends Vue {
     const nuzlockeId = nuzlocke._id;
     service
       .deleteNuzlocke(userId, nuzlockeId)
-      .then(res => {
+      .then(() => {
         let index: any;
         for (const nuzlockeObject of this.nuzlockes) {
           if (nuzlocke._id.toString() === nuzlockeObject._id.toString()) {

@@ -162,7 +162,7 @@ export default class NewNuzlocke extends Vue {
     const userId = this.$store.state.user.id;
     service
       .createNuzlocke(userId, data)
-      .then(res => {
+      .then(() => {
         this.$root.$emit("notification", this.title + " nuzlocke created");
         this.$router.push({ name: "nuzlockes" });
       })

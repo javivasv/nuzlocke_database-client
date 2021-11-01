@@ -197,6 +197,16 @@ export const specialPokemonNames = [
 
 export const videos = [
   {
+    channel: "Pokémon Challenges",
+    title: "My Worst Nuzlocke Defeat",
+    id: "kd9p4EGWpDQ"
+  },
+  {
+    channel: "Pokémon Challenges",
+    title: "How I Beat The 'Impossible' Nuzlocke",
+    id: "faMFeVBtq9I"
+  },
+  {
     channel: "pChal Daily",
     title: "Emerald Kaizo Attempt 151: The Final Battles Part I",
     id: "7Go0SlJWNYE"

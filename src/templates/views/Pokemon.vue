@@ -132,7 +132,6 @@
                   <v-col id="type-col-left">
                     <v-row>
                       <v-autocomplete
-                        :disabled="edit"
                         label="Type"
                         :items="pokemonTypes"
                         @change="checkType($event, 0)"
@@ -150,7 +149,6 @@
                   <v-col id="type-col-right">
                     <v-row>
                       <v-autocomplete
-                        :disabled="edit"
                         label="Type"
                         :items="pokemonTypes"
                         @change="checkType($event, 1)"
@@ -824,7 +822,7 @@ export default class Pokemon extends Vue {
     const nuzlockeId = this.nuzlocke._id;
     service
       .addPokemon(userId, nuzlockeId, data)
-      .then(res => {
+      .then(() => {
         let message: any;
         if (this.nickname === "") {
           message = data.species.toUpperCase();
@@ -856,7 +854,8 @@ export default class Pokemon extends Vue {
       nickname: this.nickname,
       number: "",
       species: "",
-      sprite: ""
+      sprite: "",
+      types: this.types
     };
 
     if (this.original) {

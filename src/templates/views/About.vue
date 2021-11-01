@@ -129,7 +129,7 @@ export default class About extends Vue {
 
     service
       .sendSuggestion(data)
-      .then(res => {
+      .then(() => {
         this.suggestion = "";
         this.$root.$emit("notification", "Suggestion sent");
       })
