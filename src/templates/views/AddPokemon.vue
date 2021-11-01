@@ -5,8 +5,11 @@
         <v-btn color="white" text class="action-button" @click="back()">
           <v-icon>fa-arrow-left</v-icon>
         </v-btn>
-        <h1 class="inner-view-title" :class="titleMode()">
+        <h1 v-if="!edit" class="inner-view-title" :class="titleMode()">
           ADD POKEMON TO: {{ nuzlocke.title.toUpperCase() }}
+        </h1>
+        <h1 v-else class="inner-view-title" :class="titleMode()">
+          EDIT POKEMON OF: {{ nuzlocke.title.toUpperCase() }}
         </h1>
       </v-row>
       <v-row class="content-row">
@@ -32,12 +35,31 @@
                     >{{ type.toUpperCase() }}</v-card
                   >
                 </v-row>
+                <v-row
+                  v-if="edit && !original"
+                  id="evolution-row"
+                  justify="center"
+                >
+                  <v-select
+                    label="Evolve"
+                    :items="evolvesTo"
+                    @change="evolve($event)"
+                  >
+                    <template v-slot:selection="evolvesTo">
+                      {{ evolvesTo.item.toUpperCase() }}
+                    </template>
+                    <template v-slot:item="evolvesTo">
+                      {{ evolvesTo.item.toUpperCase() }}
+                    </template>
+                  </v-select>
+                </v-row>
                 <v-row class="input-row">
                   <v-col :cols="original ? '9' : '7'" id="species-col">
                     <v-row>
                       <template v-if="!original">
                         <v-row>
                           <v-autocomplete
+                            :disabled="edit"
                             v-if="gotPokemons"
                             v-model="species"
                             :items="pokemons"
@@ -88,6 +110,7 @@
                   <v-col v-if="!original" cols="2" class="checkbox-col">
                     <v-row justify="center">
                       <v-checkbox
+                        :disabled="edit"
                         label="Shiny"
                         v-model="shiny"
                         @change="selectShiny()"
@@ -97,6 +120,7 @@
                   <v-col cols="3" class="checkbox-col">
                     <v-row justify="center">
                       <v-checkbox
+                        :disabled="edit"
                         label="Original species"
                         v-model="original"
                         @change="selectOriginal($event)"
@@ -108,6 +132,7 @@
                   <v-col id="type-col-left">
                     <v-row>
                       <v-autocomplete
+                        :disabled="edit"
                         label="Type"
                         :items="pokemonTypes"
                         @change="checkType($event, 0)"
@@ -125,6 +150,7 @@
                   <v-col id="type-col-right">
                     <v-row>
                       <v-autocomplete
+                        :disabled="edit"
                         label="Type"
                         :items="pokemonTypes"
                         @change="checkType($event, 1)"
@@ -153,6 +179,7 @@
                 <v-row class="input-row">
                   <template v-if="!nuzlocke.original">
                     <v-autocomplete
+                      :disabled="edit"
                       v-if="gotLocations"
                       v-model="location"
                       :items="locations"
@@ -168,6 +195,7 @@
                   </template>
                   <template v-else>
                     <v-text-field
+                      :disabled="edit"
                       v-model="location"
                       label="Location"
                     ></v-text-field>
@@ -178,6 +206,7 @@
                 </v-row>
                 <v-row class="input-row">
                   <v-select
+                    :disabled="edit"
                     v-model="obtained"
                     :items="obtainedOptions"
                     label="Obtained"
@@ -216,11 +245,15 @@
             </v-fab-transition>
             <v-card-title>
               <v-btn
+                v-if="!edit"
                 color="white"
                 text
                 class="action-button"
                 @click="addPokemon()"
                 >Add pokemon</v-btn
+              >
+              <v-btn v-else color="white" text class="action-button"
+                >Update pokemon</v-btn
               >
             </v-card-title>
             <v-divider></v-divider>
@@ -298,6 +331,7 @@ import * as constants from "../../utils/constants";
 
 @Component({})
 export default class AddPokemon extends Vue {
+  edit = false;
   nuzlocke: any;
   gotNuzlocke = false;
   pokemons = [] as any;
@@ -343,7 +377,50 @@ export default class AddPokemon extends Vue {
       }
     }
 
+    if (this.$route.params.pokemon_id !== undefined) {
+      this.edit = true;
+    }
+
     this.getPokemon();
+  }
+
+  setPokemonData() {
+    if (this.edit) {
+      const pokemonId = this.$route.params.pokemon_id;
+
+      try {
+        const pokemon = this.nuzlocke.pokemon.find((pokemonObject: any) => {
+          return pokemonObject._id === pokemonId;
+        });
+
+        this.types = pokemon.types;
+
+        if (pokemon.types.length === 1) {
+          this.firstType = pokemon.types[0];
+        } else if (pokemon.types.length === 2) {
+          this.firstType = pokemon.types[0];
+          this.secondType = pokemon.types[1];
+        }
+
+        this.nickname = pokemon.nickname;
+        this.location = pokemon.location;
+        this.obtained = pokemon.obtained;
+
+        if (!pokemon.original) {
+          this.sprite = pokemon.sprite;
+          const pokemonSpecies = pokemon.number + " - " + pokemon.species;
+          this.species = pokemonSpecies;
+          this.selectPokemon(pokemonSpecies);
+          this.shiny = pokemon.shiny;
+        } else {
+          this.original = true;
+          this.number = pokemon.number;
+          this.species = pokemon.species;
+        }
+      } catch {
+        this.$router.push({ name: "nuzlocke" });
+      }
+    }
   }
 
   getNuzlocke() {
@@ -365,6 +442,7 @@ export default class AddPokemon extends Vue {
           this.$root.$emit("logout");
         } else {
           this.$root.$emit("notification", error.response.data.msg);
+          this.$router.push({ name: "nuzlockes" });
         }
       });
   }
@@ -429,6 +507,7 @@ export default class AddPokemon extends Vue {
         });
 
         this.gotPokemons = true;
+        this.setPokemonData();
       })
       .catch(error => {
         this.$root.$emit(
@@ -706,40 +785,35 @@ export default class AddPokemon extends Vue {
       return;
     }
 
-    let obtainedAs: string;
-    if (this.obtained === "not") {
-      obtainedAs = "";
-      this.nickname = "";
-    } else {
-      obtainedAs = this.species.toUpperCase();
-    }
+    let data = {
+      nickname: this.nickname,
+      location: this.location,
+      obtained: this.obtained,
+      number: "",
+      obtainedAs: "",
+      original: this.original,
+      shiny: this.shiny,
+      species: "",
+      sprite: this.sprite,
+      types: this.types
+    };
 
-    let data: any;
     if (this.original) {
-      data = {
-        nickname: this.nickname,
-        location: this.location.toLowerCase(),
-        obtained: this.obtained,
-        number: this.number,
-        obtainedAs,
-        original: this.original,
-        species: this.species.toLowerCase(),
-        sprite: this.sprite,
-        types: this.types
-      };
+      data.location = this.location.toLowerCase();
+      data.number = this.number;
+      data.species = this.species.toLowerCase();
+
+      if (this.obtained !== "not") {
+        data.obtainedAs = this.species.toLowerCase();
+      }
     } else {
       const pokemon = this.species.split(" ");
-      data = {
-        nickname: this.nickname,
-        location: this.location,
-        obtained: this.obtained,
-        number: pokemon[0],
-        obtainedAs,
-        original: this.original,
-        species: pokemon[2],
-        sprite: this.sprite,
-        types: this.types
-      };
+      data.number = pokemon[0];
+      data.species = pokemon[2];
+
+      if (this.obtained !== "not") {
+        data.obtainedAs = pokemon[2];
+      }
     }
 
     const userId = this.$store.state.user.id;

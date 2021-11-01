@@ -49,7 +49,10 @@
             :items-per-page="5"
           >
             <template #item="{ item }">
-              <tr :class="pokemonRowClass(item.dead, item.obtained)">
+              <tr
+                :class="pokemonRowClass(item.dead, item.obtained)"
+                @click="toEdit(item._id)"
+              >
                 <td :class="tdClass(item.dead)">
                   <v-avatar size="78" tile>
                     <template v-if="item.sprite === ''">
@@ -137,7 +140,7 @@
                     text
                     :class="statusButtonClass(item.dead)"
                     v-if="item.obtained !== 'not' && !showDeleteButton"
-                    @click="changePokemonStatus(item)"
+                    @click="changePokemonStatus($event, item)"
                     small
                   >
                     <v-icon v-if="item.dead" small>fa-skull</v-icon>
@@ -149,7 +152,7 @@
                     class="delete-button"
                     v-if="showDeleteButton"
                     small
-                    @click="deletePokemon(item)"
+                    @click="deletePokemon($event, item)"
                   >
                     <v-icon small>fa-trash</v-icon>
                   </v-btn>
@@ -412,6 +415,7 @@ export default class Nuzlocke extends Vue {
           this.$root.$emit("logout");
         } else {
           this.$root.$emit("notification", error.response.data.msg);
+          this.$router.push({ name: "nuzlockes" });
         }
       });
   }
@@ -439,7 +443,8 @@ export default class Nuzlocke extends Vue {
       });
   }
 
-  changePokemonStatus(pokemon: any) {
+  changePokemonStatus(event: any, pokemon: any) {
+    event.stopPropagation();
     const userId = this.$store.state.user.id;
     const nuzlockeId = this.$route.params.nuzlocke_id;
     const pokemonId = pokemon._id;
@@ -457,7 +462,8 @@ export default class Nuzlocke extends Vue {
       });
   }
 
-  deletePokemon(pokemon: any) {
+  deletePokemon(event: any, pokemon: any) {
+    event.stopPropagation();
     const userId = this.$store.state.user.id;
     const nuzlockeId = this.$route.params.nuzlocke_id;
     const pokemonId = pokemon._id;
@@ -671,10 +677,6 @@ export default class Nuzlocke extends Vue {
     (this.$refs.pdf as any).generatePdf();
   }
 
-  back() {
-    this.$router.push({ name: "nuzlockes" });
-  }
-
   darkMode() {
     return this.$store.state.mode === "dark";
   }
@@ -683,6 +685,17 @@ export default class Nuzlocke extends Vue {
     if (this.$store.state.mode === "dark") {
       return "dark-title";
     }
+  }
+
+  toEdit(pokemonId: string) {
+    this.$router.push({
+      name: "edit-pokemon",
+      params: { pokemon_id: pokemonId, nuzlocke: this.nuzlocke }
+    });
+  }
+
+  back() {
+    this.$router.push({ name: "nuzlockes" });
   }
 }
 </script>
@@ -731,6 +744,10 @@ export default class Nuzlocke extends Vue {
 
 a {
   text-decoration: none;
+}
+
+tr {
+  cursor: pointer;
 }
 
 tr,

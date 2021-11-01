@@ -57,6 +57,11 @@ const routes = [
         component: AddPokemon
       },
       {
+        path: "/nuzlocke/:nuzlocke_id/edit-pokemon/:pokemon_id",
+        name: "edit-pokemon",
+        component: AddPokemon
+      },
+      {
         path: "/about",
         name: "about",
         component: About
