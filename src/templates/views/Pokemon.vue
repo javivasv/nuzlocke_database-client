@@ -36,7 +36,7 @@
                   >
                 </v-row>
                 <v-row
-                  v-if="edit && !original"
+                  v-if="edit && !original && evolvesTo.length > 0"
                   id="evolution-row"
                   justify="center"
                 >
@@ -370,60 +370,13 @@ export default class Pokemon extends Vue {
   firstType = "";
   secondType = "";
 
-  updatePokemon() {
-    if (!this.validateData()) {
-      return;
-    }
-
-    const data = {
-      nickname: this.nickname,
-      number: "",
-      species: "",
-      sprite: ""
-    };
-
-    if (this.original) {
-      data.number = this.number;
-      data.species = this.species;
-    } else {
-      const pokemon = this.species.split(" ");
-      data.number = pokemon[0];
-      data.species = pokemon[2];
-      data.sprite = this.sprite;
-    }
-
-    const userId = this.$store.state.user.id;
-    const nuzlockeId = this.$route.params.nuzlocke_id;
-    const pokemonId = this.$route.params.pokemon_id;
-
-    service
-      .updatePokemon(userId, nuzlockeId, pokemonId, data)
-      .then(() => {
-        let message: any;
-        if (this.nickname === "") {
-          message = data.species.toUpperCase() + " was updated";
-        } else {
-          message = this.nickname;
-        }
-
-        this.$root.$emit("notification", message + " was updated");
-        this.$router.push({ name: "nuzlocke" });
-      })
-      .catch(error => {
-        if (error.response.status === 400) {
-          this.$root.$emit("logout");
-        } else {
-          this.$root.$emit("notification", error.response.data.msg);
-        }
-      });
-  }
-
   created() {
     if (!this.$route.params.nuzlocke) {
       this.getNuzlocke();
     } else {
       this.nuzlocke = this.$route.params.nuzlocke;
       this.gotNuzlocke = true;
+      this.getPokemon();
 
       if (!this.nuzlocke.original) {
         this.getLocations();
@@ -433,8 +386,6 @@ export default class Pokemon extends Vue {
     if (this.$route.params.pokemon_id !== undefined) {
       this.edit = true;
     }
-
-    this.getPokemon();
   }
 
   setPokemonData() {
@@ -443,7 +394,7 @@ export default class Pokemon extends Vue {
 
       try {
         const pokemon = this.nuzlocke.pokemon.find((pokemonObject: any) => {
-          return pokemonObject._id === pokemonId;
+          return pokemonObject._id.toString() === pokemonId;
         });
 
         this.types = pokemon.types;
@@ -486,6 +437,8 @@ export default class Pokemon extends Vue {
         this.gotNuzlocke = true;
       })
       .then(() => {
+        this.getPokemon();
+
         if (!this.nuzlocke.original) {
           this.getLocations();
         }
@@ -630,9 +583,7 @@ export default class Pokemon extends Vue {
 
   selectPokemon(event: any) {
     this.types = [];
-    this.evolutionChain = {};
-    this.evolves = false;
-    this.evolvesTo = [];
+    this.noEvolution();
 
     if (event === undefined) {
       this.sprite = "";
@@ -649,44 +600,13 @@ export default class Pokemon extends Vue {
       } else if (constants.specialPokemonForms.includes(pokemonName)) {
         this.getPokemonData(pokemonName);
         this.checkOriginalEvolutions(pokemonName, pokemonNumber.toString());
+      } else if (constants.specialPokemonChains.includes(pokemonName)) {
+        this.getPokemonData(pokemonName);
+        this.checkSpecialEvolutions(pokemonName);
       } else {
         this.getPokemonData(pokemonNumber.toString());
         this.checkOriginalEvolutions(pokemonName, pokemonNumber.toString());
       }
-    }
-  }
-
-  checkOriginalEvolutions(pokemonName: string, pokemonNumber: string) {
-    if (pokemonName === "meowth") {
-      this.evolutionChain = {};
-      this.evolves = true;
-      this.evolvesTo.push("persian");
-    } else if (pokemonName === "yamask") {
-      this.evolutionChain = {};
-      this.evolves = true;
-      this.evolvesTo.push("cofagrigus");
-    } else if (pokemonName === "farfetchd") {
-      this.evolutionChain = {};
-      this.evolves = false;
-      this.evolvesTo = [];
-    } else if (pokemonName === "mr-mime") {
-      this.evolutionChain = {};
-      this.evolves = false;
-      this.evolvesTo = [];
-    } else if (pokemonName === "farfetchd") {
-      this.evolutionChain = {};
-      this.evolves = false;
-      this.evolvesTo = [];
-    } else if (pokemonName === "corsola") {
-      this.evolutionChain = {};
-      this.evolves = false;
-      this.evolvesTo = [];
-    } else if (pokemonName === "linoone") {
-      this.evolutionChain = {};
-      this.evolves = false;
-      this.evolvesTo = [];
-    } else {
-      this.getPokemonSpecies(pokemonName, pokemonNumber);
     }
   }
 
@@ -703,8 +623,7 @@ export default class Pokemon extends Vue {
       speciesName === "grimer"
     ) {
       const index = constants.alolanVariants.indexOf(speciesName);
-      this.evolutionChain = {};
-      this.evolves = true;
+      this.haveEvolution();
       this.evolvesTo.push(constants.alolanVariants[index + 1] + "-alola");
     }
   }
@@ -713,33 +632,26 @@ export default class Pokemon extends Vue {
     const speciesName = pokemonName.split("-")[0];
 
     if (speciesName === "meowth") {
-      this.evolutionChain = {};
-      this.evolves = true;
+      this.haveEvolution();
       this.evolvesTo.push("perrserker");
     } else if (speciesName === "slowpoke") {
-      this.evolutionChain = {};
-      this.evolves = true;
+      this.haveEvolution();
       this.evolvesTo.push("slowbro");
       this.evolvesTo.push("slowking");
     } else if (speciesName === "farfetchd") {
-      this.evolutionChain = {};
-      this.evolves = true;
+      this.haveEvolution();
       this.evolvesTo.push("sirfetchd");
     } else if (speciesName === "mr") {
-      this.evolutionChain = {};
-      this.evolves = true;
+      this.haveEvolution();
       this.evolvesTo.push("mr-rime");
     } else if (speciesName === "corsola") {
-      this.evolutionChain = {};
-      this.evolves = true;
+      this.haveEvolution();
       this.evolvesTo.push("cursola");
     } else if (speciesName === "linoone") {
-      this.evolutionChain = {};
-      this.evolves = true;
+      this.haveEvolution();
       this.evolvesTo.push("obstagoon");
     } else if (speciesName === "yamask") {
-      this.evolutionChain = {};
-      this.evolves = true;
+      this.haveEvolution();
       this.evolvesTo.push("runerigus");
     } else if (
       speciesName === "ponyta" ||
@@ -747,10 +659,49 @@ export default class Pokemon extends Vue {
       speciesName === "darumaka"
     ) {
       const index = constants.galarianVariants.indexOf(speciesName);
-      this.evolutionChain = {};
-      this.evolves = true;
+      this.haveEvolution();
       this.evolvesTo.push(constants.galarianVariants[index + 1] + "-galar");
     }
+  }
+
+  checkOriginalEvolutions(pokemonName: string, pokemonNumber: string) {
+    if (pokemonName === "meowth") {
+      this.haveEvolution();
+      this.evolvesTo.push("persian");
+    } else if (pokemonName === "yamask") {
+      this.haveEvolution();
+      this.evolvesTo.push("cofagrigus");
+    } else if (pokemonName === "farfetchd") {
+      this.noEvolution();
+    } else if (pokemonName === "mr-mime") {
+      this.noEvolution();
+    } else if (pokemonName === "farfetchd") {
+      this.noEvolution();
+    } else if (pokemonName === "corsola") {
+      this.noEvolution();
+    } else if (pokemonName === "linoone") {
+      this.noEvolution();
+    } else {
+      this.getPokemonSpecies(pokemonName, pokemonNumber);
+    }
+  }
+
+  checkSpecialEvolutions(pokemonName: string) {
+    if (pokemonName === "nincada") {
+      this.haveEvolution();
+      this.evolvesTo.push("ninjask");
+    }
+  }
+
+  haveEvolution() {
+    this.evolutionChain = {};
+    this.evolves = true;
+  }
+
+  noEvolution() {
+    this.evolutionChain = {};
+    this.evolves = false;
+    this.evolvesTo = [];
   }
 
   getPokemonData(pokemon: string) {
@@ -885,6 +836,54 @@ export default class Pokemon extends Vue {
           "notification",
           message + " was added to " + this.nuzlocke.title
         );
+        this.$router.push({ name: "nuzlocke" });
+      })
+      .catch(error => {
+        if (error.response.status === 400) {
+          this.$root.$emit("logout");
+        } else {
+          this.$root.$emit("notification", error.response.data.msg);
+        }
+      });
+  }
+
+  updatePokemon() {
+    if (!this.validateData()) {
+      return;
+    }
+
+    const data = {
+      nickname: this.nickname,
+      number: "",
+      species: "",
+      sprite: ""
+    };
+
+    if (this.original) {
+      data.number = this.number;
+      data.species = this.species;
+    } else {
+      const pokemon = this.species.split(" ");
+      data.number = pokemon[0];
+      data.species = pokemon[2];
+      data.sprite = this.sprite;
+    }
+
+    const userId = this.$store.state.user.id;
+    const nuzlockeId = this.$route.params.nuzlocke_id;
+    const pokemonId = this.$route.params.pokemon_id;
+
+    service
+      .updatePokemon(userId, nuzlockeId, pokemonId, data)
+      .then(() => {
+        let message: any;
+        if (this.nickname === "") {
+          message = data.species.toUpperCase() + " was updated";
+        } else {
+          message = this.nickname;
+        }
+
+        this.$root.$emit("notification", message + " was updated");
         this.$router.push({ name: "nuzlocke" });
       })
       .catch(error => {

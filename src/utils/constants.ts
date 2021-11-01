@@ -109,47 +109,6 @@ export const regionsGames = [
 
 export const obtainedOptions = ["caught", "gifted", "hatched", "traded", "not"];
 
-export const specialPokemonNames = [
-  "giratina-altered",
-  "shaymin-land",
-  "basculin-red-striped",
-  "darmanitan-standard",
-  "tornadus-incarnate",
-  "thundurus-incarnate",
-  "landorus-incarnate",
-  "keldeo-ordinary",
-  "meloetta-aria",
-  "meowstic-male",
-  "aegislash-shield",
-  "pumpkaboo-average",
-  "gourgeist-average",
-  "oricorio-baile",
-  "wishiwashi-solo",
-  "minior-red-meteor",
-  "mimikyu-disguised",
-  "eiscue-ice",
-  "indeedee-male",
-  "zacian-hero",
-  "zamazenta-hero"
-];
-
-export const specialPokemonForms = [
-  "deoxys-normal",
-  "deoxys-attack",
-  "deoxys-defense",
-  "deoxys-speed",
-  "wormadam-plant",
-  "wormadam-sandy",
-  "wormadam-trash",
-  "lycanroc-midday",
-  "lycanroc-midnight",
-  "lycanroc-dusk",
-  "toxtricity-amped",
-  "toxtricity-low-key",
-  "urshifu-single-strike",
-  "urshifu-rapid-strike"
-];
-
 export const alolanVariants = [
   "rattata",
   "raticate",
@@ -191,6 +150,49 @@ export const galarianVariants = [
   "darmanitan",
   "yamask",
   "stunfisk"
+];
+
+export const specialPokemonForms = [
+  "deoxys-normal",
+  "deoxys-attack",
+  "deoxys-defense",
+  "deoxys-speed",
+  "wormadam-plant",
+  "wormadam-sandy",
+  "wormadam-trash",
+  "lycanroc-midday",
+  "lycanroc-midnight",
+  "lycanroc-dusk",
+  "toxtricity-amped",
+  "toxtricity-low-key",
+  "urshifu-single-strike",
+  "urshifu-rapid-strike"
+];
+
+export const specialPokemonChains = ["nincada"];
+
+export const specialPokemonNames = [
+  "giratina-altered",
+  "shaymin-land",
+  "basculin-red-striped",
+  "darmanitan-standard",
+  "tornadus-incarnate",
+  "thundurus-incarnate",
+  "landorus-incarnate",
+  "keldeo-ordinary",
+  "meloetta-aria",
+  "meowstic-male",
+  "aegislash-shield",
+  "pumpkaboo-average",
+  "gourgeist-average",
+  "oricorio-baile",
+  "wishiwashi-solo",
+  "minior-red-meteor",
+  "mimikyu-disguised",
+  "eiscue-ice",
+  "indeedee-male",
+  "zacian-hero",
+  "zamazenta-hero"
 ];
 
 export const videos = [
