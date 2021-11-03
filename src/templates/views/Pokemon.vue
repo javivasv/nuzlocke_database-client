@@ -1003,11 +1003,10 @@ export default class Pokemon extends Vue {
           (this.types.length === 1 && this.firstType !== "")
         ) {
           this.types.push(type);
-        } else if (
-          (this.types.length === 1 && this.firstType === "") ||
-          this.types.length === 2
-        ) {
+        } else if (this.types.length === 1 && this.firstType === "") {
           this.types[0] = type;
+        } else if (this.types.length === 2) {
+          this.types[1] = type;
         }
       }
     }
